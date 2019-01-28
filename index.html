@@ -1,22 +1,29 @@
 <!DOCTYPE html>
 <html>
+
   <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="main.css">
+
     <title>Hello World!</title>
   </head>
+
   <body>
+
+      <script>
+          require('./renderer.js');
+          const tg = require('./testGuy.js');
+        </script>
     <h1>Hello World!</h1>
     <!-- All of the Node.js APIs are available in this renderer process. -->
     We are using Node.js <script>document.write(process.versions.node)</script>,
     Chromium <script>document.write(process.versions.chrome)</script>,
     and Electron <script>document.write(process.versions.electron)</script>.
 
-    <div tooltip="sup dood" tooltip-position="bottom">hover try</h2> 
-    
-    <script>
-      // You can also require other files to run in this process
-      require('./renderer.js')
-    </script>
+    <div tooltip="sup dood">hover try</div>
+
+    <input type="button" name="click" value="record" />
+
   </body>
+
 </html>

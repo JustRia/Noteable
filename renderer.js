@@ -2,7 +2,4 @@
 // be executed in the renderer process for that window.
 // All of the Node.js APIs are available in this process.
 
-const tt = require('electron-tooltip')
-tt( {
-    //property configuration, eventually, potentially
-})
+var tt = require('electron-tooltip')
