@@ -5,15 +5,11 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" href="main.css">
 
-    <title>Hello World!</title>
+    <title>Noteable</title>
   </head>
 
   <body>
 
-      <script>
-          require('./renderer.js');
-          const tg = require('./testGuy.js');
-        </script>
     <h1>Hello World!</h1>
     <!-- All of the Node.js APIs are available in this renderer process. -->
     We are using Node.js <script>document.write(process.versions.node)</script>,
@@ -22,8 +18,20 @@
 
     <div tooltip="sup dood">hover try</div>
 
-    <input type="button" name="click" value="record" />
+    <!--Hi, you can do anything you want in the DOM just make sure you keep the button ids since that's how the functions are assigned!-->
+    <div id="controls">
+      <button id="recordButton">Record</button>
+      <button id="pauseButton" disabled>Pause</button>
+      <button id="stopButton" disabled>Stop</button>
+     </div>
+     <h3>Recordings</h3>
+     <ol id="recordingsList"></ol>
 
+    <script>
+      require('./renderer.js');
+    </script>
+    <!--It should be noted that rawgit is going to be shut down on October 2019, so I'll look into a more sustainable host for Recorderjs-->
+    <script src="https://cdn.rawgit.com/mattdiamond/Recorderjs/08e7abd9/dist/recorder.js"></script>
   </body>
 
 </html>
