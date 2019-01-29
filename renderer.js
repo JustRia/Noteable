@@ -2,13 +2,15 @@
 // be executed in the renderer process for that window.
 // All of the Node.js APIs are available in this process.
 
-var tt = require('electron-tooltip')
-
+var tt = require('electron-tooltip'); //lol we'll see
 /*
 All of the below code is taken from mattdiamond's popular Recordjs plugin found:
 https://github.com/mattdiamond/Recorderjs
 code will be slightly repurposed for our use
 */
+
+//also waow so many globals
+
 //webkitURL is deprecated but nevertheless
 URL = window.URL || window.webkitURL;
  
@@ -19,6 +21,7 @@ var input; //MediaStreamAudioSourceNode we'll be recording
 // shim for AudioContext when it's not avb. 
 var AudioContext = window.AudioContext || window.webkitAudioContext;
 var audioContext = new AudioContext; //new audio context to help us record
+var audioBuffer; 
  
 var recordButton = document.getElementById("recordButton");
 var stopButton = document.getElementById("stopButton");
@@ -30,7 +33,7 @@ stopButton.addEventListener("click", stopRecording);
 pauseButton.addEventListener("click", pauseRecording);
 
 function startRecording() {
-    console.log("recordButton clicked");
+    //console.log("recordButton clicked");
  
     /*
     Simple constraints object, for more advanced audio features see
@@ -53,7 +56,7 @@ function startRecording() {
     */
  
     navigator.mediaDevices.getUserMedia(constraints).then(function(stream) {
-        console.log("getUserMedia() success, stream created, initializing Recorder.js ...");
+       // console.log("getUserMedia() success, stream created, initializing Recorder.js ...");
  
         /* assign to gumStream for later use */
         gumStream = stream;
@@ -70,7 +73,7 @@ function startRecording() {
         //start the recording process
         rec.record()
  
-        console.log("Recording started");
+        //console.log("Recording started");
  
     }).catch(function(err) {
         //enable the record button if getUserMedia() fails
@@ -81,7 +84,7 @@ function startRecording() {
 }
 
 function pauseRecording(){
-    console.log("pauseButton clicked rec.recording=",rec.recording );
+   // console.log("pauseButton clicked rec.recording=",rec.recording );
     if (rec.recording){
         //pause
         rec.stop();
@@ -93,7 +96,7 @@ function pauseRecording(){
     }
 }
 function stopRecording() {
-    console.log("stopButton clicked");
+    //console.log("stopButton clicked");
  
     //disable the stop button, enable the record too allow for new recordings
     stopButton.disabled = true;
@@ -111,7 +114,11 @@ function stopRecording() {
  
     //create the wav blob and pass it on to createDownloadLink
     rec.exportWAV(createDownloadLink);
+    rec.exportWAV(createAudioBuffer);
+    console.log("gdi be an audioBuffer?" + audioBuffer);
 }
+/**The callback above contains the blob in wav format */
+
 function createDownloadLink(blob) {
  
     var url = URL.createObjectURL(blob);
@@ -119,7 +126,7 @@ function createDownloadLink(blob) {
     var li = document.createElement('li');
     var link = document.createElement('a');
  
-    //add controls to the <audio> element
+    //add controls to the <audio> element in the html file to play stuff
     au.controls = true;
     au.src = url;
  
@@ -134,4 +141,22 @@ function createDownloadLink(blob) {
  
     //add the li element to the ordered list
     recordingsList.appendChild(li);
+    //console.log("au:" + au);
+  
+}
+
+function createAudioBuffer(blob) {
+
+    var arrayBuffer;
+    fetch(URL.createObjectURL(blob)).then(res => res.arrayBuffer().then(function(buffer) {
+        arrayBuffer = buffer;
+        //console.log("I'm an arraybuffer" + arrayBuffer);
+
+        audioContext.decodeAudioData(arrayBuffer, function(buffer) {
+            audioBuffer = buffer;
+            console.log("we in here");
+            return buffer;
+        }, function(e){"Error decoding data"});
+    }));
+    console.log("audioBUffer print: " + audioBuffer);
 }
