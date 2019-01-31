@@ -26,6 +26,22 @@ h1, h2, h3, h4, h5, h6, p {
     border: 7px solid #FF8C8C;
 }
 
+.disabled-button {
+    filter: grayscale(100%) opacity(60%);
+}
+
+.enabled-button {
+    filter: grayscale(0%) opacity(100%);
+}
+
+.hidden {
+    display: none;
+}
+
+.show {
+    display: block;
+}
+
 /*******************/
 /****** Logo *******/
 /*******************/
