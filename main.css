@@ -1,18 +1,86 @@
-[tooltip]:before {            
+/*******************/
+/*** Colors ****/
+/*******************/
+
+/* Green-Blue color #76BAA9 */
+/* Light Red color  #FF8C8C */
+/* Red color        #C00000 */
+/* white            #FFFFFF */
+
+
+/*******************/
+/*** The Basics ****/
+/*******************/
+body {
+    background-color: #76BAA9;
+    color: white;
+    font-family: "Arial", "Verdana";
+    text-align: center;
+}
+
+h1, h2, h3, h4, h5, h6, p {
+    color: white;
+}
+
+.selected {
+    border: 7px solid #FF8C8C;
+}
+
+/*******************/
+/****** Logo *******/
+/*******************/
+#logo {
+    text-align: center;
+    margin-bottom: 80px;
+}
+
+/*******************/
+/** Main Buttons **/
+/*******************/
+#buttons-container {
+    display: flex; /* allows us to evenly distribute the 3 buttons */
+    justify-content: space-around;
+    width:700px;
+    margin: 0 auto;
+}
+
+.main-button {
+    width: 200px;
+    padding: 40px 0; /* centers text on button vertically and gives height */
+    background-color: white;
+    color: black;
+    text-align: center;
+    border-radius: 15px;
+}
+
+/*******************/
+/**** Mic Icon *****/
+/*******************/
+#mic-icon {
+    position: absolute;
+    bottom: 10px;
+    left: -50%;
+    right: -50%;
+}
+
+/*******************/
+/** Tooltip stuff **/
+/*******************/
+[tooltip]:before {
     content: attr(tooltip);
     position: absolute;
     opacity: 0;
-    
+
     /* customizable */
     transition: all 0.15s ease;
     padding: 10px;
     color: white;
     border-radius: 10px;
-    box-shadow: 2px 2px 1px silver; 
+    box-shadow: 2px 2px 1px silver;
 }
-[tooltip]:hover:before {        
+[tooltip]:hover:before {
     opacity : 1;
-    
+
     /* customizable */
     background: black;
     margin-top: -40px;
