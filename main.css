@@ -113,3 +113,19 @@ h1, h2, h3, h4, h5, h6, p {
 [tooltip]:not([tooltip-persistent]):before {
     pointer-events: none;
 }
+
+/*******************/
+/** Tooltip stuff **/
+/*******************/
+@media only screen and (max-width: 715px) {
+    /* Buttons start to scroll off the side */
+    #buttons-container {
+        display: block;
+        width: 100%;
+    }
+
+    .main-button {
+        width: 90%;
+        margin: 10px auto;
+    }
+}
