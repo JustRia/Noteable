@@ -23,7 +23,7 @@ h1, h2, h3, h4, h5, h6, p {
 }
 
 .selected {
-    border: 7px solid #FF8C8C;
+    box-shadow: 0 0 0 5px #FF8C8C;
 }
 
 .disabled-button {
@@ -36,10 +36,6 @@ h1, h2, h3, h4, h5, h6, p {
 
 .hidden {
     display: none;
-}
-
-.show {
-    display: block;
 }
 
 /*******************/

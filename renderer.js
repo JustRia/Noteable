@@ -4,5 +4,5 @@
 
 const tt = require('electron-tooltip')
 tt( {
-    
+
 })
