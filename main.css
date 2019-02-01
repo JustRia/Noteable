@@ -69,13 +69,23 @@ h1, h2, h3, h4, h5, h6, p {
 }
 
 /*******************/
+/** Main Content ***/
+/*******************/
+#main-content {
+    margin-top: 45px;
+}
+
+/*******************/
 /**** Mic Icon *****/
 /*******************/
 #mic-icon {
     position: absolute;
     bottom: 10px;
-    left: -50%;
-    right: -50%;
+    position: absolute;
+    margin-left: auto;
+    margin-right: auto;
+    left: 0;
+    right: 0;
 }
 
 /*******************/
