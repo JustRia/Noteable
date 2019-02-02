@@ -1,22 +1,131 @@
-[tooltip]:before {            
+/*******************/
+/*** Colors ****/
+/*******************/
+
+/* Green-Blue color #76BAA9 */
+/* Light Red color  #FF8C8C */
+/* Red color        #C00000 */
+/* white            #FFFFFF */
+
+
+/*******************/
+/*** The Basics ****/
+/*******************/
+body {
+    background-color: #76BAA9;
+    color: white;
+    font-family: "Arial", "Verdana";
+    text-align: center;
+}
+
+h1, h2, h3, h4, h5, h6, p {
+    color: white;
+}
+
+.selected {
+    box-shadow: 0 0 0 5px #FF8C8C;
+}
+
+.disabled-button {
+    filter: grayscale(100%) opacity(60%);
+}
+
+.enabled-button {
+    filter: grayscale(0%) opacity(100%);
+}
+
+.hidden {
+    display: none;
+}
+
+/*******************/
+/****** Logo *******/
+/*******************/
+#logo {
+    text-align: center;
+    margin-bottom: 80px;
+}
+#logo img {
+    width: 200px;
+}
+
+/*******************/
+/** Main Buttons **/
+/*******************/
+#buttons-container {
+    display: flex; /* allows us to evenly distribute the 3 buttons */
+    justify-content: space-around;
+    width:700px;
+    margin: 0 auto;
+}
+
+.main-button {
+    width: 200px;
+    padding: 40px 0; /* centers text on button vertically and gives height */
+    background-color: white;
+    color: black;
+    text-align: center;
+    border-radius: 15px;
+}
+
+/*******************/
+/** Main Content ***/
+/*******************/
+#main-content {
+    margin-top: 45px;
+}
+
+/*******************/
+/**** Mic Icon *****/
+/*******************/
+#mic-icon {
+    position: absolute;
+    bottom: 10px;
+    position: absolute;
+    margin-left: auto;
+    margin-right: auto;
+    left: 0;
+    right: 0;
+}
+
+/*******************/
+/** Tooltip stuff **/
+/*******************/
+[tooltip]:before {
     content: attr(tooltip);
     position: absolute;
     opacity: 0;
-    
+
     /* customizable */
     transition: all 0.15s ease;
     padding: 10px;
     color: white;
     border-radius: 10px;
-    box-shadow: 2px 2px 1px silver; 
+    box-shadow: 2px 2px 1px silver;
 }
-[tooltip]:hover:before {        
+[tooltip]:hover:before {
     opacity : 1;
-    
+
     /* customizable */
     background: black;
     margin-top: -40px;
 }
 [tooltip]:not([tooltip-persistent]):before {
     pointer-events: none;
+}
+
+/*******************/
+/** Tooltip stuff **/
+/*******************/
+@media only screen and (max-width: 715px) {
+    /* Buttons start to scroll off the side */
+    #buttons-container {
+        display: block;
+        width: 100%;
+    }
+
+    .main-button {
+        width: 90%;
+        margin: 10px auto;
+    }
 }
