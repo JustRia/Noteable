@@ -4,7 +4,8 @@
   "description": "Voice-to-sheet software!",
   "main": "main.js",
   "scripts": {
-    "start": "electron ."
+    "start": "electron .",
+    "postinstall": "npm rebuild --target=4.0.0 --runtime=electron --dist-url=https://atom.io/download/electron"
   },
   "repository": "https://github.com/JustRia/Noteable",
   "keywords": [
@@ -19,6 +20,7 @@
     "electron-tooltip": "^1.1.5"
   },
   "dependencies": {
-    "@google-cloud/speech": "^2.2.0"
+    "@google-cloud/speech": "^2.2.0",
+    "@google-cloud/storage": "^2.4.1"
   }
 }
