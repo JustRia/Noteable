@@ -6,7 +6,7 @@ const teoria = require("teoria")
 // see below for optional constructor parameters.
 const detectPitch = new Pitchfinder.YIN();
 
-const buffer = fs.readFileSync('4-c-notes.wav');
+const buffer = fs.readFileSync('');
 const decoded = WavDecoder.decode.sync(buffer); // get audio data from file using `wav-decoder`
 const float32Array = decoded.channelData[0]; // get a single channel of sound
 
@@ -18,8 +18,10 @@ var frequencies = Pitchfinder.frequencies(detectPitch, float32Array, {
 
 console.log(frequencies);
 
-var notes = frequencies.map(freq => freq < 1109 ? {"freq" : freq, "note_name" : "" + teoria.note.fromFrequency(freq).note.name() 
+var notes = frequencies.map(freq => freq < 1109 && freq != null ? 
+                            {"freq" : freq, "note_name" : "" + teoria.note.fromFrequency(freq).note.name() 
                             + teoria.note.fromFrequency(freq).note.accidental()
                             + teoria.note.fromFrequency(freq).note.octave()} : null);
 
 console.log(notes);
+
