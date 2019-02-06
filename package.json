@@ -4,7 +4,8 @@
   "description": "Voice-to-sheet software!",
   "main": "main.js",
   "scripts": {
-    "start": "electron ."
+    "start": "electron .",
+    "test": "mocha"
   },
   "repository": "https://github.com/JustRia/Noteable",
   "keywords": [
@@ -14,7 +15,10 @@
   ],
   "author": "GitHub",
   "license": "CC0-1.0",
-  "devDependencies": {},
+  "devDependencies": {
+    "mocha": "^5.2.0",
+    "spectron": "^5.0.0"
+  },
   "dependencies": {
     "electron": "^4.0.1",
     "electron-tooltip": "^1.1.5",
