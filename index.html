@@ -12,9 +12,20 @@
     </h1>
 
     <div id="buttons-container">
-        <div class="main-button" id="key-signature-button" data-tooltip="Key signature tooltip goes here" data-tooltip-position="bottom" onclick="addSelected('key-signature')">Key Signature</div>
-        <div class="main-button" id="tempo-button"data-tooltip="Tempo tooltip goes here" data-tooltip-position="bottom" onclick="addSelected('tempo')">Tempo</div>
-        <div class="main-button" id="time-signature-button"data-tooltip="Time signature tooltip goes here" data-tooltip-position="bottom" onclick="addSelected('time-signature')">Time Signature</div>
+        <div class="main-button" id="key-signature-button" onclick="addSelected('key-signature')">
+            Key Signature
+            <span class="tooltip">Key signature tooltip goes here</span>
+        </div>
+
+        <div class="main-button" id="tempo-button" onclick="addSelected('tempo')">
+            Tempo
+            <span class="tooltip">Tempo tooltip goes here</span>
+        </div>
+
+        <div class="main-button" id="time-signature-button" onclick="addSelected('time-signature')">
+            Time Signature
+            <span class="tooltip">Time signature tooltip goes here</span>
+        </div>
     </div>
 
     <div id="main-content">

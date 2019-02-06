@@ -39,7 +39,7 @@ h1, h2, h3, h4, h5, h6, p {
 }
 
 .hidden {
-    display: none;
+    display: none !important;
 }
 
 /*******************/
@@ -60,10 +60,11 @@ h1, h2, h3, h4, h5, h6, p {
     display: flex; /* allows us to evenly distribute the 3 buttons */
     justify-content: space-around;
     width:700px;
-    margin: 0 auto;
+    margin: 0 auto 70px auto;
 }
 
 .main-button {
+    position: relative;
     width: 200px;
     padding: 40px 0; /* centers text on button vertically and gives height */
     background-color: white;
@@ -73,10 +74,56 @@ h1, h2, h3, h4, h5, h6, p {
 }
 
 /*******************/
+/** Tooltip stuff **/
+/*******************/
+.main-button .tooltip {
+    position: absolute;
+    top: 110%;
+    left: 0;
+    right: 0;
+    margin: auto;
+    padding: 10px;
+    border-radius: 10px;
+    color: white;
+    background-color: rgba(45, 45, 45, 0.9);
+    z-index: 1;
+
+    visibility: hidden;
+    opacity: 0;
+    transition: all 0.3s;
+}
+
+.main-button:hover .tooltip{
+    visibility: visible;
+    opacity: 1;
+}
+
+.main-button.selected .tooltip {
+    top: calc(110% + 5px); /* shift downward because of selected border */
+}
+
+/* prevents weird stutter when user would hover over tooltip instead of button */
+.main-button .tooltip:hover {
+    visibility: hidden;
+    opacity: 0;
+}
+
+/* the arrow of the tooltip */
+.tooltip::after {
+    content: "";
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    margin-left: -6px;
+    border-width: 6px;
+    border-style: solid;
+    border-color: transparent transparent rgba(45, 45, 45, 0.9) transparent;
+}
+
+/*******************/
 /** Main Content ***/
 /*******************/
 #main-content {
-    margin-top: 45px;
     flex: 1; /* takes up rest of space of window so microphone is at the bottom of the screen */
 }
 
@@ -91,35 +138,10 @@ h1, h2, h3, h4, h5, h6, p {
     right: 0;
 }
 
-/*******************/
-/** Tooltip stuff **/
-/*******************/
-[tooltip]:before {
-    content: attr(tooltip);
-    position: absolute;
-    opacity: 0;
 
-    /* customizable */
-    transition: all 0.15s ease;
-    padding: 10px;
-    color: white;
-    border-radius: 10px;
-    box-shadow: 2px 2px 1px silver;
-}
-[tooltip]:hover:before {
-    opacity : 1;
-
-    /* customizable */
-    background: black;
-    margin-top: -40px;
-}
-[tooltip]:not([tooltip-persistent]):before {
-    pointer-events: none;
-}
-
-/*******************/
-/** Tooltip stuff **/
-/*******************/
+/**************************/
+/** Screen Width changes **/
+/**************************/
 @media only screen and (max-width: 715px) {
     /* Buttons start to scroll off the side */
     #buttons-container {
