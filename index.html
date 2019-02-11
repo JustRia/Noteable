@@ -28,19 +28,60 @@
         </div>
     </div>
 
-    <div id="main-content">
+    <div class="main-content">
         <!-- All the content we will be adding and removing should appear here -->
         <div id="key-signature-input" class="hidden">
-            <h3>Input Key Signature: </h3>
-            <!-- TODO: add input options -->
+            <h3>Input Key Signature:</h3>
+            <form>
+                <div class="input-container">
+                    <select name="key-signature">
+                        <option value="A-flat">A&#9837;</option>
+                        <option value="A">A</option>
+                        <option value="A-sharp;">A&#9839;</option>
+
+                        <option value="B-flat">B&#9837;</option>
+                        <option value="B">B</option>
+
+                        <option value="C" selected>C</option>
+                        <option value="C-sharp;">C&#9839;</option>
+
+                        <option value="D-flat">D&#9837;</option>
+                        <option value="D">D</option>
+                        <option value="D-sharp;">D&#9839;</option>
+
+                        <option value="E-flat">E&#9837;</option>
+                        <option value="E">E</option>
+
+                        <option value="F">F</option>
+                        <option value="F-sharp;">F&#9839;</option>
+
+                        <option value="G-flat">G&#9837;</option>
+                        <option value="G">G</option>
+                        <option value="G-sharp;">G&#9839;</option>
+                    </select>
+                </div>
+                <input type="submit">
+            </form>
         </div>
         <div id="tempo-input" class="hidden">
             <h3>Input Tempo: </h3>
-            <!-- TODO: add input options -->
+            <form>
+                <div class="input-container">
+                    <input type="number" name="tempo" min="1" max="999" value="4">
+                </div>
+                <input type="submit">
+            </form>
         </div>
         <div id="time-signature-input" class="hidden">
             <h3>Input Time Signature: </h3>
-            <!-- TODO: add input options -->
+            <form>
+                <div class="input-container">
+                    <input type="number" name="time-signature-top-num" min="1" max="99" value="4">
+                    <hr />
+                    <input type="number" name="time-signature-bottom-num" min="1" max="99" value="4">
+                </div>
+                <input type="submit">
+            </form>
         </div>
     </div>
 

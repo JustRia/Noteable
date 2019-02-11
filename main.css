@@ -60,7 +60,7 @@ h1, h2, h3, h4, h5, h6, p {
     display: flex; /* allows us to evenly distribute the 3 buttons */
     justify-content: space-around;
     width:700px;
-    margin: 0 auto 70px auto;
+    margin: 0 auto;
 }
 
 .main-button {
@@ -123,8 +123,46 @@ h1, h2, h3, h4, h5, h6, p {
 /*******************/
 /** Main Content ***/
 /*******************/
-#main-content {
+.main-content {
+    display: flex;
     flex: 1; /* takes up rest of space of window so microphone is at the bottom of the screen */
+    margin: 70px auto;
+    align-items: center;
+}
+
+.main-content *{
+    display: inline-block;
+}
+
+/*******************/
+/***** Inputs ******/
+/*******************/
+input {
+    text-align: center;
+}
+
+/* Turn off scroll buttons for numbers */
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Key-Signature */
+.input-container {
+    vertical-align: middle;
+    margin: 15px;
+}
+.input-container input{
+    display: block;
+    padding: 3px;
+    margin: 5px;
+}
+.input-container hr {
+    display: block;
+    width: 100%;
+    border: 1px solid white;
+    border-style: solid none;
 }
 
 /*******************/
