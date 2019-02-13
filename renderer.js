@@ -5,7 +5,9 @@
 var detectTempoButton = document.getElementById("detect-tempo-button");
 var tempoCountdown = document.getElementById("tempo-countdown");
 var taps;
+var startTime, endTime;
 var detectingTempo = false;
+var tempoBPM;
 detectTempoButton.addEventListener("click", startDetectTempo);
 document.addEventListener("keypress", keyPress);
 
@@ -18,8 +20,19 @@ function startDetectTempo () {
 
 function keyPress (e) {
     if (detectingTempo) {
-        console.log(e.keyCode);
-        taps--;
-        tempoCountdown.innerText = "" + taps + " times";
+        if (e.keyCode == 32) {
+            if (taps == 10) {
+                startTime = new Date();
+            }
+            taps--;
+            tempoCountdown.innerText = "" + taps + " times";
+            if (taps == 0) {
+                detectingTempo = false;
+                endTime = new Date();
+                var elapsedTime = endTime.getTime() - startTime.getTime();
+                tempoBPM = 9 / (elapsedTime / 60000);
+                console.log(tempoBPM);
+            }
+        }
     }
 }
