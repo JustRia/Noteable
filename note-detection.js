@@ -4,6 +4,8 @@ const Pitchfinder = require("pitchfinder");
 const teoria = require("teoria")
 
 //module.exports = function(blob) {// see below for optional constructor parameters.
+
+    time_signature = "4/4"
     const detectPitch = new Pitchfinder.YIN();
 
     const buffer = fs.readFileSync('eqt-major-sc.wav');
@@ -12,7 +14,7 @@ const teoria = require("teoria")
 
     var frequencies = Pitchfinder.frequencies(detectPitch, float32Array, {
         tempo: 80, // in BPM, defaults to 120
-        quantization: 16, // samples per beat, defaults to 4 (i.e. 16th notes)
+        quantization: 32, // samples per beat, defaults to 4 (i.e. 16th notes)
                      // We assume users will not sing any faster than 16th notes
     });
 
@@ -24,8 +26,12 @@ const teoria = require("teoria")
     console.log(notes);
 
     var combined = combine_notes(notes);
-
     console.log(combined);
+    
+    combined = assign_note_types(combined, time_signature);
+    console.log(combined);
+
+
 //}
 
 /**
@@ -65,7 +71,6 @@ function combine_notes(notes) {
         if (note.note_name == note_obj.note_name_full) {
             size++;
             note_obj.freq += note.freq;
-            continue;
         } else { // note_name does not match, reset note being checked and push the current note_obj
             note_obj.length = size;
             note_obj.freq = note_obj.freq / size;
@@ -74,6 +79,13 @@ function combine_notes(notes) {
             note_obj = null;
             --i;
         }
+        
+        if (i == notes.length - 1) {
+            note_obj.length = size;
+            note_obj.freq = note_obj.freq / size;
+            combined_notes.push(note_obj);
+        }
+
     }
     return combined_notes;
 }
@@ -91,5 +103,5 @@ function combine_notes(notes) {
  * 
  */
 function assign_note_types (combined_notes, time_signature) {
-    
+
 }
