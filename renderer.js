@@ -135,7 +135,7 @@ function stopRecording() {
 /**The callback above contains the blob in wav format */
 
 function createDownloadLink(blob) {
-
+    console.log(blob);
     var url = URL.createObjectURL(blob);
     var au = document.createElement('audio');
     var li = document.createElement('li');
@@ -169,11 +169,12 @@ function createAudioBuffer(blob) {
 
         audioContext.decodeAudioData(arrayBuffer, function (buffer) {
             audioBuffer = buffer;
-            console.log("we in here");
+            console.log(audioBuffer);
+            console.log(audioBuffer.getChannelData(0));
+            syncRecognize(audioBuffer);
             return buffer;
         }, function (e) {
             "Error decoding data"
         });
     }));
-    console.log("audioBUffer print: " + audioBuffer);
 }

@@ -31,36 +31,59 @@ const fs = require('fs');
 const client = new speech.SpeechClient();
 
 // The name of the audio file to transcribe
-const fileName = './resources/audio-samples/male-misc/audio.raw';
+//const fileName = './resources/audio-samples/male-sung/dreaming-of-a-white-christmas.wav';
 
-// Reads a local audio file and converts it to base64
-const file = fs.readFileSync(fileName);
-const audioBytes = file.toString('base64');
+function syncRecognize(audioBuffer) {
+  // Reads a local audio file and converts it to base64
+  // fileName = './resources/audio-samples/male-misc/audio.raw';
+  // const file = fs.readFileSync(fileName);
+  // console.log("File:");
+  // console.log(file);
+  console.log(audioBuffer);
+  //const audioBytes = file.toString('base64');
 
-// The audio file's encoding, sample rate in hertz, and BCP-47 language code
-const audio = {
-  content: audioBytes,
-};
-const config = {
-  encoding: 'LINEAR16',
-  sampleRateHertz: 16000,
-  languageCode: 'en-US',
-};
-const request = {
-  audio: audio,
-  config: config,
-};
+  const floatArray = audioBuffer.getChannelData(0);
+  console.log(floatArray);
+  let bufferLength = floatArray.length - 1;
+  const intArray = new Int16Array(bufferLength);
+  while (bufferLength !== -1) {
+    const temp = Math.max(-1, Math.min(1, audioBuffer[bufferLength]));
+    intArray[bufferLength] = temp < 0 ? temp * 0x8000 : temp * 0x7FFF;
+    bufferLength--;
+  }
 
-// Detects speech in the audio file
-client
-  .recognize(request)
-  .then(data => {
-    const response = data[0];
-    const transcription = response.results
-      .map(result => result.alternatives[0].transcript)
-      .join('\n');
-    console.log(`Transcription: ${transcription}`);
-  })
-  .catch(err => {
-    console.error('ERROR:', err);
-  });
+  const binaryString = new Uint8Array(intArray).reduce((data, byte) => data + String.fromCharCode(byte), '');
+  const audioBytes = btoa(binaryString);
+
+  //const audioBytes = intArray.toString('base64');
+  console.log("Audio bytes:");
+  console.log(audioBytes);
+
+  // The audio file's encoding, sample rate in hertz, and BCP-47 language code
+  const audio = {
+    content: audioBytes,
+  };
+  const config = {
+    languageCode: 'en-US',
+    encoding: 'LINEAR16',
+    sampleRateHertz: audioBuffer.sampleRate,
+  };
+  const request = {
+    audio: audio,
+    config: config,
+  };
+
+  // Detects speech in the audio file
+  client
+    .recognize(request)
+    .then(data => {
+      const response = data[0];
+      const transcription = response.results
+        .map(result => result.alternatives[0].transcript)
+        .join('\n');
+      console.log(`Transcription: ${transcription}`);
+    })
+    .catch(err => {
+      console.error('ERROR:', err);
+    });
+}
