@@ -68,10 +68,16 @@
             <form>
                 <div class="input-container">
                     <input type="number" name="tempo" min="1" max="999" value="4">
-                    <button id="detect-tempo">Detect Tempo</button>
                 </div>
                 <input type="submit">
             </form>
+            <div id="detect-tempo-div" style="display: block">
+                <button id="detect-tempo-button"  onclick="addSelected('detecting-tempo')">Detect Tempo</button>
+                <div id="detecting-tempo-div" class="hidden" style="display: block">
+                    <h3>Tap spacebar to the beat</h3>
+                    <h2 id="tempo-countdown">10 times</h2>
+                </div>
+            </div>
         </div>
         <div id="time-signature-input" class="hidden">
             <h3>Input Time Signature: </h3>
