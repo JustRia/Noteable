@@ -8,7 +8,7 @@ const teoria = require("teoria")
     time_signature = "4/4"
     const detectPitch = new Pitchfinder.YIN();
 
-    const buffer = fs.readFileSync('eqt-major-sc.wav');
+    const buffer = fs.readFileSync('');
     const decoded = WavDecoder.decode.sync(buffer); // get audio data from file using `wav-decoder`
     const float32Array = decoded.channelData[0]; // get a single channel of sound
 
@@ -103,5 +103,50 @@ function combine_notes(notes) {
  * 
  */
 function assign_note_types (combined_notes, time_signature) {
+    beats_per_measure = time_signature.split("/")[0];
+    one_beat = time_signature.split("/")[1];
+    samples_per_measure = beats_per_measure * 32;
 
+    measures_arr = []
+    measure = []
+
+    // combine notes based on measure
+    for (var i = 0; i < combined_notes.length; ++i) {
+        note_obj = combined_notes[i];
+        if (note_obj.length < 5)
+            continue;
+        note_obj.length = 8 * Math.round(note_obj.length/8);
+        if (samples_per_measure - note_obj.length >= 0) {
+            measure.push(note_obj);
+            samples_per_measure -= note_obj.length;
+        } else {
+            cut_length = note_obj.length - samples_per_measure;
+            front_split = JSON.parse(JSON.stringify(note_obj));
+            front_split.length = samples_per_measure;
+            if (samples_per_measure > 0)
+                measure.push(front_split);
+            back_split = JSON.parse(JSON.stringify(note_obj));
+            back_split.length = cut_length;
+            samples_per_measure = beats_per_measure * 32;
+            measures_arr.push(measure);
+            measure = [];
+            measure.push(back_split);
+            samples_per_measure -= note_obj.length;
+        }
+    }
+    
+    if (samples_per_measure > 4) {
+        end_rest = {
+            "note_name_full" : "rest",
+            "note" : "rest",
+            "octave" : undefined,
+            "accidental" : undefined,
+            "freq" : 0,
+            "length" : 8 * Math.round(samples_per_measure/8)
+        }
+        measure.push(end_rest);
+    }
+    measures_arr.push(measure);
+
+    return measures_arr;
 }
