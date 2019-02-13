@@ -28,7 +28,7 @@ const teoria = require("teoria")
     var combined = combine_notes(notes);
     console.log(combined);
     
-    combined = assign_note_types(combined, time_signature);
+    combined = measures_split(combined, time_signature);
     console.log(combined);
 
 
@@ -99,27 +99,41 @@ function combine_notes(notes) {
  * @param {number} combined_notes[].length - The length a note was held (in 32nd notes)
  * @param {string} time_signature - The number of beats per measure, and the note that is one beat (ex. 4/4)
  * 
- * @returns {Array} The combined_notes array, including note types calculated from the lengths
+ * @returns {Array} The combined_notes array, with rounded lengths and sub-arrays of measures
  * 
  */
-function assign_note_types (combined_notes, time_signature) {
+function measures_split (combined_notes, time_signature) {
+
+    //Number of beats & samples per measure.  Needed to split array into measures
     beats_per_measure = time_signature.split("/")[0];
-    one_beat = time_signature.split("/")[1];
     samples_per_measure = beats_per_measure * 32;
 
     measures_arr = []
     measure = []
 
-    // combine notes based on measure
+    // Combine notes based on measure
     for (var i = 0; i < combined_notes.length; ++i) {
         note_obj = combined_notes[i];
+
+        // Note is below the lowest threshold to be considered a 16th note (fastest note user can sing)
         if (note_obj.length < 5)
             continue;
+
+        // Round length based on samples per beat (32 samples/beat --> 8 samples/16th beat)
         note_obj.length = 8 * Math.round(note_obj.length/8);
+
+        // Add note to the current measure if enough samples remain open in the measure
         if (samples_per_measure - note_obj.length >= 0) {
             measure.push(note_obj);
             samples_per_measure -= note_obj.length;
         } else {
+            /*
+                If no more space remains in the measure to fit the entire note, 2 cases:
+                1) If samples_per_measure > 0, there is space for a note in the measure.
+                    cut the next note and put the front into the measure and the back 
+                    into the next measure.
+                2) samples_per_measure = 0, add full measure, then place note into the next measure(s).
+            */
             cut_length = note_obj.length - samples_per_measure;
             front_split = JSON.parse(JSON.stringify(note_obj));
             front_split.length = samples_per_measure;
@@ -130,8 +144,8 @@ function assign_note_types (combined_notes, time_signature) {
             samples_per_measure = beats_per_measure * 32;
             measures_arr.push(measure);
             measure = [];
-            measure.push(back_split);
-            samples_per_measure -= note_obj.length;
+            // Add back split of note to array to be evealuated next
+            combined_notes.splice(i+1, 0, back_split);
         }
     }
     
