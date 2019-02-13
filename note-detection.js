@@ -18,8 +18,8 @@ const teoria = require("teoria")
 
     var notes = frequencies.map(freq => freq < 1109 && freq != null ? 
                             {"freq" : freq, "note_name" : "" + teoria.note.fromFrequency(freq).note.name() 
-                            + teoria.note.fromFrequency(freq).note.accidental()
-                            + teoria.note.fromFrequency(freq).note.octave()} : {"freq" : null, "note_name" : "rest"});
+                            + teoria.note.fromFrequency(freq).note.octave()
+                            + teoria.note.fromFrequency(freq).note.accidental()} : {"freq" : null, "note_name" : "rest"});
 
     console.log(notes);
 
@@ -51,7 +51,10 @@ function combine_notes(notes) {
         a new note object from the current index to begin comparing subsequent elements */
         if (note_obj == null) {
             note_obj = {
-                "note_name" : note.note_name,
+                "note_name_full" : note.note_name,
+                "note" : note.note_name != "rest" ? note.note_name.split("")[0] : "rest",
+                "octave" : note.note_name != "rest" ? note.note_name.split("")[1] : undefined,
+                "accidental" : note.note_name != "rest" ? note.note_name.split("")[2] : undefined,
                 "freq" : note.freq,
                 "length" : size
             }
@@ -59,7 +62,7 @@ function combine_notes(notes) {
         }
         
         // The index's note_name matches the current note being checked, increment size
-        if (note.note_name == note_obj.note_name) {
+        if (note.note_name == note_obj.note_name_full) {
             size++;
             note_obj.freq += note.freq;
             continue;
