@@ -3,29 +3,30 @@ const WavDecoder = require("wav-decoder");
 const Pitchfinder = require("pitchfinder");
 const teoria = require("teoria")
 
-// see below for optional constructor parameters.
-const detectPitch = new Pitchfinder.YIN();
+//module.exports = function(blob) {// see below for optional constructor parameters.
+    const detectPitch = new Pitchfinder.YIN();
 
-const buffer = fs.readFileSync('');
-const decoded = WavDecoder.decode.sync(buffer); // get audio data from file using `wav-decoder`
-const float32Array = decoded.channelData[0]; // get a single channel of sound
+    const buffer = fs.readFileSync('eqt-major-sc.wav');
+    const decoded = WavDecoder.decode.sync(buffer); // get audio data from file using `wav-decoder`
+    const float32Array = decoded.channelData[0]; // get a single channel of sound
 
-var frequencies = Pitchfinder.frequencies(detectPitch, float32Array, {
-    tempo: 80, // in BPM, defaults to 120
-    quantization: 16, // samples per beat, defaults to 4 (i.e. 16th notes)
+    var frequencies = Pitchfinder.frequencies(detectPitch, float32Array, {
+        tempo: 80, // in BPM, defaults to 120
+        quantization: 16, // samples per beat, defaults to 4 (i.e. 16th notes)
                      // We assume users will not sing any faster than 16th notes
-});
+    });
 
-var notes = frequencies.map(freq => freq < 1109 && freq != null ? 
+    var notes = frequencies.map(freq => freq < 1109 && freq != null ? 
                             {"freq" : freq, "note_name" : "" + teoria.note.fromFrequency(freq).note.name() 
                             + teoria.note.fromFrequency(freq).note.accidental()
                             + teoria.note.fromFrequency(freq).note.octave()} : {"freq" : null, "note_name" : "rest"});
 
-console.log(notes);
+    console.log(notes);
 
-var combined = combine_notes(notes);
+    var combined = combine_notes(notes);
 
-console.log(combined);
+    console.log(combined);
+//}
 
 /**
  * 
@@ -63,7 +64,7 @@ function combine_notes(notes) {
             note_obj.freq += note.freq;
             continue;
         } else { // note_name does not match, reset note being checked and push the current note_obj
-            note_obj.freq = size;
+            note_obj.length = size;
             note_obj.freq = note_obj.freq / size;
             combined_notes.push(note_obj);
             size = 1;
@@ -72,4 +73,20 @@ function combine_notes(notes) {
         }
     }
     return combined_notes;
+}
+
+
+/**
+ * 
+ * @param {Object[]} combined_notes - The notes sampled from the recorded audio and the length they were played
+ * @param {number} combined_notes[].freq - The frequency of the note in Hz
+ * @param {string} combined_notes[].note_name - The name of the note (ex. c4, f#5)
+ * @param {number} combined_notes[].length - The length a note was held (in 32nd notes)
+ * @param {string} time_signature - The number of beats per measure, and the note that is one beat (ex. 4/4)
+ * 
+ * @returns {Array} The combined_notes array, including note types calculated from the lengths
+ * 
+ */
+function assign_note_types (combined_notes, time_signature) {
+    
 }
