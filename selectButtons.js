@@ -38,7 +38,5 @@ function addSelected(input) {
             time_sig_content.classList.remove("hidden");
             
             break;
-        case "detecting-tempo":
-            detecting_tempo_content.classList.remove("hidden");
     }
 }
