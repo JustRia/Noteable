@@ -13,6 +13,7 @@ var tempoBPM;
 detectTempoButton.addEventListener("click", startDetectTempo);
 document.addEventListener("keypress", keyPress);
 
+// Show tempo detection interface
 function startDetectTempo () {
     detectingTempoContent.classList.remove("hidden");
     detectingTempo = true;
@@ -21,6 +22,7 @@ function startDetectTempo () {
     detectTempoButton.blur();
 }
 
+// Tempo detection 
 function keyPress (e) {
     if (detectingTempo) {
         if (e.keyCode == 32) {
