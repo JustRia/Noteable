@@ -23,14 +23,12 @@ const teoria = require("teoria")
                             + teoria.note.fromFrequency(freq).note.octave()
                             + teoria.note.fromFrequency(freq).note.accidental()} : {"freq" : null, "note_name" : "rest"});
 
-    console.log(notes);
-
     var combined = combine_notes(notes);
-    console.log(combined);
-    
-    combined = measures_split(combined, time_signature);
-    console.log(combined);
 
+    beats_per_measure = time_signature.split("/")[0];
+    
+    measures = measures_split(combined, beats_per_measure);
+    console.log(measures);
 
 //}
 
@@ -97,15 +95,14 @@ function combine_notes(notes) {
  * @param {number} combined_notes[].freq - The frequency of the note in Hz
  * @param {string} combined_notes[].note_name - The name of the note (ex. c4, f#5)
  * @param {number} combined_notes[].length - The length a note was held (in 32nd notes)
- * @param {string} time_signature - The number of beats per measure, and the note that is one beat (ex. 4/4)
+ * @param {number} beats_per_measure - The number of beats per measure
  * 
  * @returns {Array} The combined_notes array, with rounded lengths and sub-arrays of measures
  * 
  */
-function measures_split (combined_notes, time_signature) {
+function measures_split (combined_notes, beats_per_measure) {
 
-    //Number of beats & samples per measure.  Needed to split array into measures
-    beats_per_measure = time_signature.split("/")[0];
+    //Number of beats & samples per measure.  Needed to split array into measure
     samples_per_measure = beats_per_measure * 32;
 
     measures_arr = []
