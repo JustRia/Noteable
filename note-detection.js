@@ -1,21 +1,23 @@
 const fs = require("fs");
 const WavDecoder = require("wav-decoder");
 const Pitchfinder = require("pitchfinder");
-const teoria = require("teoria")
+const teoria = require("teoria");
 
-//module.exports = function(blob) {// see below for optional constructor parameters.
+const samples_per_beat = 32;
 
-    time_signature = "4/4"
+//module.exports = function(blob, time_signature, tempo) {// see below for optional constructor parameters.
+
+    time_signature = "4/4";
     const detectPitch = new Pitchfinder.YIN();
 
-    const buffer = fs.readFileSync('');
+    const buffer = fs.readFileSync('eqt-major-sc.wav');
     const decoded = WavDecoder.decode.sync(buffer); // get audio data from file using `wav-decoder`
     const float32Array = decoded.channelData[0]; // get a single channel of sound
 
     var frequencies = Pitchfinder.frequencies(detectPitch, float32Array, {
         tempo: 80, // in BPM, defaults to 120
-        quantization: 32, // samples per beat, defaults to 4 (i.e. 16th notes)
-                     // We assume users will not sing any faster than 16th notes
+        quantization: samples_per_beat, // samples per beat, defaults to 4 (i.e. 16th notes)
+                     // We assume users will not sing any faster than quarter beats
     });
 
     var notes = frequencies.map(freq => freq < 1109 && freq != null ? 
@@ -25,10 +27,14 @@ const teoria = require("teoria")
 
     var combined = combine_notes(notes);
 
-    beats_per_measure = time_signature.split("/")[0];
+    var beats_per_measure = time_signature.split("/")[0];
+    one_beat = time_signature.split("/")[1];
     
-    measures = measures_split(combined, beats_per_measure);
+    var measures = measures_split(combined, beats_per_measure);
+
+    measures = note_types(measures, one_beat);
     console.log(measures);
+    
 
 //}
 
@@ -57,10 +63,10 @@ function combine_notes(notes) {
             note_obj = {
                 "note_name_full" : note.note_name,
                 "note" : note.note_name != "rest" ? note.note_name.split("")[0] : "rest",
-                "octave" : note.note_name != "rest" ? note.note_name.split("")[1] : undefined,
-                "accidental" : note.note_name != "rest" ? note.note_name.split("")[2] : undefined,
+                "octave" : note.note_name != "rest" ? note.note_name.split("")[1] : 0,
+                "accidental" : note.note_name != "rest" ? note.note_name.split("")[2] : 0,
                 "freq" : note.freq,
-                "length" : size
+                "note_length" : size
             }
             continue;
         }
@@ -70,7 +76,7 @@ function combine_notes(notes) {
             size++;
             note_obj.freq += note.freq;
         } else { // note_name does not match, reset note being checked and push the current note_obj
-            note_obj.length = size;
+            note_obj.note_length = size;
             note_obj.freq = note_obj.freq / size;
             combined_notes.push(note_obj);
             size = 1;
@@ -78,8 +84,8 @@ function combine_notes(notes) {
             --i;
         }
         
-        if (i == notes.length - 1) {
-            note_obj.length = size;
+        if (i == notes.note_length - 1) {
+            note_obj.note_length = size;
             note_obj.freq = note_obj.freq / size;
             combined_notes.push(note_obj);
         }
@@ -94,7 +100,7 @@ function combine_notes(notes) {
  * @param {Object[]} combined_notes - The notes sampled from the recorded audio and the length they were played
  * @param {number} combined_notes[].freq - The frequency of the note in Hz
  * @param {string} combined_notes[].note_name - The name of the note (ex. c4, f#5)
- * @param {number} combined_notes[].length - The length a note was held (in 32nd notes)
+ * @param {number} combined_notes[].note_length - The number of samples a note was held (in 32 samples/beat)
  * @param {number} beats_per_measure - The number of beats per measure
  * 
  * @returns {Array} The combined_notes array, with rounded lengths and sub-arrays of measures
@@ -103,7 +109,7 @@ function combine_notes(notes) {
 function measures_split (combined_notes, beats_per_measure) {
 
     //Number of beats & samples per measure.  Needed to split array into measure
-    samples_per_measure = beats_per_measure * 32;
+    samples_per_measure = beats_per_measure * samples_per_beat;
 
     measures_arr = []
     measure = []
@@ -113,16 +119,16 @@ function measures_split (combined_notes, beats_per_measure) {
         note_obj = combined_notes[i];
 
         // Note is below the lowest threshold to be considered a 16th note (fastest note user can sing)
-        if (note_obj.length < 5)
+        if (note_obj.note_length < 5)
             continue;
 
         // Round length based on samples per beat (32 samples/beat --> 8 samples/16th beat)
-        note_obj.length = 8 * Math.round(note_obj.length/8);
+        note_obj.note_length = 8 * Math.round(note_obj.note_length/8);
 
         // Add note to the current measure if enough samples remain open in the measure
-        if (samples_per_measure - note_obj.length >= 0) {
+        if (samples_per_measure - note_obj.note_length >= 0) {
             measure.push(note_obj);
-            samples_per_measure -= note_obj.length;
+            samples_per_measure -= note_obj.note_length;
         } else {
             /*
                 If no more space remains in the measure to fit the entire note, 2 cases:
@@ -131,14 +137,14 @@ function measures_split (combined_notes, beats_per_measure) {
                     into the next measure.
                 2) samples_per_measure = 0, add full measure, then place note into the next measure(s).
             */
-            cut_length = note_obj.length - samples_per_measure;
+            cut_length = note_obj.note_length - samples_per_measure;
             front_split = JSON.parse(JSON.stringify(note_obj));
-            front_split.length = samples_per_measure;
+            front_split.note_length = samples_per_measure;
             if (samples_per_measure > 0)
                 measure.push(front_split);
             back_split = JSON.parse(JSON.stringify(note_obj));
-            back_split.length = cut_length;
-            samples_per_measure = beats_per_measure * 32;
+            back_split.note_length = cut_length;
+            samples_per_measure = beats_per_measure * samples_per_beat;
             measures_arr.push(measure);
             measure = [];
             // Add back split of note to array to be evealuated next
@@ -150,14 +156,62 @@ function measures_split (combined_notes, beats_per_measure) {
         end_rest = {
             "note_name_full" : "rest",
             "note" : "rest",
-            "octave" : undefined,
-            "accidental" : undefined,
+            "octave" : 0,
+            "accidental" : 0,
             "freq" : 0,
-            "length" : 8 * Math.round(samples_per_measure/8)
+            "note_length" : 8 * Math.round(samples_per_measure/8)
         }
         measure.push(end_rest);
     }
     measures_arr.push(measure);
 
     return measures_arr;
+}
+
+
+/**
+ * 
+ * @param {Object[]} measures - The notes sampled from the recorded audio split into measure subarrays by beats
+ * @param {number} measures[].note_length - The number of samples a note was held (in 32 samples/beat)
+ * @param {number} one_beat - The note type that constitutes one beat (quarter, 8th, 16th, etc)
+ * 
+ * @returns {Array} The measures array, with each note assigned a note_type (whole, half, quarter, etc)
+ * 
+ */
+function note_types (measures, one_beat) {
+
+    var res = [];
+
+    for (var i = 0; i < measures.length; ++i) {
+        measure = JSON.parse(JSON.stringify(measures[i]));
+        measure_updated = [];
+        for (var j = 0; j < measure.length; ++j) {
+            // Convert a note's sample length to a note type (half, quarter, 8th, 16th, etc)
+            note_type = samples_per_beat / measure[j].note_length * one_beat;
+            note_obj = JSON.parse(JSON.stringify(measure[j]));
+            if (note_type % 1 == 0) {
+                //Note type is a multiple of whole number (half, quarter, 8th, 16th, etc)
+                note_obj.note_type = "" + note_type;
+            } else {
+                // Conversion does not cleanly divide into a whole number (dotted note)
+                // Get number of beats a note takes up
+                temp = note_obj.note_length / samples_per_beat;
+                if (temp == 0.75) { //dotted half beat = 0.5 + 0.25 = 0.75
+                    note_obj.note_type = 2 * one_beat + ".";
+                } else if (temp == 1.5) { //dotted single beat = 1.5
+                    note_obj.note_type = one_beat + ".";
+                } else if (temp == 3) { //dotted 2 beat = 3 beats (dotted half note)
+                    note_obj.note_type = one_beat / 2 + ".";
+                } else { //dotted 4 beat = 6 beats
+                    note_obj.note_type = one_beat / 4 + ".";
+                }
+            }
+            measure_updated.push(note_obj);
+        }
+        
+        res.push(measure_updated);
+    }
+
+    return res;
+
 }
