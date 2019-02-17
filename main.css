@@ -12,6 +12,10 @@
 /*** The Basics ****/
 /*******************/
 body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    margin: 0;
     background-color: #76BAA9;
     color: white;
     font-family: "Arial", "Verdana";
@@ -35,7 +39,7 @@ h1, h2, h3, h4, h5, h6, p {
 }
 
 .hidden {
-    display: none;
+    display: none !important;
 }
 
 /*******************/
@@ -60,6 +64,7 @@ h1, h2, h3, h4, h5, h6, p {
 }
 
 .main-button {
+    position: relative;
     width: 200px;
     padding: 40px 0; /* centers text on button vertically and gives height */
     background-color: white;
@@ -69,54 +74,120 @@ h1, h2, h3, h4, h5, h6, p {
 }
 
 /*******************/
+/** Tooltip stuff **/
+/*******************/
+.main-button .tooltip {
+    position: absolute;
+    top: 110%;
+    left: 0;
+    right: 0;
+    margin: auto;
+    padding: 10px;
+    border-radius: 10px;
+    color: white;
+    background-color: rgba(45, 45, 45, 0.9);
+    z-index: 1;
+
+    visibility: hidden;
+    opacity: 0;
+    transition: all 0.3s;
+}
+
+.main-button:hover .tooltip{
+    visibility: visible;
+    opacity: 1;
+}
+
+.main-button.selected .tooltip {
+    top: calc(110% + 5px); /* shift downward because of selected border */
+}
+
+/* prevents weird stutter when user would hover over tooltip instead of button */
+.main-button .tooltip:hover {
+    visibility: hidden;
+    opacity: 0;
+}
+
+/* the arrow of the tooltip */
+.tooltip::after {
+    content: "";
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    margin-left: -6px;
+    border-width: 6px;
+    border-style: solid;
+    border-color: transparent transparent rgba(45, 45, 45, 0.9) transparent;
+}
+
+/*******************/
 /** Main Content ***/
 /*******************/
-#main-content {
-    margin-top: 45px;
+.main-content {
+    display: flex;
+    flex: 1; /* takes up rest of space of window so microphone is at the bottom of the screen */
+    margin: 70px auto;
+    align-items: center;
+}
+
+.main-content *{
+    display: inline-block;
+}
+
+/*******************/
+/***** Inputs ******/
+/*******************/
+input {
+    text-align: center;
+}
+
+/* Turn off scroll buttons for numbers */
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Key-Signature */
+.input-container {
+    vertical-align: middle;
+    margin: 15px;
+}
+.input-container input{
+    display: block;
+    padding: 3px;
+    margin: 5px;
+}
+.input-container hr {
+    display: block;
+    width: 100%;
+    border: 1px solid white;
+    border-style: solid none;
+}
+
+#detect-tempo-div {
+    display: block;
+}
+
+#detecting-tempo-div {
+    display: block;
 }
 
 /*******************/
 /**** Mic Icon *****/
 /*******************/
 #mic-icon {
-    position: absolute;
     bottom: 10px;
-    position: absolute;
     margin-left: auto;
     margin-right: auto;
     left: 0;
     right: 0;
 }
 
-/*******************/
-/** Tooltip stuff **/
-/*******************/
-[tooltip]:before {
-    content: attr(tooltip);
-    position: absolute;
-    opacity: 0;
 
-    /* customizable */
-    transition: all 0.15s ease;
-    padding: 10px;
-    color: white;
-    border-radius: 10px;
-    box-shadow: 2px 2px 1px silver;
-}
-[tooltip]:hover:before {
-    opacity : 1;
-
-    /* customizable */
-    background: black;
-    margin-top: -40px;
-}
-[tooltip]:not([tooltip-persistent]):before {
-    pointer-events: none;
-}
-
-/*******************/
-/** Tooltip stuff **/
-/*******************/
+/**************************/
+/** Screen Width changes **/
+/**************************/
 @media only screen and (max-width: 715px) {
     /* Buttons start to scroll off the side */
     #buttons-container {
