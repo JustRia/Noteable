@@ -44,13 +44,22 @@ function syncRecognize(audioBuffer) {
 
   const floatArray = audioBuffer.getChannelData(0);
   console.log(floatArray);
-  let bufferLength = floatArray.length - 1;
+  let bufferLength = floatArray.length;
   const intArray = new Int16Array(bufferLength);
-  while (bufferLength !== -1) {
+  /* while (bufferLength !== -1) {
     const temp = Math.max(-1, Math.min(1, audioBuffer[bufferLength]));
     intArray[bufferLength] = temp < 0 ? temp * 0x8000 : temp * 0x7FFF;
     bufferLength--;
+  } */
+  let l = bufferLength;
+  while (l--) {
+    if (l == -1) break;
+    if (floatArray[l]*0xFFFF > 32767) intArray[l] = 32767;
+    else if (floatArray[l]*0xFFFF < -32768) intArray[l] = -32768;
+    else intArray[l] = floatArray[l]*0xFFFF;
   }
+
+  console.log(intArray);
 
   const binaryString = new Uint8Array(intArray).reduce((data, byte) => data + String.fromCharCode(byte), '');
   const audioBytes = btoa(binaryString);
