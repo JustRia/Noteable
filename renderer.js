@@ -1,16 +1,11 @@
-// This file is required by the index.html file and will
-// be executed in the renderer process for that window.
-// All of the Node.js APIs are available in this process.
-
-var tt = require('electron-tooltip'); //lol we'll see
 /*
-All of the below code is taken from mattdiamond's popular Recordjs plugin found:
+Most of the below code is utilizing mattdiamond's popular Recordjs plugin found:
 https://github.com/mattdiamond/Recorderjs
 code will be slightly repurposed for our use
 */
-
-//also waow so many globals
-
+const {
+    promisify
+} = require('util');
 //webkitURL is deprecated but nevertheless
 URL = window.URL || window.webkitURL;
 
@@ -26,17 +21,11 @@ var audioBuffer; //this variable will contain the audiobuffer post-recording
 var recordButton = document.getElementById("mic-icon");
 var recording = false;
 
-//var stopButton = document.getElementById("stopButton");
-//var pauseButton = document.getElementById("pauseButton"); 
-
-//add events to those 3 buttons
 recordButton.addEventListener("click", startRecording);
-//stopButton.addEventListener("click", stopRecording);
-//pauseButton.addEventListener("click", pauseRecording);
 
 function startRecording() {
     if (!recording) {
-        console.log("recordButton clicked");
+
         recording = true;
 
         /*
@@ -48,14 +37,6 @@ function startRecording() {
             audio: true,
             video: false
         }
-
-        /*
-        Disable the record button until we get a success or fail from getUserMedia()
-        */
-
-        //recordButton.disabled = true;
-        //stopButton.disabled = false;
-        //pauseButton.disabled = false
 
         /*
         We're using the standard promise based getUserMedia()
@@ -82,46 +63,16 @@ function startRecording() {
             //start the recording process
             rec.record()
 
-            //console.log("Recording started");
-
         }).catch(function (err) {
-            //enable the record button if getUserMedia() fails
             recordButton.disabled = false;
-            //stopButton.disabled = true;
-            //pauseButton.disabled = true
         });
     } else {
         stopRecording();
     }
 }
 
-/*function pauseRecording() {
-    // console.log("pauseButton clicked rec.recording=",rec.recording );
-    if (rec.recording) {
-        //pause
-        rec.stop();
-        pauseButton.innerHTML = "Resume";
-    } else {
-        //resume
-        rec.record()
-        pauseButton.innerHTML = "Pause";
-    }
-}
-*/
-
 function stopRecording() {
-    console.log("stop clicked");
     recording = false;
-
-    //disable the stop button, enable the record to allow for new recordings
-    //stopButton.disabled = true;
-    //recordButton.disabled = false;
-    //pauseButton.disabled = true;
-
-    //reset button just in case the recording is stopped while paused
-    //pauseButton.innerHTML = "Pause";
-
-    //tell the recorder to stop the recording
     rec.stop();
 
     //stop microphone access
@@ -129,9 +80,28 @@ function stopRecording() {
 
     //create the wav blob and pass it on to createDownloadLink
     rec.exportWAV(createDownloadLink);
+    
+    rec.getBuffer(testBuff);
+    //rec.getBuffer(testBuff);
     rec.exportWAV(createAudioBuffer);
-    console.log("gdi be an audioBuffer?" + audioBuffer);
+    //rec.exportWAV(blobToFile);
+    rec.clear();
 }
+
+function testBuff(buffers) {
+    // console.log(buffers);
+    // console.log("buffers:" + buffers[0]);
+    //var newSource = audioContext.createBufferSource();
+    var newBuffer = audioContext.createBuffer(1, buffers[0].length, audioContext.sampleRate);
+    newBuffer.getChannelData(0).set(buffers[0]);
+    //newBuffer.getChannelData(1).set(buffers[1]);
+    //newSource.buffer = newBuffer;
+    audioBuffer = newBuffer;
+    //newSource.buffer = audioBuffer;
+    //newSource.connect(audioContext.destination);
+    //newSource.start(0);
+}
+
 /**The callback above contains the blob in wav format */
 
 function createDownloadLink(blob) {
@@ -156,25 +126,38 @@ function createDownloadLink(blob) {
 
     //add the li element to the ordered list
     recordingsList.appendChild(li);
-    //console.log("au:" + au);
 
 }
 
+function blobToFile(blob) {
+    //lol who knows but it certainly looks like a file
+    var file = new File([blob], "fileGuy", {
+        lastModifiedDate: new Date()
+    });
+    /*for (var prop in file) {
+        console.log("blob:" + file + ": " + prop);
+    } */
+    return blob;
+}
+
 function createAudioBuffer(blob) {
-
-    var arrayBuffer;
-    fetch(URL.createObjectURL(blob)).then(res => res.arrayBuffer().then(function (buffer) {
-        arrayBuffer = buffer;
-        //console.log("I'm an arraybuffer" + arrayBuffer);
-
-        audioContext.decodeAudioData(arrayBuffer, function (buffer) {
-            audioBuffer = buffer;
-            console.log(audioBuffer);
-            console.log(audioBuffer.getChannelData(0));
-            syncRecognize(audioBuffer);
-            return buffer;
-        }, function (e) {
-            "Error decoding data"
+    var readBlob = require('read-blob');
+    return new Promise(function (resolve, reject) {
+        readBlob(blob, 'arraybuffer', function (err, arraybuffer) {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(audioContext.decodeAudioData(arraybuffer, function (buffer) {
+                    audioBuffer = buffer;
+                    console.log("arraybuffer:" + arraybuffer[1]); //oh no
+                    for (var prop in arraybuffer) {
+                        console.log("blob: " + prop);
+                    }
+                    console.log("ab channel:" + buffer.getChannelData(0));
+                }, function (e) {
+                    "Error decoding data"
+                }));
+            }
         });
-    }));
+    });
 }
