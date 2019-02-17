@@ -21,9 +21,12 @@ const samples_per_beat = 32;
     });
 
     var notes = frequencies.map(freq => freq < 1109 && freq != null ? 
-                            {"freq" : freq, "note_name" : "" + teoria.note.fromFrequency(freq).note.name() 
-                            + teoria.note.fromFrequency(freq).note.octave()
-                            + teoria.note.fromFrequency(freq).note.accidental()} : {"freq" : null, "note_name" : "rest"});
+                            {
+                                "freq" : freq, 
+                                "note_name" : "" + teoria.note.fromFrequency(freq).note.name() 
+                                            + teoria.note.fromFrequency(freq).note.octave()
+                                            + teoria.note.fromFrequency(freq).note.accidental(),
+                            } : {"freq" : null, "note_name" : "rest"});
 
     var combined = combine_notes(notes);
 
