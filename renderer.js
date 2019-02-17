@@ -91,13 +91,15 @@ function stopRecording() {
 function testBuff(buffers) {
     // console.log(buffers);
     // console.log("buffers:" + buffers[0]);
-    var newSource = audioContext.createBufferSource();
+    //var newSource = audioContext.createBufferSource();
     var newBuffer = audioContext.createBuffer(1, buffers[0].length, audioContext.sampleRate);
     newBuffer.getChannelData(0).set(buffers[0]);
     //newBuffer.getChannelData(1).set(buffers[1]);
-    newSource.buffer = newBuffer;
-    newSource.connect(audioContext.destination);
-    newSource.start(0);
+    //newSource.buffer = newBuffer;
+    audioBuffer = newBuffer;
+    //newSource.buffer = audioBuffer;
+    //newSource.connect(audioContext.destination);
+    //newSource.start(0);
 }
 
 /**The callback above contains the blob in wav format */
