@@ -10,7 +10,7 @@ const samples_per_beat = 32;
     time_signature = "4/4";
     const detectPitch = new Pitchfinder.YIN();
 
-    const buffer = fs.readFileSync('eqt-major-sc.wav');
+    const buffer = fs.readFileSync('');
     const decoded = WavDecoder.decode.sync(buffer); // get audio data from file using `wav-decoder`
     const float32Array = decoded.channelData[0]; // get a single channel of sound
 
@@ -29,6 +29,17 @@ const samples_per_beat = 32;
                             } : {"freq" : null, "note_name" : "rest"});
 
     var combined = combine_notes(notes);
+
+    // Change accidental signs (#, b) to fit lilypond format
+    for (var i = 0; i < combined.length; ++i) {   
+        if (combined[i].accidental) {
+            if (combined[i].accidental == "#") {
+                combined[i].accidental = "is";
+            } else if (combined[i].accidental == "b") {
+                combined[i].accidental = "es";
+            }
+        }
+    }
 
     var beats_per_measure = time_signature.split("/")[0];
     one_beat = time_signature.split("/")[1];
