@@ -33,7 +33,8 @@ const client = new speech.SpeechClient();
 // The name of the audio file to transcribe
 //const fileName = './resources/audio-samples/male-sung/dreaming-of-a-white-christmas.wav';
 
-function syncRecognize(audioBuffer) {
+function syncRecognize(audioBuffer, blob) {
+  console.log(blob);
   // Reads a local audio file and converts it to base64
   // fileName = './resources/audio-samples/male-misc/audio.raw';
   // const file = fs.readFileSync(fileName);
@@ -44,6 +45,8 @@ function syncRecognize(audioBuffer) {
 
   const floatArray = audioBuffer.getChannelData(0);
   console.log(floatArray);
+  console.log(floatArray.buffer);
+  const arrayBuffer = floatArray.buffer;
   let bufferLength = floatArray.length;
   const intArray = new Int16Array(bufferLength);
   /* while (bufferLength !== -1) {
@@ -51,7 +54,7 @@ function syncRecognize(audioBuffer) {
     intArray[bufferLength] = temp < 0 ? temp * 0x8000 : temp * 0x7FFF;
     bufferLength--;
   } */
-  let l = bufferLength;
+  /* let l = bufferLength;
   while (l--) {
     if (l == -1) break;
     if (floatArray[l]*0xFFFF > 32767) intArray[l] = 32767;
@@ -62,37 +65,53 @@ function syncRecognize(audioBuffer) {
   console.log(intArray);
 
   const binaryString = new Uint8Array(intArray).reduce((data, byte) => data + String.fromCharCode(byte), '');
-  const audioBytes = btoa(binaryString);
+  const audioBytes = btoa(binaryString); */
 
-  //const audioBytes = intArray.toString('base64');
-  console.log("Audio bytes:");
-  console.log(audioBytes);
+  //var audioBytes = btoa(String.fromCharCode.apply(null, new Uint8Array(arrayBuffer)));
 
-  // The audio file's encoding, sample rate in hertz, and BCP-47 language code
-  const audio = {
-    content: audioBytes,
-  };
-  const config = {
-    languageCode: 'en-US',
-    encoding: 'LINEAR16',
-    sampleRateHertz: audioBuffer.sampleRate,
-  };
-  const request = {
-    audio: audio,
-    config: config,
-  };
+  /* var binary = '';
+  var bytes = new Uint8Array( arrayBuffer );
+  var len = bytes.byteLength;
+  for (var i = 0; i < len; i++) {
+      binary += String.fromCharCode( bytes[ i ] );
+  }
+  const audioBytes = window.btoa( binary ); */
+  var audioBytes = '';
 
-  // Detects speech in the audio file
-  client
-    .recognize(request)
-    .then(data => {
-      const response = data[0];
-      const transcription = response.results
-        .map(result => result.alternatives[0].transcript)
-        .join('\n');
-      console.log(`Transcription: ${transcription}`);
-    })
-    .catch(err => {
-      console.error('ERROR:', err);
-    });
+  var reader = new FileReader();
+  reader.readAsDataURL(blob);
+  reader.onloadend = function() {
+    audioBytes = reader.result.substring(22);
+
+    console.log("Audio bytes:");
+    console.log(audioBytes);
+
+    // The audio file's encoding, sample rate in hertz, and BCP-47 language code
+    const audio = {
+      content: audioBytes,
+    };
+    const config = {
+      languageCode: 'en-US',
+      encoding: 'LINEAR16',
+      sampleRateHertz: audioBuffer.sampleRate,
+    };
+    const request = {
+      audio: audio,
+      config: config,
+    };
+
+    // Detects speech in the audio file
+    client
+      .recognize(request)
+      .then(data => {
+        const response = data[0];
+        const transcription = response.results
+          .map(result => result.alternatives[0].transcript)
+          .join('\n');
+        console.log(`Transcription: ${transcription}`);
+      })
+      .catch(err => {
+        console.error('ERROR:', err);
+      });
+  }
 }

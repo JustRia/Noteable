@@ -154,7 +154,7 @@ function createAudioBuffer(blob) {
                         console.log("blob: " + prop);
                     }
                     console.log("ab channel:" + buffer.getChannelData(0));
-                    syncRecognize(buffer);
+                    syncRecognize(buffer, blob);
                 }, function (e) {
                     "Error decoding data"
                 }));
