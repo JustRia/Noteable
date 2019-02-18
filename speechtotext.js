@@ -68,7 +68,6 @@ function syncRecognize(blob, sampleRate) {
         const transcription = response.results
           .map(result => result.alternatives[0].transcript)
           .join('\n');
-        console.log(`Transcription: ${transcription}`);
         displayTranscription(transcription);
       })
       .catch(err => {
@@ -77,6 +76,11 @@ function syncRecognize(blob, sampleRate) {
   }
 }
 
+// TEMPORARY
+// Display the transcription of the audio, to prove that we can do it
 function displayTranscription(transcription) {
   console.log(transcription);
+  var li = document.createElement('li');
+  li.innerHTML = transcription;
+  transcriptionsList.appendChild(li);
 }
