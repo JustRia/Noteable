@@ -5,52 +5,56 @@ const teoria = require("teoria");
 
 const samples_per_beat = 32;
 
-//module.exports = function(blob, time_signature, tempo) {// see below for optional constructor parameters.
+//module.exports = {
+    //get_notes : function(blob, time_signature, tempo) {// see below for optional constructor parameters.
 
-    time_signature = "4/4";
-    const detectPitch = new Pitchfinder.YIN();
+        time_signature = "4/4";
+        const detectPitch = new Pitchfinder.YIN();
 
-    const buffer = fs.readFileSync('');
-    const decoded = WavDecoder.decode.sync(buffer); // get audio data from file using `wav-decoder`
-    const float32Array = decoded.channelData[0]; // get a single channel of sound
+        const buffer = fs.readFileSync('');
+        const decoded = WavDecoder.decode.sync(buffer); // get audio data from file using `wav-decoder`
+        const float32Array = decoded.channelData[0]; // get a single channel of sound
 
-    var frequencies = Pitchfinder.frequencies(detectPitch, float32Array, {
-        tempo: 80, // in BPM, defaults to 120
-        quantization: samples_per_beat, // samples per beat, defaults to 4 (i.e. 16th notes)
-                     // We assume users will not sing any faster than quarter beats
-    });
+        var frequencies = Pitchfinder.frequencies(detectPitch, float32Array, {
+            tempo: 80, // in BPM, defaults to 120
+            quantization: samples_per_beat, // samples per beat, defaults to 4 (i.e. 16th notes)
+                         // We assume users will not sing any faster than quarter beats
+        });
 
-    var notes = frequencies.map(freq => freq < 1109 && freq != null ? 
-                            {
-                                "freq" : freq, 
-                                "note_name" : "" + teoria.note.fromFrequency(freq).note.name() 
-                                            + teoria.note.fromFrequency(freq).note.octave()
-                                            + teoria.note.fromFrequency(freq).note.accidental(),
-                            } : {"freq" : null, "note_name" : "rest"});
+        var notes = frequencies.map(freq => freq < 1109 && freq != null ? 
+                                {
+                                    "freq" : freq, 
+                                    "note_name" : "" + teoria.note.fromFrequency(freq).note.name() 
+                                                + teoria.note.fromFrequency(freq).note.octave()
+                                                + teoria.note.fromFrequency(freq).note.accidental(),
+                                } : {"freq" : null, "note_name" : "rest"});
 
-    var combined = combine_notes(notes);
+        var combined = combine_notes(notes);
 
-    // Change accidental signs (#, b) to fit lilypond format
-    for (var i = 0; i < combined.length; ++i) {   
-        if (combined[i].accidental) {
-            if (combined[i].accidental == "#") {
-                combined[i].accidental = "is";
-            } else if (combined[i].accidental == "b") {
-                combined[i].accidental = "es";
+        // Change accidental signs (#, b) to fit lilypond format
+        for (var i = 0; i < combined.length; ++i) {   
+            if (combined[i].accidental) {
+                if (combined[i].accidental == "#") {
+                    combined[i].accidental = "is";
+                } else if (combined[i].accidental == "b") {
+                    combined[i].accidental = "es";
+                }
             }
         }
-    }
 
-    var beats_per_measure = time_signature.split("/")[0];
-    one_beat = time_signature.split("/")[1];
+        var beats_per_measure = time_signature.split("/")[0];
+        one_beat = time_signature.split("/")[1];
     
-    var measures = measures_split(combined, beats_per_measure);
+        var measures = measures_split(combined, beats_per_measure);
 
-    measures = note_types(measures, one_beat);
-    console.log(measures);
-    
+        measures = note_types(measures, one_beat);
+        console.log(measures);
+    //},
+    /*combine_notes : combine_notes,
+    measures : measures_split,
+    note_types : note_types
 
-//}
+}*/
 
 /**
  * 
@@ -62,7 +66,7 @@ const samples_per_beat = 32;
  *                  with the same note_name
  * 
  */
-function combine_notes(notes) {
+var combine_notes = function (notes) {
     var size = 1;
     var combined_notes = [];
     var note_obj = null;
@@ -120,7 +124,7 @@ function combine_notes(notes) {
  * @returns {Array} The combined_notes array, with rounded lengths and sub-arrays of measures
  * 
  */
-function measures_split (combined_notes, beats_per_measure) {
+var measures_split = function (combined_notes, beats_per_measure) {
 
     //Number of beats & samples per measure.  Needed to split array into measure
     samples_per_measure = beats_per_measure * samples_per_beat;
@@ -192,7 +196,7 @@ function measures_split (combined_notes, beats_per_measure) {
  * @returns {Array} The measures array, with each note assigned a note_type (whole, half, quarter, etc)
  * 
  */
-function note_types (measures, one_beat) {
+var note_types = function (measures, one_beat) {
 
     var res = [];
 
