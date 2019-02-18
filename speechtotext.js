@@ -12,18 +12,18 @@ process.env.GOOGLE_APPLICATION_CREDENTIALS="noteable-d12e9bdafe4f.json";
 
 // Makes an authenticated API request.
 storage
-  .getBuckets()
-  .then((results) => {
-    const buckets = results[0];
+    .getBuckets()
+    .then((results) => {
+        const buckets = results[0];
 
-    console.log('Buckets:');
-    buckets.forEach((bucket) => {
-      console.log(bucket.name);
+        console.log('Buckets:');
+        buckets.forEach((bucket) => {
+            console.log(bucket.name);
+        });
+    })
+    .catch((err) => {
+        console.error('ERROR:', err);
     });
-  })
-  .catch((err) => {
-    console.error('ERROR:', err);
-  });
 
 const fs = require('fs');
 
@@ -35,52 +35,50 @@ const client = new speech.SpeechClient();
  * Returns 
  */
 function syncRecognize(blob, sampleRate) {
-  console.log(blob);
-  console.log(sampleRate);
-  var audioBytes = '';
-  var reader = new FileReader();
+    console.log(blob);
+    console.log(sampleRate);
+    var audioBytes = '';
+    var reader = new FileReader();
 
-  // Read WAV blob as a file and convert to base64 string
-  reader.readAsDataURL(blob);
-  reader.onloadend = function() {
-    audioBytes = reader.result.substring(22);
-    console.log("Audio bytes: " + audioBytes);
+    // Read WAV blob as a file and convert to base64 string
+    reader.readAsDataURL(blob);
+    reader.onloadend = function() {
+        audioBytes = reader.result.substring(22);
+        console.log("Audio bytes: " + audioBytes);
 
-    // The audio file's encoding, sample rate in hertz, and BCP-47 language code
-    const audio = {
-      content: audioBytes,
-    };
-    const config = {
-      languageCode: 'en-US',
-      encoding: 'LINEAR16',
-      sampleRateHertz: sampleRate,
-    };
-    const request = {
-      audio: audio,
-      config: config,
-    };
+        // The audio file's encoding, sample rate in hertz, and BCP-47 language code
+        const audio = {
+            content: audioBytes,
+        };
+        const config = {
+            languageCode: 'en-US',
+            encoding: 'LINEAR16',
+            sampleRateHertz: sampleRate,
+        };
+        const request = {
+            audio: audio,
+            config: config,
+        };
 
-    // Detects speech in the audio file
-    client
-      .recognize(request)
-      .then(data => {
-        const response = data[0];
-        const transcription = response.results
-          .map(result => result.alternatives[0].transcript)
-          .join('\n');
-        displayTranscription(transcription);
-      })
-      .catch(err => {
-        console.error('ERROR:', err);
-      });
-  }
+        // Detects speech in the audio file
+        client
+            .recognize(request)
+            .then(data => {
+                const response = data[0];
+                const transcription = response.results.map(result => result.alternatives[0].transcript).join('\n');
+                displayTranscription(transcription);
+            })
+            .catch(err => {
+                console.error('ERROR:', err);
+            });
+    }
 }
 
 // TEMPORARY
 // Display the transcription of the audio, to prove that we can do it
 function displayTranscription(transcription) {
-  console.log(transcription);
-  var li = document.createElement('li');
-  li.innerHTML = transcription;
-  transcriptionsList.appendChild(li);
+    console.log(transcription);
+    var li = document.createElement('li');
+    li.innerHTML = transcription;
+    transcriptionsList.appendChild(li);
 }
