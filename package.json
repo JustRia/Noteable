@@ -21,13 +21,12 @@
     "spectron": "^5.0.0"
   },
   "dependencies": {
-    "electron": "^4.0.1",
-    "electron-tooltip": "^1.1.5",
     "@google-cloud/speech": "^2.2.0",
     "@google-cloud/storage": "^2.4.1",
+    "electron": "^4.0.1",
+    "electron-tooltip": "^1.1.5",
     "jquery": "^3.3.1",
     "read-blob": "^1.1.0",
-    "recorder-js": "^1.0.7",
-    "web-audio-beat-detector": "^7.0.26"
+    "recorder-js": "^1.0.7"
   }
 }
