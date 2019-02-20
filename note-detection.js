@@ -6,14 +6,16 @@ const teoria = require("teoria");
 const samples_per_beat = 32;
 
 module.exports = {
-    get_notes : function(blob, time_signature, tempo) {// see below for optional constructor parameters.
+    get_notes : function(buffer, time_signature, tempo) {// see below for optional constructor parameters.
 
         time_signature = "4/4";
-        const detectPitch = new Pitchfinder.YIN();
+        const detectPitch = new Pitchfinder.AMDF();
 
-        const buffer = fs.readFileSync('');
+        /*const buffer = fs.readFileSync('');
         const decoded = WavDecoder.decode.sync(buffer); // get audio data from file using `wav-decoder`
-        const float32Array = decoded.channelData[0]; // get a single channel of sound
+        const float32Array = decoded.channelData[0]; // get a single channel of sound*/
+
+        const float32Array = buffer.getChannelData(0);
 
         var frequencies = Pitchfinder.frequencies(detectPitch, float32Array, {
             tempo: 80, // in BPM, defaults to 120
@@ -48,6 +50,10 @@ module.exports = {
         var measures = measures_split(combined, beats_per_measure);
 
         measures = note_types(measures, one_beat);
+        console.log(measures);
+
+        return measures;
+        
     },
     combine_notes : combine_notes,
     measures : measures_split,
