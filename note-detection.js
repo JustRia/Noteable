@@ -4,8 +4,8 @@ const teoria = require("teoria");
 const samples_per_beat = 32;
 
 const fraction_of_beat = {
-    8 : 4,
-    16 : 2,
+    8 : [4, ""],
+    16 : [2, ""],
     24 : [2, "."],
 }
 
