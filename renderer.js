@@ -6,6 +6,7 @@ code will be slightly repurposed for our use
 const {
     promisify
 } = require('util');
+var note_detection = require("./note-detection.js")
 //webkitURL is deprecated but nevertheless
 URL = window.URL || window.webkitURL;
 
@@ -25,6 +26,7 @@ var input; //MediaStreamAudioSourceNode we'll be recording
 var AudioContext = window.AudioContext || window.webkitAudioContext; // shim for AudioContext when it's not avb. 
 var audioContext = new AudioContext; //new audio context to help us record
 var audioBuffer; //this variable will contain the audiobuffer post-recording
+var measures = [];
 
 recordButton.addEventListener("click", startRecording);
 detectTempoButton.addEventListener("click", startDetectTempo);
@@ -127,6 +129,8 @@ function createAudioBuffer(blob) {
                     audioBuffer = buffer;
                     // Speech to text
                     syncRecognize(blob, audioBuffer.sampleRate);
+                    // Note-detection
+                    measures = note_detection.get_notes(audioBuffer, "4/4", 80);
                 }, function (e) {
                     "Error decoding data"
                 }));
