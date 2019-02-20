@@ -3,14 +3,19 @@ const teoria = require("teoria");
 
 const samples_per_beat = 32;
 
+const fraction_of_beat = {
+    8 : 4,
+    16 : 2,
+    24 : [2, "."],
+}
+
 module.exports = {
     get_notes : function(buffer, time_signature, tempo) {// see below for optional constructor parameters.
 
         time_signature = "4/4";
         const detectPitch = new Pitchfinder.AMDF();
 
-        /*const buffer = fs.readFileSync('');
-        const decoded = WavDecoder.decode.sync(buffer); // get audio data from file using `wav-decoder`
+        /*const decoded = WavDecoder.decode.sync(buffer); // get audio data from file using `wav-decoder`
         const float32Array = decoded.channelData[0]; // get a single channel of sound*/
 
         const float32Array = buffer.getChannelData(0);
@@ -28,6 +33,7 @@ module.exports = {
                                                 + teoria.note.fromFrequency(freq).note.octave()
                                                 + teoria.note.fromFrequency(freq).note.accidental(),
                                 } : {"freq" : null, "note_name" : "rest"});
+        console.log(notes);
         
         var combined = combine_notes(notes);
 
@@ -221,16 +227,32 @@ function note_types(measures, one_beat) {
                 //Note type is a multiple of whole number (half, quarter, 8th, 16th, etc)
                 note_obj.note_type = "" + note_type;
             } else {
-                // Conversion does not cleanly divide into a whole number (dotted note)
+                // Conversion does not cleanly divide into a whole number (dotted note / slurred note)
                 // Get number of beats a note takes up
                 temp = note_obj.note_length / samples_per_beat;
                 if (temp == 0.75) { //dotted half beat = 0.5 + 0.25 = 0.75
                     note_obj.note_type = 2 * one_beat + ".";
+                } else if (temp == 1.25) {  //single beat + quarter beat (slurred over two notes)
+                    note_obj.note_type = ["" + one_beat, "" + one_beat * 4];
                 } else if (temp == 1.5) { //dotted single beat = 1.5
                     note_obj.note_type = one_beat + ".";
+                } else if (temp == 1.75) { //single beat + 3/4 beat (slurred over two notes)
+                    note_obj.note_type = ["" + one_beat, 2 * one_beat + "."];
+                } else if (temp > 2 && temp < 3) { // between 2 and 3 beats
+                    multiplier = fraction_of_beat[note_obj.note_length % samples_per_beat];
+                    note_obj.note_type = ["" + one_beat / 2, multiplier[0] * one_beat + multiplier[1]];
                 } else if (temp == 3) { //dotted 2 beat = 3 beats (dotted half note)
                     note_obj.note_type = one_beat / 2 + ".";
-                } else { //dotted 4 beat = 6 beats
+                } else if (temp > 3 && temp < 4) { //Between a 3 beats and 4 beats
+                    multiplier = fraction_of_beat[note_obj.note_length % samples_per_beat];
+                    note_obj.note_type = [one_beat / 2 + ".", multiplier[0] * one_beat + multiplier[1]];
+                } else if (temp > 4 && temp < 5) { //between 4 and 5 beats
+                    multiplier = fraction_of_beat[note_obj.note_length % samples_per_beat];
+                    note_obj.note_type = [one_beat / 4 + "", multiplier[0] * one_beat + multiplier[1]];
+                } else if (temp > 5 && temp < 6) { //between 5 and 6 beats
+                    multiplier = fraction_of_beat[note_obj.note_length % samples_per_beat];
+                    note_obj.note_type = [one_beat / 4 + "", one_beat + "", multiplier[0] * one_beat + multiplier[1]];
+                }else { //dotted 4 beat = 6 beats
                     note_obj.note_type = one_beat / 4 + ".";
                 }
             }
