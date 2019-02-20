@@ -8,7 +8,7 @@ const speech = require('@google-cloud/speech');
 const storage = new Storage();
 
 // Set environment variable
-process.env.GOOGLE_APPLICATION_CREDENTIALS="noteable-d12e9bdafe4f.json";
+process.env.GOOGLE_APPLICATION_CREDENTIALS="noteable-139e67da6ae0.json";
 
 // Makes an authenticated API request.
 storage
