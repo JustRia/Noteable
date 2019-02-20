@@ -16,7 +16,7 @@ module.exports = {
         const float32Array = buffer.getChannelData(0);
 
         var frequencies = Pitchfinder.frequencies(detectPitch, float32Array, {
-            tempo: 80, // in BPM, defaults to 120
+            tempo: tempo, // in BPM, defaults to 120
             quantization: samples_per_beat, // samples per beat, defaults to 4 (i.e. 16th notes)
                          // We assume users will not sing any faster than quarter beats
         });
