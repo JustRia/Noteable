@@ -9,19 +9,26 @@ const {
 //webkitURL is deprecated but nevertheless
 URL = window.URL || window.webkitURL;
 
+var recordButton = document.getElementById("mic-icon");
+var recording = false;
+var detectTempoButton = document.getElementById("detect-tempo-button");
+var tempoCountdown = document.getElementById("tempo-countdown");
+var tempoInput = document.querySelector("input[name='tempo']");
+var detectingTempoContent =  document.getElementById("detecting-tempo-div");
+var taps;
+var startTime, endTime;
+var detectingTempo = false;
+var tempoBPM;
 var gumStream; //stream from getUserMedia()
 var rec; //Recorder.js object
 var input; //MediaStreamAudioSourceNode we'll be recording
-
-// shim for AudioContext when it's not avb. 
-var AudioContext = window.AudioContext || window.webkitAudioContext;
+var AudioContext = window.AudioContext || window.webkitAudioContext; // shim for AudioContext when it's not avb. 
 var audioContext = new AudioContext; //new audio context to help us record
 var audioBuffer; //this variable will contain the audiobuffer post-recording
 
-var recordButton = document.getElementById("mic-icon");
-var recording = false;
-
 recordButton.addEventListener("click", startRecording);
+detectTempoButton.addEventListener("click", startDetectTempo);
+document.addEventListener("keypress", keyPress);
 
 function startRecording() {
     if (!recording) {
@@ -162,4 +169,36 @@ function createAudioBuffer(blob) {
             }
         });
     });
+}
+
+// Show tempo detection interface
+function startDetectTempo () {
+    detectingTempoContent.classList.remove("hidden");
+    detectingTempo = true;
+    taps = 10;
+    tempoCountdown.innerText = "" + taps + " times";
+    detectTempoButton.blur();
+}
+
+// Tempo detection 
+function keyPress (e) {
+    if (detectingTempo) {
+        if (e.keyCode == 32) {
+            e.preventDefault();
+            if (taps == 10) {
+                startTime = new Date();
+            }
+            taps--;
+            tempoCountdown.innerText = "" + taps + " times";
+            if (taps == 0) {
+                detectingTempo = false;
+                endTime = new Date();
+                var elapsedTime = endTime.getTime() - startTime.getTime();
+                tempoBPM = 9 / (elapsedTime / 60000);
+                console.log(tempoBPM);
+                tempoInput.value = Math.round(tempoBPM);
+                detectingTempoContent.classList.add("hidden")
+            }
+        }
+    }
 }

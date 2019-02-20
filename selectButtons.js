@@ -5,6 +5,7 @@ function addSelected(input) {
     var key_sig_content = document.getElementById("key-signature-input");
     var tempo_content = document.getElementById("tempo-input");
     var time_sig_content = document.getElementById("time-signature-input");
+    var detecting_tempo_content =  document.getElementById("detecting-tempo-div");
 
     switch (input) {
         case "key-signature":

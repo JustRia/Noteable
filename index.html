@@ -15,24 +15,83 @@
     </h1>
 
     <div id="buttons-container">
-        <div class="main-button" id="key-signature-button" data-tooltip="Key signature tooltip goes here" data-tooltip-position="bottom" onclick="addSelected('key-signature')">Key Signature</div>
-        <div class="main-button" id="tempo-button"data-tooltip="Tempo tooltip goes here" data-tooltip-position="bottom" onclick="addSelected('tempo')">Tempo</div>
-        <div class="main-button" id="time-signature-button"data-tooltip="Time signature tooltip goes here" data-tooltip-position="bottom" onclick="addSelected('time-signature')">Time Signature</div>
+        <div class="main-button" id="key-signature-button" onclick="addSelected('key-signature')">
+            Key Signature
+            <span class="tooltip">Key signature tooltip goes here</span>
+        </div>
+
+        <div class="main-button" id="tempo-button" onclick="addSelected('tempo')">
+            Tempo
+            <span class="tooltip">Tempo tooltip goes here</span>
+        </div>
+
+        <div class="main-button" id="time-signature-button" onclick="addSelected('time-signature')">
+            Time Signature
+            <span class="tooltip">Time signature tooltip goes here</span>
+        </div>
     </div>
 
-    <div id="main-content">
+    <div class="main-content">
         <!-- All the content we will be adding and removing should appear here -->
         <div id="key-signature-input" class="hidden">
-            <h3>Input Key Signature: </h3>
-            <!-- TODO: add input options -->
+            <h3>Input Key Signature:</h3>
+            <form>
+                <div class="input-container">
+                    <select name="key-signature">
+                        <option value="A-flat">A&#9837;</option>
+                        <option value="A">A</option>
+                        <option value="A-sharp;">A&#9839;</option>
+
+                        <option value="B-flat">B&#9837;</option>
+                        <option value="B">B</option>
+
+                        <option value="C" selected>C</option>
+                        <option value="C-sharp;">C&#9839;</option>
+
+                        <option value="D-flat">D&#9837;</option>
+                        <option value="D">D</option>
+                        <option value="D-sharp;">D&#9839;</option>
+
+                        <option value="E-flat">E&#9837;</option>
+                        <option value="E">E</option>
+
+                        <option value="F">F</option>
+                        <option value="F-sharp;">F&#9839;</option>
+
+                        <option value="G-flat">G&#9837;</option>
+                        <option value="G">G</option>
+                        <option value="G-sharp;">G&#9839;</option>
+                    </select>
+                </div>
+                <input type="submit">
+            </form>
         </div>
         <div id="tempo-input" class="hidden">
             <h3>Input Tempo: </h3>
-            <!-- TODO: add input options -->
+            <form>
+                <div class="input-container">
+                    <input type="number" name="tempo" min="1" max="999" value="4">
+                </div>
+                <input type="submit">
+            </form>
+            <div id="detect-tempo-div">
+                <button id="detect-tempo-button">Detect Tempo</button>
+                <div id="detecting-tempo-div" class="hidden">
+                    <h3>Tap spacebar to the beat</h3>
+                    <h2 id="tempo-countdown">10 times</h2>
+                </div>
+            </div>
         </div>
         <div id="time-signature-input" class="hidden">
             <h3>Input Time Signature: </h3>
-            <!-- TODO: add input options -->
+            <form>
+                <div class="input-container">
+                    <input type="number" name="time-signature-top-num" min="1" max="99" value="4">
+                    <hr />
+                    <input type="number" name="time-signature-bottom-num" min="1" max="99" value="4">
+                </div>
+                <input type="submit">
+            </form>
         </div>
     </div>
 
