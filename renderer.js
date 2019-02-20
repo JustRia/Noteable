@@ -51,7 +51,6 @@ function startRecording() {
         */
 
         navigator.mediaDevices.getUserMedia(constraints).then(function (stream) {
-            // console.log("getUserMedia() success, stream created, initializing Recorder.js ...");
 
             /* assign to gumStream for later use */
             gumStream = stream;
@@ -87,32 +86,13 @@ function stopRecording() {
 
     //create the wav blob and pass it on to createDownloadLink
     rec.exportWAV(createDownloadLink);
-    
-    rec.getBuffer(testBuff);
-    //rec.getBuffer(testBuff);
     rec.exportWAV(createAudioBuffer);
-    //rec.exportWAV(blobToFile);
     rec.clear();
-}
-
-function testBuff(buffers) {
-    // console.log(buffers);
-    // console.log("buffers:" + buffers[0]);
-    //var newSource = audioContext.createBufferSource();
-    var newBuffer = audioContext.createBuffer(1, buffers[0].length, audioContext.sampleRate);
-    newBuffer.getChannelData(0).set(buffers[0]);
-    //newBuffer.getChannelData(1).set(buffers[1]);
-    //newSource.buffer = newBuffer;
-    audioBuffer = newBuffer;
-    //newSource.buffer = audioBuffer;
-    //newSource.connect(audioContext.destination);
-    //newSource.start(0);
 }
 
 /**The callback above contains the blob in wav format */
 
 function createDownloadLink(blob) {
-    console.log(blob);
     var url = URL.createObjectURL(blob);
     var au = document.createElement('audio');
     var li = document.createElement('li');
@@ -136,17 +116,6 @@ function createDownloadLink(blob) {
 
 }
 
-function blobToFile(blob) {
-    //lol who knows but it certainly looks like a file
-    var file = new File([blob], "fileGuy", {
-        lastModifiedDate: new Date()
-    });
-    /*for (var prop in file) {
-        console.log("blob:" + file + ": " + prop);
-    } */
-    return blob;
-}
-
 function createAudioBuffer(blob) {
     var readBlob = require('read-blob');
     return new Promise(function (resolve, reject) {
@@ -156,11 +125,6 @@ function createAudioBuffer(blob) {
             } else {
                 resolve(audioContext.decodeAudioData(arraybuffer, function (buffer) {
                     audioBuffer = buffer;
-                    console.log("arraybuffer:" + arraybuffer[1]); //oh no
-                    for (var prop in arraybuffer) {
-                        console.log("blob: " + prop);
-                    }
-                    console.log("ab channel:" + buffer.getChannelData(0));
                     // Speech to text
                     syncRecognize(blob, audioBuffer.sampleRate);
                 }, function (e) {
