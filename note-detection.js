@@ -5,8 +5,8 @@ const teoria = require("teoria");
 
 const samples_per_beat = 32;
 
-//module.exports = {
-    //get_notes : function(blob, time_signature, tempo) {// see below for optional constructor parameters.
+module.exports = {
+    get_notes : function(blob, time_signature, tempo) {// see below for optional constructor parameters.
 
         time_signature = "4/4";
         const detectPitch = new Pitchfinder.YIN();
@@ -28,7 +28,7 @@ const samples_per_beat = 32;
                                                 + teoria.note.fromFrequency(freq).note.octave()
                                                 + teoria.note.fromFrequency(freq).note.accidental(),
                                 } : {"freq" : null, "note_name" : "rest"});
-
+        
         var combined = combine_notes(notes);
 
         // Change accidental signs (#, b) to fit lilypond format
@@ -48,13 +48,12 @@ const samples_per_beat = 32;
         var measures = measures_split(combined, beats_per_measure);
 
         measures = note_types(measures, one_beat);
-        console.log(measures);
-    //},
-    /*combine_notes : combine_notes,
+    },
+    combine_notes : combine_notes,
     measures : measures_split,
     note_types : note_types
 
-}*/
+}
 
 /**
  * 
@@ -66,7 +65,7 @@ const samples_per_beat = 32;
  *                  with the same note_name
  * 
  */
-var combine_notes = function (notes) {
+function combine_notes(notes) {
     var size = 1;
     var combined_notes = [];
     var note_obj = null;
@@ -78,13 +77,22 @@ var combine_notes = function (notes) {
         /* If the index is 0, or the counter for consecutive notes has been reset, create
         a new note object from the current index to begin comparing subsequent elements */
         if (note_obj == null) {
-            note_obj = {
-                "note_name_full" : note.note_name,
-                "note" : note.note_name != "rest" ? note.note_name.split("")[0] : "rest",
-                "octave" : note.note_name != "rest" ? note.note_name.split("")[1] : 0,
-                "accidental" : note.note_name != "rest" ? note.note_name.split("")[2] : 0,
-                "freq" : note.freq,
-                "note_length" : size
+            if (note.note_name != "rest") {
+                note_obj = {
+                    "note_name_full" : note.note_name,
+                    "note" : note.note_name.split("")[0],
+                    "octave" : note.note_name.split("")[1],
+                    "accidental" : note.note_name.split("")[2],
+                    "freq" : note.freq,
+                    "note_length" : size
+                }
+            } else {
+                note_obj = {
+                    "note_name_full" : note.note_name,
+                    "note" : "rest",
+                    "freq" : note.freq,
+                    "note_length" : size
+                }
             }
             continue;
         }
@@ -102,7 +110,7 @@ var combine_notes = function (notes) {
             --i;
         }
         
-        if (i == notes.note_length - 1) {
+        if (i == notes.length - 1) {
             note_obj.note_length = size;
             note_obj.freq = note_obj.freq / size;
             combined_notes.push(note_obj);
@@ -124,7 +132,7 @@ var combine_notes = function (notes) {
  * @returns {Array} The combined_notes array, with rounded lengths and sub-arrays of measures
  * 
  */
-var measures_split = function (combined_notes, beats_per_measure) {
+function measures_split(combined_notes, beats_per_measure) {
 
     //Number of beats & samples per measure.  Needed to split array into measure
     samples_per_measure = beats_per_measure * samples_per_beat;
@@ -174,8 +182,6 @@ var measures_split = function (combined_notes, beats_per_measure) {
         end_rest = {
             "note_name_full" : "rest",
             "note" : "rest",
-            "octave" : 0,
-            "accidental" : 0,
             "freq" : 0,
             "note_length" : 8 * Math.round(samples_per_measure/8)
         }
@@ -196,7 +202,7 @@ var measures_split = function (combined_notes, beats_per_measure) {
  * @returns {Array} The measures array, with each note assigned a note_type (whole, half, quarter, etc)
  * 
  */
-var note_types = function (measures, one_beat) {
+function note_types(measures, one_beat) {
 
     var res = [];
 
