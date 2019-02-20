@@ -182,6 +182,7 @@ input[type=number]::-webkit-outer-spin-button {
     margin-right: auto;
     left: 0;
     right: 0;
+    transition: 0.3s all ease-in-out;
 }
 
 
