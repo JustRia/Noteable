@@ -140,7 +140,7 @@ describe('note_detection.js measures_split() function unit tests', function() {
         var expected = [
             [
                 { note_name_full : "c4", note : "c", octave : "4", note_length : 48 },
-                { note_name_full : "g4", note : "g", octave : "4", note_length : 80 }
+                { note_name_full : "g4", note : "g", octave : "4", note_length : 80, tied : true }
             ],
             [
                 { note_name_full : "g4", note : "g", octave : "4", note_length : 48 },
@@ -160,10 +160,10 @@ describe('note_detection.js measures_split() function unit tests', function() {
 
         var expected = [
             [
-                { note_name_full : "c4", note : "c", octave : "4", note_length : 128 },
+                { note_name_full : "c4", note : "c", octave : "4", note_length : 128, tied : true },
             ],
             [
-                { note_name_full : "c4", note : "c", octave : "4", note_length : 128 },
+                { note_name_full : "c4", note : "c", octave : "4", note_length : 128, tied : true },
             ],
             [
                 { note_name_full : "c4", note : "c", octave : "4", note_length : 64 },
@@ -175,5 +175,62 @@ describe('note_detection.js measures_split() function unit tests', function() {
 
         expect(res).to.eql(expected);
     });
+});
 
+describe('note_detection.js note_types() function unit tests', function() {
+    // What note type is one beat? (1 = whole, 2 = half, 4 = quarter, 8 = eigth, ...)
+    // Limited to values of 2^x
+    one_beat = 4;
+
+    it('In x/4 time, should assign full notes (whole, half, quarter, etc) to lengths of (8 * 2^x)', function() {
+        var arr = [
+            [
+                //Subarray size unimportant, checking proper note_length --> note_type conversion
+                { note_name_full : "c4", note : "c", octave : "4", note_length : 8 },
+                { note_name_full : "c4", note : "c", octave : "4", note_length : 16 },
+                { note_name_full : "c4", note : "c", octave : "4", note_length : 32 },
+                { note_name_full : "c4", note : "c", octave : "4", note_length : 64 },
+                { note_name_full : "c4", note : "c", octave : "4", note_length : 128 },
+            ]
+        ];
+
+        var expected = [
+            [
+                { note_name_full : "c4", note : "c", octave : "4", note_length : 8, note_type : "16" },
+                { note_name_full : "c4", note : "c", octave : "4", note_length : 16, note_type : "8" },
+                { note_name_full : "c4", note : "c", octave : "4", note_length : 32, note_type : "4" },
+                { note_name_full : "c4", note : "c", octave : "4", note_length : 64, note_type : "2" },
+                { note_name_full : "c4", note : "c", octave : "4", note_length : 128, note_type : "1" },
+            ]
+        ];
+
+        var res = note_detect.note_types(arr, one_beat);
+
+        expect(res).to.eql(expected);
+    });
+
+    it('Should assign dotted notes appropriately', function() {
+        var arr = [
+            [
+                //Subarray size unimportant, checking proper note_length --> note_type conversion
+                { note_name_full : "c4", note : "c", octave : "4", note_length : 24 },
+                { note_name_full : "c4", note : "c", octave : "4", note_length : 48 },
+                { note_name_full : "c4", note : "c", octave : "4", note_length : 96 },
+                { note_name_full : "c4", note : "c", octave : "4", note_length : 192 },
+            ]
+        ];
+
+        var expected = [
+            [
+                { note_name_full : "c4", note : "c", octave : "4", note_length : 24, note_type : "8." },
+                { note_name_full : "c4", note : "c", octave : "4", note_length : 48, note_type : "4." },
+                { note_name_full : "c4", note : "c", octave : "4", note_length : 96, note_type : "2." },
+                { note_name_full : "c4", note : "c", octave : "4", note_length : 192, note_type : "1." },
+            ]
+        ];
+
+        var res = note_detect.note_types(arr, one_beat);
+
+        expect(res).to.eql(expected);
+    });
 });

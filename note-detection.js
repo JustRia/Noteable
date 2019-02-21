@@ -176,6 +176,8 @@ function measures_split(combined_notes, beats_per_measure) {
             cut_length = note_obj.note_length - samples_per_measure;
             front_split = JSON.parse(JSON.stringify(note_obj));
             front_split.note_length = samples_per_measure;
+            // Note is tied to a note split and placed in the next measure
+            front_split.tied = true;
             if (samples_per_measure > 0)
                 measure.push(front_split);
             back_split = JSON.parse(JSON.stringify(note_obj));
@@ -226,31 +228,31 @@ function note_types(measures, one_beat) {
                 //Note type is a multiple of whole number (half, quarter, 8th, 16th, etc)
                 note_obj.note_type = "" + note_type;
             } else {
-                // Conversion does not cleanly divide into a whole number (dotted note / slurred note)
+                // Conversion does not cleanly divide into a whole number (dotted note / tied note)
                 // Get number of beats a note takes up
                 temp = note_obj.note_length / samples_per_beat;
                 if (temp == 0.75) { //dotted half beat = 0.5 + 0.25 = 0.75
                     note_obj.note_type = 2 * one_beat + ".";
                 } else if (temp == 1.25) {  //single beat + quarter beat (slurred over two notes)
-                    note_obj.note_type = ["" + one_beat, "" + one_beat * 4];
+                    note_obj.note_type = one_beat + "~ " + (one_beat * 4);
                 } else if (temp == 1.5) { //dotted single beat = 1.5
                     note_obj.note_type = one_beat + ".";
                 } else if (temp == 1.75) { //single beat + 3/4 beat (slurred over two notes)
-                    note_obj.note_type = ["" + one_beat, 2 * one_beat + "."];
+                    note_obj.note_type = one_beat + "~ " + (2 * one_beat);
                 } else if (temp > 2 && temp < 3) { // between 2 and 3 beats
                     multiplier = fraction_of_beat[note_obj.note_length % samples_per_beat];
-                    note_obj.note_type = ["" + one_beat / 2, multiplier[0] * one_beat + multiplier[1]];
+                    note_obj.note_type = (one_beat / 2) + "~ " + (multiplier[0] * one_beat + multiplier[1]);
                 } else if (temp == 3) { //dotted 2 beat = 3 beats (dotted half note)
                     note_obj.note_type = one_beat / 2 + ".";
                 } else if (temp > 3 && temp < 4) { //Between a 3 beats and 4 beats
                     multiplier = fraction_of_beat[note_obj.note_length % samples_per_beat];
-                    note_obj.note_type = [one_beat / 2 + ".", multiplier[0] * one_beat + multiplier[1]];
+                    note_obj.note_type = (one_beat / 2 + ".") + "~ " + (multiplier[0] * one_beat + multiplier[1]);
                 } else if (temp > 4 && temp < 5) { //between 4 and 5 beats
                     multiplier = fraction_of_beat[note_obj.note_length % samples_per_beat];
-                    note_obj.note_type = [one_beat / 4 + "", multiplier[0] * one_beat + multiplier[1]];
+                    note_obj.note_type = (one_beat / 4) + "~ " + (multiplier[0] * one_beat + multiplier[1]);
                 } else if (temp > 5 && temp < 6) { //between 5 and 6 beats
                     multiplier = fraction_of_beat[note_obj.note_length % samples_per_beat];
-                    note_obj.note_type = [one_beat / 4 + "", one_beat + "", multiplier[0] * one_beat + multiplier[1]];
+                    note_obj.note_type = (one_beat / 4 + "~ " + one_beat + "~ " + multiplier[0] * one_beat + multiplier[1]);
                 }else { //dotted 4 beat = 6 beats
                     note_obj.note_type = one_beat / 4 + ".";
                 }
