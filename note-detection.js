@@ -192,7 +192,6 @@ function measures_split(combined_notes, beats_per_measure) {
         end_rest = {
             "note_name_full" : "rest",
             "note" : "rest",
-            "freq" : 0,
             "note_length" : 8 * Math.round(samples_per_measure/8)
         }
         measure.push(end_rest);
