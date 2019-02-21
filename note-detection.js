@@ -36,6 +36,8 @@ module.exports = {
         console.log(notes);
         
         var combined = combine_notes(notes);
+        console.log('Notes combined based on consecutive samples of the same note', combined);
+        
 
         // Change accidental signs (#, b) to fit lilypond format
         for (var i = 0; i < combined.length; ++i) {   
@@ -52,9 +54,10 @@ module.exports = {
         one_beat = time_signature.split("/")[1];
     
         var measures = measures_split(combined, beats_per_measure);
+        console.log('Notes divided into subarrays by measures', measures);
 
         measures = note_types(measures, one_beat);
-        console.log(measures);
+        console.log('Measures assigned note types', measures);
 
         return measures;
         
