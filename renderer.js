@@ -137,7 +137,7 @@ function createAudioBuffer(blob) {
                     // Speech to text
                     syncRecognize(blob, audioBuffer.sampleRate);
                     // Note-detection
-                    measures = note_detection.get_notes(audioBuffer, "4/4", 80);
+                    measures = note_detection.get_notes(audioBuffer, "4/4", tempoInput.value);
                 }, function (e) {
                     "Error decoding data"
                 }));

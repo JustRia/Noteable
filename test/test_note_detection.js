@@ -54,8 +54,9 @@ describe('note_detection.js combine_notes() function unit tests', function() {
 });
 
 describe('note_detection.js measures_split() function unit tests', function() {
+    var beats_per_measure = 4;
+
     it('Function should round note lengths to the nearest multiple of 8', function() {
-        var beats_per_measure = 4;
         var arr = [
             { note_name_full : "c4", note : "c", octave : "4", note_length : 7 },
             { note_name_full : "f4", note : "f", octave : "4", note_length : 18 },
@@ -70,7 +71,6 @@ describe('note_detection.js measures_split() function unit tests', function() {
     });
 
     it('Function should filter out note lengths below the lowest note threshold of 8 after rounding', function() {
-        var beats_per_measure = 4;
         var arr = [
             { note_name_full : "c4", note : "c", octave : "4", note_length : 4 },
         ];
@@ -79,5 +79,158 @@ describe('note_detection.js measures_split() function unit tests', function() {
 
         //Should remove the c4 note since it's less than 8 when rounded
         expect(res[0][0].note_name_full).to.not.eql("c4");
+    });
+
+    it('Function should divide the array of notes into subarrays based on beats per measure', function() {
+        var arr = [
+            // Measure 1
+            { note_name_full : "c4", note : "c", octave : "4", note_length : 23 },
+            { note_name_full : "d4", note : "d", octave : "4", note_length : 18 },
+            { note_name_full : "e4", note : "e", octave : "4", note_length : 84 },
+            //Measure 2
+            { note_name_full : "f4", note : "f", octave : "5", note_length : 30 },
+            { note_name_full : "g4", note : "g", octave : "5", note_length : 61 },
+            { note_name_full : "a5", note : "a", octave : "5", note_length : 32 },
+        ];
+
+        var expected = [
+            [
+                { note_name_full : "c4", note : "c", octave : "4", note_length : 24 },
+                { note_name_full : "d4", note : "d", octave : "4", note_length : 16 },
+                { note_name_full : "e4", note : "e", octave : "4", note_length : 88 },
+            ],
+            [
+                { note_name_full : "f4", note : "f", octave : "5", note_length : 32 },
+                { note_name_full : "g4", note : "g", octave : "5", note_length : 64 },
+                { note_name_full : "a5", note : "a", octave : "5", note_length : 32 },
+            ]
+        ];
+
+        var res = note_detect.measures(arr, beats_per_measure);
+        
+
+        expect(res).to.eql(expected);
+    });
+
+    it('Append a rest to the end of the last measure if the measure is not filled', function() {
+        var arr = [
+            { note_name_full : "c4", note : "c", octave : "4", note_length : 48 }
+        ];
+
+        var expected = [
+            [
+                { note_name_full : "c4", note : "c", octave : "4", note_length : 48 },
+                { note_name_full : "rest", note : "rest", note_length : 80 }
+            ]
+        ];
+
+        var res = note_detect.measures(arr, beats_per_measure);
+
+        expect(res).to.eql(expected);
+
+    });
+
+    it('If a note goes begins in a measure but does not have space for the full note ' + 
+    'split the note and put the rest in another measure', function() {
+        var arr = [
+            { note_name_full : "c4", note : "c", octave : "4", note_length : 48 },
+            { note_name_full : "g4", note : "g", octave : "4", note_length : 128 }
+        ];
+
+        var expected = [
+            [
+                { note_name_full : "c4", note : "c", octave : "4", note_length : 48 },
+                { note_name_full : "g4", note : "g", octave : "4", note_length : 80, tied : true }
+            ],
+            [
+                { note_name_full : "g4", note : "g", octave : "4", note_length : 48 },
+                { note_name_full : "rest", note : "rest", note_length : 80 }
+            ]
+        ];
+
+        var res = note_detect.measures(arr, beats_per_measure);
+
+        expect(res).to.eql(expected);
+    });
+
+    it('Notes longer than a measure should be split into the number of needed measures', function() {
+        var arr = [
+            { note_name_full : "c4", note : "c", octave : "4", note_length : 320 }
+        ];
+
+        var expected = [
+            [
+                { note_name_full : "c4", note : "c", octave : "4", note_length : 128, tied : true },
+            ],
+            [
+                { note_name_full : "c4", note : "c", octave : "4", note_length : 128, tied : true },
+            ],
+            [
+                { note_name_full : "c4", note : "c", octave : "4", note_length : 64 },
+                { note_name_full : "rest", note : "rest", note_length : 64 },
+            ]
+        ];
+
+        var res = note_detect.measures(arr, beats_per_measure);
+
+        expect(res).to.eql(expected);
+    });
+});
+
+describe('note_detection.js note_types() function unit tests', function() {
+    // What note type is one beat? (1 = whole, 2 = half, 4 = quarter, 8 = eigth, ...)
+    // Limited to values of 2^x
+    one_beat = 4;
+
+    it('In x/4 time, should assign full notes (whole, half, quarter, etc) to lengths of (8 * 2^x)', function() {
+        var arr = [
+            [
+                //Subarray size unimportant, checking proper note_length --> note_type conversion
+                { note_name_full : "c4", note : "c", octave : "4", note_length : 8 },
+                { note_name_full : "c4", note : "c", octave : "4", note_length : 16 },
+                { note_name_full : "c4", note : "c", octave : "4", note_length : 32 },
+                { note_name_full : "c4", note : "c", octave : "4", note_length : 64 },
+                { note_name_full : "c4", note : "c", octave : "4", note_length : 128 },
+            ]
+        ];
+
+        var expected = [
+            [
+                { note_name_full : "c4", note : "c", octave : "4", note_length : 8, note_type : "16" },
+                { note_name_full : "c4", note : "c", octave : "4", note_length : 16, note_type : "8" },
+                { note_name_full : "c4", note : "c", octave : "4", note_length : 32, note_type : "4" },
+                { note_name_full : "c4", note : "c", octave : "4", note_length : 64, note_type : "2" },
+                { note_name_full : "c4", note : "c", octave : "4", note_length : 128, note_type : "1" },
+            ]
+        ];
+
+        var res = note_detect.note_types(arr, one_beat);
+
+        expect(res).to.eql(expected);
+    });
+
+    it('Should assign dotted notes appropriately', function() {
+        var arr = [
+            [
+                //Subarray size unimportant, checking proper note_length --> note_type conversion
+                { note_name_full : "c4", note : "c", octave : "4", note_length : 24 },
+                { note_name_full : "c4", note : "c", octave : "4", note_length : 48 },
+                { note_name_full : "c4", note : "c", octave : "4", note_length : 96 },
+                { note_name_full : "c4", note : "c", octave : "4", note_length : 192 },
+            ]
+        ];
+
+        var expected = [
+            [
+                { note_name_full : "c4", note : "c", octave : "4", note_length : 24, note_type : "8." },
+                { note_name_full : "c4", note : "c", octave : "4", note_length : 48, note_type : "4." },
+                { note_name_full : "c4", note : "c", octave : "4", note_length : 96, note_type : "2." },
+                { note_name_full : "c4", note : "c", octave : "4", note_length : 192, note_type : "1." },
+            ]
+        ];
+
+        var res = note_detect.note_types(arr, one_beat);
+
+        expect(res).to.eql(expected);
     });
 });
