@@ -56,8 +56,8 @@ module.exports = {
         var measures = measures_split(combined, beats_per_measure);
         console.log('Notes divided into subarrays by measures', measures);
 
-        measures = note_types(measures, one_beat);
-        console.log('Measures assigned note types', measures);
+        /*measures = note_types(measures, one_beat);
+        console.log('Measures assigned note types', measures);*/
 
         return measures;
         
