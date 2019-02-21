@@ -29,11 +29,13 @@ describe('Record audio', function () {
     });
 
     it('record from mic icon works', function () {
-        app.webContents.executeJavaScript('document.getElementById("mic-icon").classList.remove("disabled-button")', true);
-        return app.client.element('#mic-icon').click().then(function () {
-            return app.client.element('#stop-icon').click().then(function () {
-                return assert.notEqual(null, app.client.element('#linkExists'));
+        return app.webContents.executeJavaScript('document.getElementById("mic-icon").classList.remove("disabled-button")', true).then(function() {
+            return app.client.element('#mic-icon').click().then(function () {
+                return app.client.element('#stop-icon').click().then(function () {
+                    return assert.notEqual(null, app.client.element('#linkExists'));
+                })
             })
-        })
+        });
+       
     });
 })
