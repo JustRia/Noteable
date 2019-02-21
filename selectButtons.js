@@ -1,8 +1,8 @@
 var inputFlags = [0,0,0];
-var key_signature;
-var tempo;
-var time_signature_top_num;
-var time_signature_bottom_num;
+var key_signature_input;
+var tempo_input;
+var time_signature_top_num_input;
+var time_signature_bottom_num_input;
 function addSelected(input) {
     var key_sig = document.getElementById("key-signature-button");
     var tempo = document.getElementById("tempo-button");
@@ -50,17 +50,17 @@ function submitForm(input) {
     /* get input values */
     if (input == "key-signature") {
         inputFlags[0] = 1;
-        key_signature = document.querySelector('[name="key-signature"]').value;
-        console.log(key_signature);
+        key_signature_input = document.querySelector('[name="key-signature"]').value;
+        console.log("key signature = " + key_signature_input);
     } else if (input == "tempo") {
         inputFlags[1] = 1;
-        tempo = document.querySelector('[name="tempo"]').value;
-        console.log(tempo);
+        tempo_input = document.querySelector('[name="tempo"]').value;
+        console.log("tempo = " + tempo_input);
     } else if (input == "time-signature") {
         inputFlags[2] = 1;
-        time_signature_top_num = document.querySelector('[name="time-signature-top-num"]').value;
-        time_signature_bottom_num = document.querySelector('[name="time-signature-bottom-num"]').value;
-        console.log(time_signature_top_num + "/" + time_signature_bottom_num);
+        time_signature_top_num_input = document.querySelector('[name="time-signature-top-num"]').value;
+        time_signature_bottom_num_input = document.querySelector('[name="time-signature-bottom-num"]').value;
+        console.log("time signature = " + time_signature_top_num_input + "/" + time_signature_bottom_num_input);
     }
 
     var enableButton = true;
