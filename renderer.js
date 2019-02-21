@@ -11,6 +11,7 @@ var note_detection = require("./note-detection.js")
 URL = window.URL || window.webkitURL;
 
 var recordButton = document.getElementById("mic-icon");
+var stopButton = document.getElementById("stop-icon");
 var recording = false;
 var detectTempoButton = document.getElementById("detect-tempo-button");
 var tempoCountdown = document.getElementById("tempo-countdown");
@@ -23,57 +24,61 @@ var tempoBPM;
 var gumStream; //stream from getUserMedia()
 var rec; //Recorder.js object
 var input; //MediaStreamAudioSourceNode we'll be recording
-var AudioContext = window.AudioContext || window.webkitAudioContext; // shim for AudioContext when it's not avb. 
+var AudioContext = window.AudioContext || window.webkitAudioContext; // shim for AudioContext when it's not avb.
 var audioContext = new AudioContext; //new audio context to help us record
 var audioBuffer; //this variable will contain the audiobuffer post-recording
 var measures = [];
 
 recordButton.addEventListener("click", startRecording);
+stopButton.addEventListener("click", stopRecording);
 detectTempoButton.addEventListener("click", startDetectTempo);
 document.addEventListener("keypress", keyPress);
 
 function startRecording() {
     if (!recording) {
+        if (!document.getElementById("mic-icon").classList.contains("disabled-button")) {
+            document.getElementById("mic-icon").classList.add("hidden");
+            document.getElementById("stop-icon").classList.remove("hidden");
+            recording = true;
 
-        recording = true;
-
-        /*
-        Simple constraints object, for more advanced audio features see
-        <div class="video-container"><blockquote class="wp-embedded-content" data-secret="cVHlrYJoGD"><a href="https://addpipe.com/blog/audio-constraints-getusermedia/">Supported Audio Constraints in getUserMedia()</a></blockquote><iframe class="wp-embedded-content" sandbox="allow-scripts" security="restricted" style="position: absolute; clip: rect(1px, 1px, 1px, 1px);" src="https://addpipe.com/blog/audio-constraints-getusermedia/embed/#?secret=cVHlrYJoGD" data-secret="cVHlrYJoGD" width="600" height="338" title="“Supported Audio Constraints in getUserMedia()” — Pipe Blog" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe></div>
-        */
-
-        var constraints = {
-            audio: true,
-            video: false
-        }
-
-        /*
-        We're using the standard promise based getUserMedia()
-        https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getUserMedia
-        */
-
-        navigator.mediaDevices.getUserMedia(constraints).then(function (stream) {
-
-            /* assign to gumStream for later use */
-            gumStream = stream;
-
-            /* use the stream */
-            input = audioContext.createMediaStreamSource(stream);
-
-            /* 
-            Create the Recorder object and configure to record mono sound (1 channel)
-            Recording 2 channels  will double the file size
+            /*
+            Simple constraints object, for more advanced audio features see
+            <div class="video-container"><blockquote class="wp-embedded-content" data-secret="cVHlrYJoGD"><a href="https://addpipe.com/blog/audio-constraints-getusermedia/">Supported Audio Constraints in getUserMedia()</a></blockquote><iframe class="wp-embedded-content" sandbox="allow-scripts" security="restricted" style="position: absolute; clip: rect(1px, 1px, 1px, 1px);" src="https://addpipe.com/blog/audio-constraints-getusermedia/embed/#?secret=cVHlrYJoGD" data-secret="cVHlrYJoGD" width="600" height="338" title="“Supported Audio Constraints in getUserMedia()” — Pipe Blog" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe></div>
             */
-            rec = new Recorder(input, {
-                numChannels: 1
-            })
 
-            //start the recording process
-            rec.record()
+            var constraints = {
+                audio: true,
+                video: false
+            }
 
-        }).catch(function (err) {
-            recordButton.disabled = false;
-        });
+            /*
+            We're using the standard promise based getUserMedia()
+            https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getUserMedia
+            */
+
+            navigator.mediaDevices.getUserMedia(constraints).then(function (stream) {
+
+                /* assign to gumStream for later use */
+                gumStream = stream;
+
+                /* use the stream */
+                input = audioContext.createMediaStreamSource(stream);
+
+                /*
+                Create the Recorder object and configure to record mono sound (1 channel)
+                Recording 2 channels  will double the file size
+                */
+                rec = new Recorder(input, {
+                    numChannels: 1
+                })
+
+                //start the recording process
+                rec.record()
+
+            }).catch(function (err) {
+                recordButton.disabled = false;
+            });
+        }
     } else {
         stopRecording();
     }
@@ -81,6 +86,8 @@ function startRecording() {
 
 function stopRecording() {
     recording = false;
+    document.getElementById("stop-icon").classList.add("hidden");
+    document.getElementById("mic-icon").classList.remove("hidden");
     rec.stop();
 
     //stop microphone access
@@ -148,7 +155,7 @@ function startDetectTempo () {
     detectTempoButton.blur();
 }
 
-// Tempo detection 
+// Tempo detection
 function keyPress (e) {
     if (detectingTempo) {
         if (e.keyCode == 32) {
