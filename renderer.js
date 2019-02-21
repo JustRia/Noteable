@@ -11,6 +11,7 @@ var note_detection = require("./note-detection.js")
 URL = window.URL || window.webkitURL;
 
 var recordButton = document.getElementById("mic-icon");
+var stopButton = document.getElementById("stop-icon");
 var recording = false;
 var detectTempoButton = document.getElementById("detect-tempo-button");
 var tempoCountdown = document.getElementById("tempo-countdown");
@@ -29,12 +30,15 @@ var audioBuffer; //this variable will contain the audiobuffer post-recording
 var measures = [];
 
 recordButton.addEventListener("click", startRecording);
+stopButton.addEventListener("click", stopRecording);
 detectTempoButton.addEventListener("click", startDetectTempo);
 document.addEventListener("keypress", keyPress);
 
 function startRecording() {
     if (!recording) {
         if (!document.getElementById("mic-icon").classList.contains("disabled-button")) {
+            document.getElementById("mic-icon").classList.add("hidden");
+            document.getElementById("stop-icon").classList.remove("hidden");
             recording = true;
 
             /*
@@ -82,6 +86,8 @@ function startRecording() {
 
 function stopRecording() {
     recording = false;
+    document.getElementById("stop-icon").classList.add("hidden");
+    document.getElementById("mic-icon").classList.remove("hidden");
     rec.stop();
 
     //stop microphone access

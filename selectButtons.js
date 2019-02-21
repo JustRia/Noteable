@@ -71,8 +71,6 @@ function submitForm(input) {
     }
 
     if (enableButton) {
-        console.log("TODO: enable record button")
-        // TODO:
         mic_icon = document.getElementById("mic-icon");
         mic_icon.classList.remove("disabled-button");
     }
