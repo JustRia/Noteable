@@ -2,7 +2,6 @@ const Application = require('spectron').Application;
 const assert = require('assert');
 const electronPath = require('electron'); // Require Electron from the binaries included in node_modules.
 const path = require('path');
-const chai = require('chai');
 
 let app
 describe('Record audio', function () {
@@ -28,13 +27,13 @@ describe('Record audio', function () {
             return assert.equal(isVisible, true)
         })
     });
-    it('record from mic icon works', function () {
-            return app.client.element('#mic-icon').click().then(function () {
-                return app.client.element('#mic-icon').click().then(function () {
-                    return assert.notEqual(null, app.client.element('#recordingsList'));
-                })
-            })
-        }
 
-    )
+    it('record from mic icon works', function () {
+        app.webContents.executeJavaScript('document.getElementById("mic-icon").classList.remove("disabled-button")', true);
+        return app.client.element('#mic-icon').click().then(function () {
+            return app.client.element('#stop-icon').click().then(function () {
+                return assert.notEqual(null, app.client.element('#linkExists'));
+            })
+        })
+    });
 })
