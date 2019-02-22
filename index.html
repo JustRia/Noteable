@@ -34,37 +34,43 @@
     <div class="main-content">
         <!-- All the content we will be adding and removing should appear here -->
         <div id="key-signature-input" class="hidden">
-            <h3>Input Key Signature:</h3>
-            <form onsubmit="submitForm('key-signature'); return false">
-                <div class="input-container">
-                    <select name="key-signature">
-                        <option value="A-flat">A&#9837;</option>
-                        <option value="A">A</option>
-                        <option value="A-sharp;">A&#9839;</option>
+            <div id="auto-detect-key-signature-container">
+                <input id="auto-detect-key-signature" type="checkbox" onclick="disable_input('key-signature')">
+                Auto-detect after recording <br />
+            </div>
+            <div id="key-signature-input-contents">
+                <h3>Input Key Signature:</h3>
+                <form id="key-signature-form" onsubmit="submitForm('key-signature'); return false">
+                    <div class="input-container">
+                        <select id="key-signature-selector" name="key-signature">
+                            <option value="A-flat">A&#9837;</option>
+                            <option value="A">A</option>
+                            <option value="A-sharp;">A&#9839;</option>
 
-                        <option value="B-flat">B&#9837;</option>
-                        <option value="B">B</option>
+                            <option value="B-flat">B&#9837;</option>
+                            <option value="B">B</option>
 
-                        <option value="C" selected>C</option>
-                        <option value="C-sharp;">C&#9839;</option>
+                            <option value="C" selected>C</option>
+                            <option value="C-sharp;">C&#9839;</option>
 
-                        <option value="D-flat">D&#9837;</option>
-                        <option value="D">D</option>
-                        <option value="D-sharp;">D&#9839;</option>
+                            <option value="D-flat">D&#9837;</option>
+                            <option value="D">D</option>
+                            <option value="D-sharp;">D&#9839;</option>
 
-                        <option value="E-flat">E&#9837;</option>
-                        <option value="E">E</option>
+                            <option value="E-flat">E&#9837;</option>
+                            <option value="E">E</option>
 
-                        <option value="F">F</option>
-                        <option value="F-sharp;">F&#9839;</option>
+                            <option value="F">F</option>
+                            <option value="F-sharp;">F&#9839;</option>
 
-                        <option value="G-flat">G&#9837;</option>
-                        <option value="G">G</option>
-                        <option value="G-sharp;">G&#9839;</option>
-                    </select>
-                </div>
-                <input type="submit" value="Submit">
-            </form>
+                            <option value="G-flat">G&#9837;</option>
+                            <option value="G">G</option>
+                            <option value="G-sharp;">G&#9839;</option>
+                        </select>
+                    </div>
+                    <input type="submit" value="Submit">
+                </form>
+            </div>
         </div>
         <div id="tempo-input" class="hidden">
             <h3>Input Tempo: </h3>
