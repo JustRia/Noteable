@@ -7,7 +7,7 @@ const chaiAsPromised = require('chai-as-promised');
 
 chai.use(chaiAsPromised);
 
-describe('Application launch', function () {
+describe('Tempo Detection', function () {
     this.timeout(10000)
 
     beforeEach(function () {
