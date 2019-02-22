@@ -155,7 +155,7 @@ function measures_split(combined_notes, beats_per_measure) {
 
     // Combine notes based on measure
     for (var i = 0; i < combined_notes.length; ++i) {
-        note_obj = combined_notes[i];
+        note_obj = JSON.parse(JSON.stringify(combined_notes[i]));
 
         // Note is below the lowest threshold to be considered a 16th note (fastest note user can sing)
         if (note_obj.note_length < 5)
