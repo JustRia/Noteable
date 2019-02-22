@@ -36,6 +36,14 @@ describe('Record audio', function () {
                 })
             })
         });
-       
     });
+    it('recording length is not null', function() {
+        return app.webContents.executeJavaScript('document.getElementById("mic-icon").classList.remove("disabled-button")', true).then(function() {
+            return app.client.element('#mic-icon').click().then(function () {
+                return app.client.element('#stop-icon').click().then(function () {
+                    return assert.notEqual(app.webContents.executeJavaScript('document.getElementByTagName("audio").duration'), null);
+                })
+            })
+        });
+    })
 })
