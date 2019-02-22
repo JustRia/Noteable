@@ -44,7 +44,6 @@ function syncRecognize(blob, sampleRate) {
     reader.readAsDataURL(blob);
     reader.onloadend = function() {
         audioBytes = reader.result.substring(22);
-        console.log("Audio bytes: " + audioBytes);
 
         // The audio file's encoding, sample rate in hertz, and BCP-47 language code
         const audio = {
