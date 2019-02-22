@@ -76,3 +76,18 @@ function submitForm(input) {
     }
     return false;
 }
+
+function disable_input(input) {
+    var checkbox = document.getElementById("auto-detect-key-signature").checked;
+    if (checkbox) {
+        // disable stuff
+        if (input == 'key-signature') {
+            document.getElementById("key-signature-selector").disabled = true;
+        }
+    } else {
+        // enable stuff
+        if (input == 'key-signature') {
+            document.getElementById("key-signature-selector").disabled = false;
+        }
+    }
+}
