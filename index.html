@@ -13,7 +13,7 @@
     <h1 id="logo">
         <img src="images/Title.png" alt="Noteable Logo">
     </h1>
-    <div class="main-content">
+    <div class="main-content hidden">
         <div id="buttons-container">
             <div class="main-button" id="key-signature-button" onclick="addSelected('key-signature')">
                 Key Signature
@@ -104,8 +104,11 @@
     <div class="main-content hidden">
         <!-- TODO: show metronome before recording -->
     </div>
-    <div class="main-content hidden">
-        <!-- TODO: generating sheet music progress bar -->
+    <div class="main-content">
+        <h2>Progress:</h2>
+        <div id="progress-bar">
+            <div id="progress-fill"></div>
+        </div>
     </div>
     <div class="main-content hidden">
         <!-- TODO: show sheet music with buttons -->

@@ -128,6 +128,8 @@ h1, h2, h3, h4, h5, h6, p {
     flex: 1;
     display: flex;
     flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 .input-content {
@@ -143,6 +145,27 @@ h1, h2, h3, h4, h5, h6, p {
 
 #auto-detect-key-signature-container {
     display: block;
+}
+
+/*******************/
+/** Progress Bar ***/
+/*******************/
+#progress-bar {
+    width: 85%;
+    height: 20px;
+    background-color: lightgray;
+    margin: 0 auto 20% auto;
+    border-radius: 5px;
+    border: 5px solid white;
+}
+
+#progress-fill {
+    background-color: #FF8C8C;
+    height: inherit;
+    min-width: 1%;
+    max-width: 100%;
+    width: 1%;
+    transition: .7s all ease-in-out;
 }
 
 /*******************/
