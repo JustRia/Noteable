@@ -130,14 +130,14 @@ h1, h2, h3, h4, h5, h6, p {
     flex-direction: column;
 }
 
-#input-content {
+.input-content {
     display: flex;
     flex: 1; /* takes up rest of space of window so microphone is at the bottom of the screen */
     margin: 70px auto;
     align-items: center;
 }
 
-#input-content *{
+.input-content *{
     display: inline-block;
 }
 
