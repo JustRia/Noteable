@@ -44,5 +44,12 @@ function updateProgress(input) {
         }
     }
     document.getElementById("progress-fill").style.width = percent + "%";
+    if (percent >= 99.9) {
+        // wait for animation to finish and then display sheet music
+        setTimeout(function(){
+            document.getElementById("progress-bar-main-content").classList.add("hidden");
+            document.getElementById("sheet-music-main-content").classList.remove("hidden");
+        }, 1000);
+    }
     return percent + "%";
 }
