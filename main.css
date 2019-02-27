@@ -46,6 +46,7 @@ h1, h2, h3, h4, h5, h6, p {
 /****** Logo *******/
 /*******************/
 #logo {
+    flex: 0;
     text-align: center;
     margin-bottom: 80px;
 }
@@ -124,13 +125,19 @@ h1, h2, h3, h4, h5, h6, p {
 /** Main Content ***/
 /*******************/
 .main-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.input-content {
     display: flex;
     flex: 1; /* takes up rest of space of window so microphone is at the bottom of the screen */
     margin: 70px auto;
     align-items: center;
 }
 
-.main-content *{
+.input-content *{
     display: inline-block;
 }
 
@@ -180,7 +187,8 @@ input[type=number]::-webkit-outer-spin-button {
 /*******************/
 /**** Mic Icon *****/
 /*******************/
-.recording-buttons {
+.recording-button {
+    flex: 0;
     bottom: 10px;
     margin-left: auto;
     margin-right: auto;
