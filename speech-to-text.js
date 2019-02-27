@@ -66,6 +66,7 @@ function syncRecognize(blob, sampleRate) {
                 const response = data[0];
                 const transcription = response.results.map(result => result.alternatives[0].transcript).join('\n');
                 displayTranscription(transcription);
+                splitWords(transcription);
             })
             .catch(err => {
                 console.error('ERROR:', err);
