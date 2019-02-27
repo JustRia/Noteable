@@ -54,6 +54,10 @@ h1, h2, h3, h4, h5, h6, p {
     width: 200px;
 }
 
+#input-prompt {
+    margin: 0 0 15px 0;
+}
+
 /*******************/
 /** Main Buttons **/
 /*******************/
@@ -140,6 +144,34 @@ h1, h2, h3, h4, h5, h6, p {
 .input-content *{
     display: inline-block;
 }
+
+.confirmation {
+    position: absolute;
+    background-color: white;
+    width: 16px;
+    height: 16px;
+    right: 8px;
+    bottom: 8px;
+    border-radius: 50%;
+    padding: 4px;
+}
+
+.confirmation::after {
+    content: "\2714";
+    opacity: 0;
+}
+
+.confirmed {
+    /* TODO: MAKE GREEN CHECK MARK */
+    background-color: #76baa9;
+}
+
+.confirmed::after {
+    transition: 0.3s all linear;
+    opacity: 1;
+}
+
+
 
 #auto-detect-key-signature-container {
     display: block;
