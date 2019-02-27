@@ -54,6 +54,10 @@ h1, h2, h3, h4, h5, h6, p {
     width: 200px;
 }
 
+#input-prompt {
+    margin: 0 0 15px 0;
+}
+
 /*******************/
 /** Main Buttons **/
 /*******************/
