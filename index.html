@@ -17,16 +17,19 @@
         <div id="buttons-container">
             <div class="main-button" id="key-signature-button" onclick="addSelected('key-signature')">
                 Key Signature
+                <div id="key-signature-confirmation" class="confirmation"></div>
                 <span class="tooltip">The group of pitches that indicates how your piece will sound</span>
             </div>
 
             <div class="main-button" id="tempo-button" onclick="addSelected('tempo')">
                 Tempo
+                <div id="tempo-confirmation" class="confirmation"></div>
                 <span class="tooltip">How fast or slow the music is. It is measured in beats per minute.</span>
             </div>
 
             <div class="main-button" id="time-signature-button" onclick="addSelected('time-signature')">
                 Time Signature
+                <div id="time-signature-confirmation" class="confirmation"></div>
                 <span class="tooltip">Indication of rhythm. Numerator: number of beats per measure. Denominator: What type of note gets a beat</span>
             </div>
         </div>
