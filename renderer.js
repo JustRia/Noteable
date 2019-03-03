@@ -94,14 +94,14 @@ function stopRecording() {
     //stop microphone access
     gumStream.getAudioTracks()[0].stop();
 
-    //create the wav blob and pass it on to createDownloadLink
-    rec.exportWAV(createDownloadLink);
+    //create the wav blob and pass it on
+    //rec.exportWAV(createDownloadLink);
     rec.exportWAV(createAudioBuffer);
     rec.clear();
 }
 
 /**The callback above contains the blob in wav format */
-
+/*
 function createDownloadLink(blob) {
     var url = URL.createObjectURL(blob);
     var au = document.createElement('audio');
@@ -126,7 +126,7 @@ function createDownloadLink(blob) {
     recordingsList.appendChild(li);
 
 }
-
+*/
 function createAudioBuffer(blob) {
     var readBlob = require('read-blob');
     return new Promise(function (resolve, reject) {
