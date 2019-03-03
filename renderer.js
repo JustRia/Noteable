@@ -181,18 +181,22 @@ function keyPress (e) {
 }
 
 function startMetronome() {
-    document.getElementById("circ").classList.add("circle");
-    
+    var circ = document.getElementById("circ");
+    circ.classList.add("circle");
+    if(circ.childNodes.length > 0){
+        circ.removeChild(circ.childNodes[0]);
+    }
+    var text = document.createTextNode(document.querySelector('[name="tempo"]').value + " BPM");
+    circ.appendChild(text);
     timer = window.setInterval(function(){
-        document.getElementById("ring").classList.add('ringring');
+        document.getElementById("circ").classList.add('shadow');
         window.setTimeout(function() {
-            document.getElementById("ring").classList.remove('ringring');
+            document.getElementById("circ").classList.remove('shadow');
         },100)
     }, 60000/document.querySelector('[name="tempo"]').value); //seconds to wait between playing-> 120bpm = 2bps = play once every 500 ms
 }
 
 function stopMetronome() {
     window.clearInterval(timer);
-    document.getElementById("ring").classList.toggle('paused');
-    
+    document.getElementById("circ").classList.toggle('paused');
 }
