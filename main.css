@@ -22,7 +22,13 @@ body {
     text-align: center;
 }
 
-h1, h2, h3, h4, h5, h6, p {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
     color: white;
 }
 
@@ -50,6 +56,7 @@ h1, h2, h3, h4, h5, h6, p {
     text-align: center;
     margin-bottom: 80px;
 }
+
 #logo img {
     width: 200px;
 }
@@ -62,16 +69,18 @@ h1, h2, h3, h4, h5, h6, p {
 /** Main Buttons **/
 /*******************/
 #buttons-container {
-    display: flex; /* allows us to evenly distribute the 3 buttons */
+    display: flex;
+    /* allows us to evenly distribute the 3 buttons */
     justify-content: space-around;
-    width:700px;
+    width: 700px;
     margin: 0 auto;
 }
 
 .main-button {
     position: relative;
     width: 200px;
-    padding: 40px 0; /* centers text on button vertically and gives height */
+    padding: 40px 0;
+    /* centers text on button vertically and gives height */
     background-color: white;
     color: black;
     text-align: center;
@@ -98,13 +107,14 @@ h1, h2, h3, h4, h5, h6, p {
     transition: all 0.3s;
 }
 
-.main-button:hover .tooltip{
+.main-button:hover .tooltip {
     visibility: visible;
     opacity: 1;
 }
 
 .main-button.selected .tooltip {
-    top: calc(110% + 5px); /* shift downward because of selected border */
+    top: calc(110% + 5px);
+    /* shift downward because of selected border */
 }
 
 /* prevents weird stutter when user would hover over tooltip instead of button */
@@ -136,12 +146,13 @@ h1, h2, h3, h4, h5, h6, p {
 
 .input-content {
     display: flex;
-    flex: 1; /* takes up rest of space of window so microphone is at the bottom of the screen */
+    flex: 1;
+    /* takes up rest of space of window so microphone is at the bottom of the screen */
     margin: 70px auto;
     align-items: center;
 }
 
-.input-content *{
+.input-content * {
     display: inline-block;
 }
 
@@ -187,8 +198,8 @@ input {
 /* Turn off scroll buttons for numbers */
 input[type=number]::-webkit-inner-spin-button,
 input[type=number]::-webkit-outer-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
+    -webkit-appearance: none;
+    margin: 0;
 }
 
 /* Key-Signature */
@@ -196,11 +207,13 @@ input[type=number]::-webkit-outer-spin-button {
     vertical-align: middle;
     margin: 15px;
 }
-.input-container input{
+
+.input-container input {
     display: block;
     padding: 3px;
     margin: 5px;
 }
+
 .input-container hr {
     display: block;
     width: 100%;
@@ -234,6 +247,7 @@ input[type=number]::-webkit-outer-spin-button {
 /** Screen Width changes **/
 /**************************/
 @media only screen and (max-width: 715px) {
+
     /* Buttons start to scroll off the side */
     #buttons-container {
         display: block;
@@ -244,4 +258,44 @@ input[type=number]::-webkit-outer-spin-button {
         width: 90%;
         margin: 10px auto;
     }
+}
+
+/**************************/
+/** Metronome **/
+/**************************/
+.metro-container {
+    display: block;
+    bottom: 10px;
+    margin-left: auto;
+    margin-right: auto;
+    left: 0;
+    right: 0;
+}
+
+.circle {
+    width: 30px;
+    height: 30px;
+    background-color: white;
+    border-radius: 50%;
+    position: absolute;
+    top: 23px;
+    left: 23px;
+}
+
+.ringring {
+    border: 3px solid white;
+    -webkit-border-radius: 30px;
+    height: 40px;
+    width: 40px;
+    position: absolute;
+    left: 15px;
+    top: 15px;
+    -webkit-animation: pulsate 0.2s ease-out;
+    -webkit-animation-iteration-count: 1; 
+    opacity: 0.0
+}
+@-webkit-keyframes pulsate {
+    0% {-webkit-transform: scale(0.1, 0.1); opacity: 0.0;}
+    50% {opacity: 1.0;}
+    100% {-webkit-transform: scale(1.2, 1.2); opacity: 0.0;}
 }

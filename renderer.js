@@ -21,6 +21,7 @@ var taps;
 var startTime, endTime;
 var detectingTempo = false;
 var tempoBPM;
+var timer;
 var gumStream; //stream from getUserMedia()
 var rec; //Recorder.js object
 var input; //MediaStreamAudioSourceNode we'll be recording
@@ -40,7 +41,7 @@ function startRecording() {
             document.getElementById("mic-icon").classList.add("hidden");
             document.getElementById("stop-icon").classList.remove("hidden");
             recording = true;
-
+            startMetronome();
             /*
             Simple constraints object, for more advanced audio features see
             <div class="video-container"><blockquote class="wp-embedded-content" data-secret="cVHlrYJoGD"><a href="https://addpipe.com/blog/audio-constraints-getusermedia/">Supported Audio Constraints in getUserMedia()</a></blockquote><iframe class="wp-embedded-content" sandbox="allow-scripts" security="restricted" style="position: absolute; clip: rect(1px, 1px, 1px, 1px);" src="https://addpipe.com/blog/audio-constraints-getusermedia/embed/#?secret=cVHlrYJoGD" data-secret="cVHlrYJoGD" width="600" height="338" title="“Supported Audio Constraints in getUserMedia()” — Pipe Blog" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe></div>
@@ -89,7 +90,7 @@ function stopRecording() {
     document.getElementById("stop-icon").classList.add("hidden");
     document.getElementById("mic-icon").classList.remove("hidden");
     rec.stop();
-
+    stopMetronome();
     //stop microphone access
     gumStream.getAudioTracks()[0].stop();
 
@@ -177,4 +178,21 @@ function keyPress (e) {
             }
         }
     }
+}
+
+function startMetronome() {
+    document.getElementById("circ").classList.add("circle");
+    
+    timer = window.setInterval(function(){
+        document.getElementById("ring").classList.add('ringring');
+        window.setTimeout(function() {
+            document.getElementById("ring").classList.remove('ringring');
+        },100)
+    }, 60000/document.querySelector('[name="tempo"]').value); //seconds to wait between playing-> 120bpm = 2bps = play once every 500 ms
+}
+
+function stopMetronome() {
+    window.clearInterval(timer);
+    document.getElementById("ring").classList.toggle('paused');
+    
 }
