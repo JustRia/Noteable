@@ -275,35 +275,43 @@ function note_types(measures, one_beat) {
         measure_updated = [];
         for (var j = 0; j < measure.length; ++j) {
             note_obj = JSON.parse(JSON.stringify(measure[j]));
+
+            //Determine if a note was held for a full beat (32 * x length)
             temp = note_obj.note_length % samples_per_beat;
+            //How many full beats was the note held
             quotient = parseInt(note_obj.note_length / samples_per_beat);
 
             note_obj.note_type = [];
             quotient_temp = quotient;
+            //If note is held longer than a whole note lengths, split into as many tied whole notes
+            //as possible
             while (quotient_temp - one_beat > 0) {
                 note_obj.note_type.push(one_beat);
                 quotient_temp -= one_beat;
             }
 
+            //No remainder, this means a note was held for a full number of beats
             if (temp == 0) {
-                if (quotient_temp <= one_beat) {
-                    if (Math.log2(quotient_temp) % 1 === 0) {
+                //If the note beats are power of 2, can be represented as a single note
+                if (Math.log2(quotient_temp) % 1 === 0) {
+                    note_obj.note_type.push(quotient_temp);
+                    measure_updated.push(note_obj);
+                } else {
+                    //Special case: note beats of 3 can be represented as a single note
+                    if (quotient_temp == 3) {
                         note_obj.note_type.push(quotient_temp);
                         measure_updated.push(note_obj);
                     } else {
-                        if (quotient_temp == 3) {
-                            note_obj.note_type.push(quotient_temp);
-                            measure_updated.push(note_obj);
-                        } else {
-                            low_pow = Math.pow(2,Math.floor(Math.log2(quotient_temp)));
-                            rest = quotient_temp - low_pow;
-                            note_obj.note_type.push(low_pow, rest);
-                            measure_updated.push(note_obj);
-                        }
+                        //Separate into largest power of 2 and what remains
+                        low_pow = Math.pow(2,Math.floor(Math.log2(quotient_temp)));
+                        rest = quotient_temp - low_pow;
+                        note_obj.note_type.push(low_pow, rest);
+                        measure_updated.push(note_obj);
                     }
                 }
-            } else {
-                if (quotient_temp != 0) {
+            } else { //There is a remainder, was not held for a whole number of beats
+                if (quotient_temp > 0) { //Only do this is there's full beats not accounted for
+                    //Perform same steps as above
                     if (Math.log2(quotient_temp) % 1 === 0) {
                         note_obj.note_type.push(quotient_temp);
                     } else {
@@ -316,6 +324,7 @@ function note_types(measures, one_beat) {
                         }
                     }
                 }
+                //Add final fractional bit to the end
                 note_obj.note_type.push(temp + "/" + samples_per_beat);
                 measure_updated.push(note_obj);
             }
