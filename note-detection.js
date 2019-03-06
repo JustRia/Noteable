@@ -40,7 +40,7 @@ module.exports = {
         
 
         // Change accidental signs (#, b) to fit lilypond format
-        for (var i = 0; i < combined.length; ++i) {   
+        /*for (var i = 0; i < combined.length; ++i) {   
             if (combined[i].accidental) {
                 if (combined[i].accidental == "#") {
                     combined[i].accidental = "is";
@@ -48,16 +48,20 @@ module.exports = {
                     combined[i].accidental = "es";
                 }
             }
-        }
+        }*/
 
         var beats_per_measure = time_signature.split("/")[0];
-        one_beat = time_signature.split("/")[1];
+        var one_beat = time_signature.split("/")[1];
     
         var measures = measures_split(combined, beats_per_measure);
         console.log('Notes divided into subarrays by measures', measures);
 
         /*measures = note_types(measures, one_beat);
         console.log('Measures assigned note types', measures);*/
+
+        var new_measures = note_types(measures, one_beat);
+        console.log('Notes with assigned note types', new_measures);
+        
 
         return measures;
         
@@ -220,7 +224,7 @@ function note_types(measures, one_beat) {
 
     var res = [];
 
-    for (var i = 0; i < measures.length; ++i) {
+    /*for (var i = 0; i < measures.length; ++i) {
         measure = JSON.parse(JSON.stringify(measures[i]));
         measure_updated = [];
         for (var j = 0; j < measure.length; ++j) {
@@ -263,6 +267,59 @@ function note_types(measures, one_beat) {
             measure_updated.push(note_obj);
         }
         
+        res.push(measure_updated);
+    }*/
+
+    for (var i = 0; i < measures.length; ++i) {
+        measure = JSON.parse(JSON.stringify(measures[i]));
+        measure_updated = [];
+        for (var j = 0; j < measure.length; ++j) {
+            note_obj = JSON.parse(JSON.stringify(measure[j]));
+            temp = note_obj.note_length % samples_per_beat;
+            quotient = parseInt(note_obj.note_length / samples_per_beat);
+
+            note_obj.note_type = [];
+            quotient_temp = quotient;
+            while (quotient_temp - one_beat > 0) {
+                note_obj.note_type.push(one_beat);
+                quotient_temp -= one_beat;
+            }
+
+            if (temp == 0) {
+                if (quotient_temp <= one_beat) {
+                    if (Math.log2(quotient_temp) % 1 === 0) {
+                        note_obj.note_type.push(quotient_temp);
+                        measure_updated.push(note_obj);
+                    } else {
+                        if (quotient_temp == 3) {
+                            note_obj.note_type.push(quotient_temp);
+                            measure_updated.push(note_obj);
+                        } else {
+                            low_pow = Math.pow(2,Math.floor(Math.log2(quotient_temp)));
+                            rest = quotient_temp - low_pow;
+                            note_obj.note_type.push(low_pow, rest);
+                            measure_updated.push(note_obj);
+                        }
+                    }
+                }
+            } else {
+                if (quotient_temp != 0) {
+                    if (Math.log2(quotient_temp) % 1 === 0) {
+                        note_obj.note_type.push(quotient_temp);
+                    } else {
+                        if (quotient_temp == 3) {
+                            note_obj.note_type.push(quotient_temp);
+                        } else {
+                            low_pow = Math.pow(2,Math.floor(Math.log2(quotient_temp)));
+                            rest = quotient_temp - low_pow;
+                            note_obj.note_type.push(low_pow, rest);
+                        }
+                    }
+                }
+                note_obj.note_type.push(temp + "/" + samples_per_beat);
+                measure_updated.push(note_obj);
+            }
+        }
         res.push(measure_updated);
     }
 
