@@ -16,7 +16,7 @@ var recording = false;
 var detectTempoButton = document.getElementById("detect-tempo-button");
 var tempoCountdown = document.getElementById("tempo-countdown");
 var tempoInput = document.querySelector("input[name='tempo']");
-var detectingTempoContent =  document.getElementById("detecting-tempo-div");
+var detectingTempoContent = document.getElementById("detecting-tempo-div");
 var taps;
 var startTime, endTime;
 var detectingTempo = false;
@@ -40,6 +40,7 @@ function startRecording() {
         if (!document.getElementById("mic-icon").classList.contains("disabled-button")) {
             document.getElementById("mic-icon").classList.add("hidden");
             document.getElementById("stop-icon").classList.remove("hidden");
+
             recording = true;
             startMetronome();
             /*
@@ -73,8 +74,26 @@ function startRecording() {
                     numChannels: 1
                 })
 
+                //create text for countdown and append it to the html
+                var cd = document.getElementById("countdown");
+                var countFrom = document.querySelector('[name="time-signature-top-num"]').value;
+                var count = document.createTextNode(countFrom);
+                cd.appendChild(count);
+
+                //start the countdown based on the tempo 
+                var timerBoi = window.setInterval(function () { //decrement on the beat?
+                    document.getElementById("countdown").innerHTML = "" + countFrom;
+                    if (countFrom == 0) {
+                        //remove the countdown text
+                        document.getElementById("countdown").innerHTML = "Go!";
+                        //clean
+                        window.clearInterval(timerBoi);
+                    }
+                    countFrom = countFrom - 1;
+                }, 60000 / document.querySelector('[name="tempo"]').value);
+
                 //start the recording process
-                rec.record()
+                rec.record();
 
             }).catch(function (err) {
                 recordButton.disabled = false;
@@ -100,33 +119,6 @@ function stopRecording() {
     rec.clear();
 }
 
-/**The callback above contains the blob in wav format */
-/*
-function createDownloadLink(blob) {
-    var url = URL.createObjectURL(blob);
-    var au = document.createElement('audio');
-    var li = document.createElement('li');
-    var link = document.createElement('a');
-
-    //add controls to the <audio> element in the html file to play stuff
-    au.controls = true;
-    au.src = url;
-
-    //link the a element to the blob
-    link.href = url;
-    link.download = new Date().toISOString() + '.wav';
-    link.innerHTML = link.download;
-    link.setAttribute("id", "linkExists");
-
-    //add the new audio and a elements to the li element
-    li.appendChild(au);
-    li.appendChild(link);
-
-    //add the li element to the ordered list
-    recordingsList.appendChild(li);
-
-}
-*/
 function createAudioBuffer(blob) {
     var readBlob = require('read-blob');
     return new Promise(function (resolve, reject) {
@@ -149,7 +141,7 @@ function createAudioBuffer(blob) {
 }
 
 // Show tempo detection interface
-function startDetectTempo () {
+function startDetectTempo() {
     detectingTempoContent.classList.remove("hidden");
     detectingTempo = true;
     taps = 10;
@@ -158,7 +150,7 @@ function startDetectTempo () {
 }
 
 // Tempo detection
-function keyPress (e) {
+function keyPress(e) {
     if (detectingTempo) {
         if (e.keyCode == 32) {
             e.preventDefault();
@@ -183,17 +175,17 @@ function keyPress (e) {
 function startMetronome() {
     var circ = document.getElementById("circ");
     circ.classList.add("circle");
-    if(circ.childNodes.length > 0){
+    if (circ.childNodes.length > 0) {
         circ.removeChild(circ.childNodes[0]);
     }
     var text = document.createTextNode(document.querySelector('[name="tempo"]').value + " BPM");
     circ.appendChild(text);
-    timer = window.setInterval(function(){
+    timer = window.setInterval(function () {
         document.getElementById("circ").classList.add('shadow');
-        window.setTimeout(function() {
+        window.setTimeout(function () {
             document.getElementById("circ").classList.remove('shadow');
-        },100)
-    }, 60000/document.querySelector('[name="tempo"]').value); //seconds to wait between playing-> 120bpm = 2bps = play once every 500 ms
+        }, 100)
+    }, 60000 / document.querySelector('[name="tempo"]').value); //seconds to wait between playing-> 120bpm = 2bps = play once every 500 ms
 }
 
 function stopMetronome() {
