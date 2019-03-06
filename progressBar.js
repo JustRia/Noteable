@@ -5,7 +5,7 @@
  * 2: Note detection finished
  * 3: Notes split into measures finished
  * 4: auto detected key finished
- * 5: Measures inputted to lilypond finished
+ * 5: Measures inputted to renderer finished
  * 6: We have our outputted sheet music :)
  */
 var progress = [0,0,0,0,0,0,0];
@@ -26,7 +26,7 @@ function updateProgress(input) {
         case "auto-detect-key":
             progress[4] = 1;
             break;
-        case "input-to-lilypond":
+        case "input-to-renderer":
             progress[5] = 1;
             break;
         case "finished":
