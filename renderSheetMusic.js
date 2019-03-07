@@ -6,13 +6,13 @@ function testRenderSheetMusic() {
     key_signature_input = 'C';
     var testArray = [
         [
-            { note_name_full : "c4", note : "c", octave : "4", accidental : undefined, freq : 0, note_length : 32 , note_type : [1]},
-            { note_name_full : "d4", note : "d", octave : "4", accidental : undefined, freq : 0, note_length : 32 , note_type : [1]},
-            { note_name_full : "e4", note : "e", octave : "4", accidental : undefined, freq : 0, note_length : 64 , note_type : [2]},
+            { note_name_full : "c4", note : "C", octave : "2", accidental : undefined, freq : 0, note_length : 32 , note_type : ["2", "1/2"]},
+            { note_name_full : "d4", note : "D", octave : "4", accidental : undefined, freq : 0, note_length : 32 , note_type : ["1/2"]},
+            { note_name_full : "e4", note : "E", octave : "4", accidental : undefined, freq : 0, note_length : 64 , note_type : ["1"], tied : true},
         ],
         [
-            { note_name_full : "e4b", note : "e", octave : "4", accidental : "b", freq : 0, note_length : 32 , note_type : [1]},
-            { note_name_full : "rest", note : "rest", freq : 0, note_length : 96, note_type : [3] }
+            { note_name_full : "e4", note : "E", octave : "4", accidental : undefined, freq : 0, note_length : 32 , note_type : ["1"]},
+            { note_name_full : "rest", note : "rest", freq : 0, note_length : 96, note_type : ["3"] }
         ]
     ];
     renderSheetMusic(testArray);
@@ -24,6 +24,7 @@ function testRenderSheetMusic() {
  * , (comma): ocatave down
  * ^ (carrot): sharp sign
  * _ (underscore): flat sign
+ * - (hiphen): tie between A1_B1
  * z: rest
  */
 
@@ -35,20 +36,56 @@ function renderSheetMusic(input) {
     output += "|:";
     // one measure at a time
     for (var i = 0; i < input.length; i++) {
+        // one note at a time
         for (var j = 0; j < input[i].length; j++) {
             if (input[i][j].note == "rest") {
-                output += "z"
-                output += input[i][j].note_type[0]; // TODO: change I believe
-            } else {
-                if (input[i][j].accidental == "b") {
-                    output += "_";
-                } else if (input[i][j].accidental == "#") {
-                    output += "^";
+                output += "z";
+                for (var k = 0; k < input[i][j].note_type.length; k++) {
+                    output += input[i][j].note_type[k];
+                    // if there is more than 1 note:
+                    if (k != input[i][j].note_type.length - 1) {
+                        output += "-"; // add tie
+                    }
                 }
-                output += input[i][j].note;
-                output += input[i][j].note_type[0]; // TODO: change I believe
+            } else {
+                // add note, and possible tie between notes
+                for (var k = 0; k < input[i][j].note_type.length; k++) {
+                    if (input[i][j].accidental == "b") {
+                        output += "_";
+                    } else if (input[i][j].accidental == "#") {
+                        output += "^";
+                    }
+                    // add note
+                    output += input[i][j].note;
+                    // handle octave
+                    if (input[i][j].octave < 4) {
+                        var currentOctave = input[i][j].octave;
+                        while (currentOctave < 4) {
+                            output += ",";
+                            currentOctave++;
+                        }
+                    } else {
+                        var currentOctave = input[i][j].octave;
+                        while (currentOctave > 4) {
+                            output += "\'";
+                            currentOctave--;
+                        }
+                    }
+                    // add length for note
+                    output += input[i][j].note_type[k];
+                    // possibly add the tie
+                    if (k != input[i][j].note_type.length - 1) {
+                        output += "-"; // add tie
+                    }
+                }
+            }
+            if (input[i][j].hasOwnProperty('tied')) {
+                if (input[i][j].tied == true) {
+                    output += "-"
+                }
             }
         }
+        // possibly start a new measure
         if (i != input.length - 1) {
             output += "|"; // start a new measure only if not at the end
             if ((i + 1) % 4 == 0) {
