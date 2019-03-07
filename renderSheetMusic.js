@@ -6,13 +6,13 @@ function testRenderSheetMusic() {
     key_signature_input = 'C';
     var testArray = [
         [
-            { note_name_full : "c4", note : "c", octave : "4", accidental : undefined, freq : 0, note_length : 1 },
-            { note_name_full : "d4", note : "d", octave : "4", accidental : undefined, freq : 0, note_length : 1 },
-            { note_name_full : "e4", note : "e", octave : "4", accidental : undefined, freq : 0, note_length : 2 },
+            { note_name_full : "c4", note : "c", octave : "4", accidental : undefined, freq : 0, note_length : 32 , note_type : [1]},
+            { note_name_full : "d4", note : "d", octave : "4", accidental : undefined, freq : 0, note_length : 32 , note_type : [1]},
+            { note_name_full : "e4", note : "e", octave : "4", accidental : undefined, freq : 0, note_length : 64 , note_type : [2]},
         ],
         [
-            { note_name_full : "e4b", note : "e", octave : "4", accidental : "b", freq : 0, note_length : 1 },
-            { note_name_full : "rest", note : "rest", freq : 0, note_length : 3 }
+            { note_name_full : "e4b", note : "e", octave : "4", accidental : "b", freq : 0, note_length : 32 , note_type : [1]},
+            { note_name_full : "rest", note : "rest", freq : 0, note_length : 96, note_type : [3] }
         ]
     ];
     renderSheetMusic(testArray);
@@ -38,7 +38,7 @@ function renderSheetMusic(input) {
         for (var j = 0; j < input[i].length; j++) {
             if (input[i][j].note == "rest") {
                 output += "z"
-                output += input[i][j].note_length; // TODO: change I believe
+                output += input[i][j].note_type[0]; // TODO: change I believe
             } else {
                 if (input[i][j].accidental == "b") {
                     output += "_";
@@ -46,7 +46,7 @@ function renderSheetMusic(input) {
                     output += "^";
                 }
                 output += input[i][j].note;
-                output += input[i][j].note_length; // TODO: change I believe
+                output += input[i][j].note_type[0]; // TODO: change I believe
             }
         }
         if (i != input.length - 1) {
