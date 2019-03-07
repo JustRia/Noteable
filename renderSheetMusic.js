@@ -51,9 +51,9 @@ function renderSheetMusic(input) {
         }
         if (i != input.length - 1) {
             output += "|"; // start a new measure only if not at the end
-        }
-        if ((i + 1) % 4 == 0) {
-            output += "\n"; // start a new line every 4 measures.
+            if ((i + 1) % 4 == 0) {
+                output += "\n"; // start a new line every 4 measures.
+            }
         }
     }
     output += ":|";
