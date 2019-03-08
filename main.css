@@ -170,7 +170,6 @@ h1, h2, h3, h4, h5, h6, p {
     flex: 1;
     display: flex;
     flex-direction: column;
-    max-height: calc(100vh - 250px);
 }
 
 .input-content {
@@ -225,6 +224,10 @@ h1, h2, h3, h4, h5, h6, p {
     border-radius: 15px;
     overflow: scroll !important; /* fixes problem where too many measures displayed for the screen width */
     height: auto !important; /* fix weird scrollbar when height is barely off */
+}
+
+#sheet-music-main-content {
+    max-height: calc(100vh - 250px);
 }
 
 
