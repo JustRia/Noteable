@@ -54,7 +54,7 @@ describe('Progress Bar', function () {
                 return app.webContents.executeJavaScript(runScript, true).then(function() {
                     // wait 2 seconds to let animation run.
                     return app.client.pause(2000).then(function() {
-                        app.client.element("#sheet-music-main-content").isVisible().should.eventually.equal('true');
+                        return app.client.element("#sheet-music-main-content").isVisible().should.eventually.equal(true);
                     });
                 });
             });
