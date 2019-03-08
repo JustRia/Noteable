@@ -6,7 +6,7 @@ function testRenderSheetMusic() {
     key_signature_input = 'C';
     var testArray = [
         [
-            { note_name_full : "c4", note : "C", octave : "2", accidental : undefined, freq : 0, note_length : 32 , note_type : ["2", "1/2"]},
+            { note_name_full : "c4", note : "C", octave : "4", accidental : undefined, freq : 0, note_length : 32 , note_type : ["2", "1/2"]},
             { note_name_full : "d4", note : "D", octave : "4", accidental : undefined, freq : 0, note_length : 32 , note_type : ["1/2"]},
             { note_name_full : "e4", note : "E", octave : "4", accidental : undefined, freq : 0, note_length : 64 , note_type : ["1"], tied : true},
         ],

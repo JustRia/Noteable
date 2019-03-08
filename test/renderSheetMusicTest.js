@@ -34,13 +34,13 @@ describe('Render Sheet Music', function () {
             return app.webContents.executeJavaScript('document.getElementById("input-main-content").classList.add("hidden")', true).then(function() {
                 var bla = "var testArray = [" +
                     "[" +
-                        "{ note_name_full : \"c4\", note : \"c\", octave : \"4\", accidental : undefined, freq : 0, note_length : 1 , note_type : [1]}," +
-                        "{ note_name_full : \"d4\", note : \"d\", octave : \"4\", accidental : undefined, freq : 0, note_length : 1 }," +
-                        "{ note_name_full : \"e4\", note : \"e\", octave : \"4\", accidental : undefined, freq : 0, note_length : 2 }," +
+                        "{ note_name_full : \"c4\", note : \"C\", octave : \"4\", accidental : undefined, freq : 0, note_length : 32 , note_type : [\"2\", \"1/2\"]}," +
+                        "{ note_name_full : \"d4\", note : \"D\", octave : \"4\", accidental : undefined, freq : 0, note_length : 32 , note_type : [\"1/2\"]}," +
+                        "{ note_name_full : \"e4\", note : \"E\", octave : \"4\", accidental : undefined, freq : 0, note_length : 64 , note_type : [\"1\"], tied : true}," +
                     "]," +
                     "[" +
-                        "{ note_name_full : \"e4\", note : \"e\", octave : \"4\", accidental : undefined, freq : 0, note_length : 1 }," +
-                        "{ note_name_full : \"rest\", note : \"rest\", freq : 0, note_length : 3 }" +
+                        "{ note_name_full : \"e4\", note : \"E\", octave : \"4\", accidental : undefined, freq : 0, note_length : 32 , note_type : [\"1\"]}," +
+                        "{ note_name_full : \"rest\", note : \"rest\", freq : 0, note_length : 96, note_type : [\"3\"] }" +
                     "]" +
                 "];";
                 app.webContents.executeJavaScript(bla, true);
