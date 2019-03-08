@@ -24,9 +24,9 @@ describe('Render Sheet Music', function () {
     })
 
     after(function () {
-        // if (app && app.isRunning()) {
-        //     return app.stop()
-        // }
+        if (app && app.isRunning()) {
+            return app.stop()
+        }
     })
 
     it('Sheet music renders correctly', function() {
@@ -43,9 +43,14 @@ describe('Render Sheet Music', function () {
                         "{ note_name_full : \"rest\", note : \"rest\", freq : 0, note_length : 96, note_type : [\"3\"] }" +
                     "]" +
                 "];";
-                app.webContents.executeJavaScript(bla, true);
-                app.webContents.executeJavaScript("renderSheetMusic(testArray);", true);
-                return true;
+                return app.webContents.executeJavaScript(bla, true).then(function() {
+                    return app.webContents.executeJavaScript("renderSheetMusic(testArray);", true).then(function() {
+                        return app.client.pause(1000).then(function() {
+                            return app.client.element("#sheet-music > svg").isVisible().should.eventually.equal(true);
+                        });
+                    });
+                });
+
             });
         });
     });
