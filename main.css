@@ -220,7 +220,7 @@ h1, h2, h3, h4, h5, h6, p {
 
 #sheet-music {
     margin: 0 auto;
-    width: 90%;
+    max-width: 90%;
     background-color: white;
     border-radius: 15px;
     overflow: scroll !important; /* fixes problem where too many measures displayed for the screen width */
