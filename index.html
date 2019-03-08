@@ -98,7 +98,7 @@
                     <div class="input-container">
                         <input type="number" name="time-signature-top-num" min="1" max="99" value="4" required>
                         <hr />
-                        <input type="number" name="time-signature-bottom-num" min="1" max="99" value="4" required>
+                        <input type="number" name="time-signature-bottom-num" min="1" max="99" value="4" oninput="checkPowerOfTwo();" required>
                     </div>
                     <input type="submit" value="Submit">
                 </form>

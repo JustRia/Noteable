@@ -94,3 +94,27 @@ function disable_input(input) {
         }
     }
 }
+
+function checkPowerOfTwo() {
+    var bottomNumInput = document.querySelector('[name="time-signature-bottom-num"]');
+    if (!isPowerOfTwo(bottomNumInput.value)) {
+        bottomNumInput.setCustomValidity("Value must be a power of 2.");
+    }
+    else {
+        bottomNumInput.setCustomValidity("");
+    }
+}
+
+function isPowerOfTwo(n)
+{
+    if (n == 0)
+        return false;
+
+    while (n != 1)
+    {
+        if (n % 2 != 0)
+            return false;
+        n = n / 2;
+    }
+    return true;
+}
