@@ -29,7 +29,7 @@ module.exports = {
         var notes = frequencies.map(freq => freq < 1109 && freq != null ? 
                                 {
                                     "freq" : freq, 
-                                    "note_name" : "" + teoria.note.fromFrequency(freq).note.name() 
+                                    "note_name" : "" + teoria.note.fromFrequency(freq).note.name().toUpperCase()
                                                 + teoria.note.fromFrequency(freq).note.octave()
                                                 + teoria.note.fromFrequency(freq).note.accidental(),
                                 } : {"freq" : null, "note_name" : "rest"});
@@ -38,18 +38,6 @@ module.exports = {
         var combined = combine_notes(notes);
         console.log('Notes combined based on consecutive samples of the same note', combined);
         
-
-        // Change accidental signs (#, b) to fit lilypond format
-        /*for (var i = 0; i < combined.length; ++i) {   
-            if (combined[i].accidental) {
-                if (combined[i].accidental == "#") {
-                    combined[i].accidental = "is";
-                } else if (combined[i].accidental == "b") {
-                    combined[i].accidental = "es";
-                }
-            }
-        }*/
-
         var beats_per_measure = time_signature.split("/")[0];
         var one_beat = time_signature.split("/")[1];
     
