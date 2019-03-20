@@ -1,17 +1,20 @@
 var ABCJS = require('abcjs');
 
 function testRenderSheetMusic() {
+    document.getElementById("sheet-music-main-content").classList.remove("hidden");
+    document.getElementById("input-main-content").classList.add("hidden");
     time_signature_top_num_input = 4;
     time_signature_bottom_num_input = 4;
     key_signature_input = 'C';
     var testArray = [
         [
-            { note_name_full : "c4", note : "C", octave : "4", accidental : undefined, freq : 0, note_length : 32 , note_type : ["2", "1/2"]},
-            { note_name_full : "d4", note : "D", octave : "4", accidental : undefined, freq : 0, note_length : 32 , note_type : ["1/2"]},
-            { note_name_full : "e4", note : "E", octave : "4", accidental : undefined, freq : 0, note_length : 64 , note_type : ["1"], tied : true},
+            { note_name_full : "C4", note : "C", octave : "4", accidental : undefined, freq : 0, note_length : 32 , note_type : ["2", "1/2"]},
+            { note_name_full : "C4#", note : "C", octave : "4", accidental : "#", freq : 0, note_length : 32 , note_type : ["1/2"]},
+            { note_name_full : "C4#", note : "C", octave : "4", accidental : "#", freq : 0, note_length : 32 , note_type : ["1/2"]},
+            { note_name_full : "E4", note : "E", octave : "4", accidental : undefined, freq : 0, note_length : 64 , note_type : ["1"], tied : true},
         ],
         [
-            { note_name_full : "e4", note : "E", octave : "4", accidental : undefined, freq : 0, note_length : 32 , note_type : ["1"]},
+            { note_name_full : "C4", note : "E", octave : "4", accidental : undefined, freq : 0, note_length : 32 , note_type : ["1"]},
             { note_name_full : "rest", note : "rest", freq : 0, note_length : 96, note_type : ["3"] }
         ]
     ];
@@ -24,6 +27,7 @@ function testRenderSheetMusic() {
  * , (comma): ocatave down
  * ^ (carrot): sharp sign
  * _ (underscore): flat sign
+ * = (equals): natural sign
  * - (hiphen): tie between A1_B1
  * z: rest
  */
@@ -36,6 +40,7 @@ function renderSheetMusic(input) {
     output += "|:";
     // one measure at a time
     for (var i = 0; i < input.length; i++) {
+        var measureAccidentals = []; // keep track of accidentals in the measure
         // one note at a time
         for (var j = 0; j < input[i].length; j++) {
             if (input[i][j].note == "rest") {
@@ -51,11 +56,44 @@ function renderSheetMusic(input) {
                 // add note, and possible tie between notes
                 for (var k = 0; k < input[i][j].note_type.length; k++) {
                     if (input[i][j].accidental == "b") {
-                        output += "_";
+                        // check to see if we insert the accidental or not
+                        if (!measureAccidentals.includes(input[i][j].note_name_full)) {
+                            output += "_";
+                            measureAccidentals.push(input[i][j].note_name_full);
+                            // remove sharp from measureAccidentals
+                            if (measureAccidentals.indexOf(input[i][j].note + input[i][j].octave + "#") >= 0) {
+                                var index = measureAccidentals.indexOf(input[i][j].note + input[i][j].octave + "#");
+                                measureAccidentals.splice(index, 1);
+                            }
+                        }
                     } else if (input[i][j].accidental == "#") {
-                        output += "^";
+                        // check to see if we insert the accidental or not
+                        if (!measureAccidentals.includes(input[i][j].note_name_full)) {
+                            output += "^";
+                            measureAccidentals.push(input[i][j].note_name_full);
+                            // remove flat from measureAccidentals
+                            if (measureAccidentals.indexOf(input[i][j].note + input[i][j].octave + "b") >= 0) {
+                                var index = measureAccidentals.indexOf(input[i][j].note + input[i][j].octave + "b");
+                                measureAccidentals.splice(index, 1);
+                            }
+                        }
+                    } else {
+                        // possibly add natural sign since neither sharp nor flat
+                        if (measureAccidentals.includes(input[i][j].note_name_full + "#") || measureAccidentals.includes(input[i][j].note_name_full + "b")) {
+                            output += "=";
+                            // remove flat from measureAccidentals
+                            if (measureAccidentals.indexOf(input[i][j].note + input[i][j].octave + "b") >= 0) {
+                                var index = measureAccidentals.indexOf(input[i][j].note + input[i][j].octave + "b");
+                                measureAccidentals.splice(index, 1);
+                            }
+                            // remove sharp from measureAccidentals
+                            if (measureAccidentals.indexOf(input[i][j].note + input[i][j].octave + "#") >= 0) {
+                                var index = measureAccidentals.indexOf(input[i][j].note + input[i][j].octave + "#");
+                                measureAccidentals.splice(index, 1);
+                            }
+                        }
                     }
-                    // add note
+                    // add note name
                     output += input[i][j].note;
                     // handle octave
                     if (input[i][j].octave < 4) {
