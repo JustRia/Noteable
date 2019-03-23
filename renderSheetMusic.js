@@ -136,3 +136,62 @@ function renderSheetMusic(input) {
     console.log(output);
     ABCJS.renderAbc("sheet-music", output); // attaches var abc to DOM element id="sheet-music"
 }
+
+function getKeyAccidentals() {
+    var ret = [];
+    switch (key_signature_input) {
+        case "A-flat":
+            ret = ["Bb", "Eb", "Ab", "Db"];
+            break;
+        case "A":
+            ret = ["F#", "C#", "G#"];
+            break;
+        case "A-sharp":
+            ret = []; // TODO: REMOVE from options
+            break;
+        case "B-flat":
+            ret = ["Bb", "Eb"];
+            break;
+        case "B":
+            ret = ["F#", "C#", "G#", "D#", "A#"];
+            break;
+        case "C":
+            ret = [];
+            break;
+        case "C-sharp":
+            ret = ["F#", "C#", "G#", "D#", "A#", "E#", "B#"];
+            break;
+        case "D-flat":
+            ret = ["Bb", "Eb", "Ab", "Db", "Gb"];
+            break;
+        case "D":
+            ret = ["F#", "C#"];
+            break;
+        case "D-sharp":
+            ret = []; // TODO: remove from options
+            break;
+        case "E-flat":
+            ret = ["Bb", "Eb", "Ab"];
+            break;
+        case "E":
+            ret = ["F#", "C#", "G#", "D#"];
+            break;
+        case "F":
+            ret = ["Bb"];
+            break;
+        case "F-sharp":
+            ret = ["F#", "C#", "G#", "D#", "A#", "E#"];
+            break;
+        case "G-flat":
+            ret = ["Bb", "Eb", "Ab", "Db", "Gb", "Cb"];
+            break;
+        case "G":
+            ret = ["F#"];
+            break;
+        case "G-sharp":
+            ret = []; // TODO: REMOVE from options
+            break;
+    }
+    console.log("accidentals in the key " + key_signature_input + " are " + ret);
+    return ret;
+}
