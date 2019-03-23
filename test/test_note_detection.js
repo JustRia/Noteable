@@ -227,11 +227,29 @@ describe('note_detection.js note_types() function unit tests', function() {
         var expected = [
             [
                 { note_name_full : "C4", note : "C", octave : "4", note_length : 24, note_type : ["24/32"] },
-                { note_name_full : "C4", note : "C", octave : "4", note_length : 48, note_type : [1, "16/32"] },
+                { note_name_full : "C4", note : "C", octave : "4", note_length : 48, note_type : ["48/32"] },
                 { note_name_full : "C4", note : "C", octave : "4", note_length : 96, note_type : [3] },
                 { note_name_full : "C4", note : "C", octave : "4", note_length : 192, note_type : [4, 2] },
             ]
         ];
+
+        var res = note_detect.note_types(arr, one_beat);
+
+        expect(res).to.eql(expected);
+    });
+
+    it('For notes longer than a whole note, should tie notes with whole notes as the largest', function() {
+        var arr = [
+            [
+                { note_name_full : "C4", note : "C", octave : "4", note_length : 560 }
+            ]
+        ];
+
+        var expected = [
+            [
+                { note_name_full : "C4", note : "C", octave : "4", note_length : 560, note_type : [4, 4, 4, 4, "48/32"] }
+            ]
+        ]
 
         var res = note_detect.note_types(arr, one_beat);
 
