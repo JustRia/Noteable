@@ -36,7 +36,7 @@ module.exports = {
         console.log(notes);
         
         var combined = combine_notes(notes);
-        console.log('Notes combined based on consecutive samples of the same note', combined);
+        console.log('Notes combined based on consecutive samples of the same note', JSON.parse(JSON.stringify(combined)));
         
         var beats_per_measure = time_signature.split("/")[0];
         var one_beat = time_signature.split("/")[1];
@@ -77,7 +77,7 @@ function combine_notes(notes) {
 
     // Iterating through the sampled audio
     for (var i = 0; i < notes.length; ++i) {
-        note = notes[i];
+        note = JSON.parse(JSON.stringify(notes[i]));
 
         /* If the index is 0, or the counter for consecutive notes has been reset, create
         a new note object from the current index to begin comparing subsequent elements */
@@ -147,7 +147,7 @@ function measures_split(combined_notes, beats_per_measure) {
 
     // Combine notes based on measure
     for (var i = 0; i < combined_notes.length; ++i) {
-        note_obj = combined_notes[i];
+        note_obj = JSON.parse(JSON.stringify(combined_notes[i]));
 
         // Note is below the lowest threshold to be considered a 16th note (fastest note user can sing)
         if (note_obj.note_length < 5)
