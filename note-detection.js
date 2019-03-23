@@ -253,12 +253,6 @@ function note_types(measures, one_beat) {
                 }
             } else { //There is a remainder, was not held for a whole number of beats
                 if (quotient_temp > 0) { //Only do this is there's full beats not accounted for
-                    // Special case: dotted single beat note
-                    if (quotient_temp == 1 && temp == 16) {
-                        note_obj.note_type.push("48/32");
-                        measure_updated.push(note_obj);
-                        continue;
-                    }
                     //Perform same steps as above
                     if (Math.log2(quotient_temp) % 1 === 0) {
                         note_obj.note_type.push(quotient_temp);
