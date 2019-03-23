@@ -277,4 +277,44 @@ describe('note_detection.js note_types() function unit tests', function() {
         
         expect(res).to.eql(expected);
     });
+
+    it ('Should divide into powers of 2 for differing time signature (x/16)', function() {
+        one_beat = 16;
+
+        var arr = [
+            [
+                { note_name_full : "C4", note : "C", octave : "4", note_length : 416 }
+            ]
+        ];
+
+        var expected = [
+            [
+                { note_name_full : "C4", note : "C", octave : "4", note_length : 416, note_type : [8, 4, 1] }
+            ]
+        ];
+
+        var res = note_detect.note_types(arr, one_beat);
+        
+        expect(res).to.eql(expected);
+    })
+
+    it ('Should divide into powers of 2 for differing time signature (x/8)', function() {
+        one_beat = 8;
+
+        var arr = [
+            [
+                { note_name_full : "C4", note : "C", octave : "4", note_length : 224 }
+            ]
+        ];
+
+        var expected = [
+            [
+                { note_name_full : "C4", note : "C", octave : "4", note_length : 224, note_type : [4, 3] }
+            ]
+        ];
+
+        var res = note_detect.note_types(arr, one_beat);
+        
+        expect(res).to.eql(expected);
+    });
 });

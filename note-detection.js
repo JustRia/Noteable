@@ -219,7 +219,7 @@ function note_types(measures, one_beat) {
             note_obj = JSON.parse(JSON.stringify(measure[j]));
 
             //Determine if a note was held for a full beat (32 * x length)
-            temp = note_obj.note_length % samples_per_beat;
+            rem = note_obj.note_length % samples_per_beat;
             //How many full beats was the note held
             quotient = parseInt(note_obj.note_length / samples_per_beat);
 
@@ -233,7 +233,7 @@ function note_types(measures, one_beat) {
             }
 
             //No remainder, this means a note was held for a full number of beats
-            if (temp == 0) {
+            if (rem == 0) {
                 //If the note beats are power of 2, can be represented as a single note
                 if (Math.log2(quotient_temp) % 1 === 0) {
                     note_obj.note_type.push(quotient_temp);
@@ -246,8 +246,18 @@ function note_types(measures, one_beat) {
                     } else {
                         //Separate into largest power of 2 and what remains
                         low_pow = Math.pow(2,Math.floor(Math.log2(quotient_temp)));
-                        rest = quotient_temp - low_pow;
-                        note_obj.note_type.push(low_pow, rest);
+                        rest = [quotient_temp - low_pow];
+                        //Further break down until remainder is powers of 2 (or special case 3)
+                        while (Math.log2(rest[rest.length - 1]) % 1 !== 0) {
+                            temp = rest.pop();
+                            if (temp == 3) {
+                                rest.push(temp);
+                                break;
+                            }
+                            pow = Math.pow(2,Math.floor(Math.log2(temp)));
+                            rest.push(pow, temp - pow);
+                        }
+                        note_obj.note_type.push(low_pow, ...rest);
                         measure_updated.push(note_obj);
                     }
                 }
@@ -261,13 +271,23 @@ function note_types(measures, one_beat) {
                             note_obj.note_type.push(quotient_temp);
                         } else {
                             low_pow = Math.pow(2,Math.floor(Math.log2(quotient_temp)));
-                            rest = quotient_temp - low_pow;
-                            note_obj.note_type.push(low_pow, rest);
+                            rest = [quotient_temp - low_pow];
+                            //Further break down until remainder is powers of 2 (or special case 3)
+                            while (Math.log2(rest[rest.length - 1]) % 1 !== 0) {
+                                temp = rest.pop();
+                                if (temp == 3) {
+                                    rest.push(temp);
+                                    break;
+                                }
+                                pow = Math.pow(2,Math.floor(Math.log2(temp)));
+                                rest.push(pow, temp - pow);
+                            }
+                            note_obj.note_type.push(low_pow, ...rest);
                         }
                     }
                 }
                 //Add final fractional bit to the end
-                note_obj.note_type.push(temp + "/" + samples_per_beat);
+                note_obj.note_type.push(rem + "/" + samples_per_beat);
                 measure_updated.push(note_obj);
             }
         }
