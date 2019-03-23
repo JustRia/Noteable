@@ -139,6 +139,7 @@ function createAudioBuffer(blob) {
                     syncRecognize(blob, audioBuffer.sampleRate);
                     // Note-detection
                     measures = note_detection.get_notes(audioBuffer, "4/4", tempoInput.value);
+                    detectKey(measures);
                 }, function (e) {
                     "Error decoding data"
                 }));
