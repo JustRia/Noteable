@@ -74,24 +74,6 @@ function startRecording() {
                     numChannels: 1
                 })
 
-                //create text for countdown and append it to the html
-                var cd = document.getElementById("countdown");
-                var countFrom = document.querySelector('[name="time-signature-top-num"]').value;
-                var count = document.createTextNode(countFrom);
-                cd.appendChild(count);
-
-                //start the countdown based on the tempo 
-                var timerBoi = window.setInterval(function () { //decrement on the beat?
-                    document.getElementById("countdown").innerHTML = "" + countFrom;
-                    if (countFrom == 0) {
-                        //remove the countdown text
-                        document.getElementById("countdown").innerHTML = "Go!";
-                        //clean
-                        window.clearInterval(timerBoi);
-                    }
-                    countFrom = countFrom - 1;
-                }, 60000 / document.querySelector('[name="tempo"]').value);
-
                 //start the recording process
                 rec.record();
 
@@ -173,6 +155,26 @@ function keyPress(e) {
 }
 
 function startMetronome() {
+
+    //create text for countdown and append it to the html
+    var cd = document.getElementById("countdown");
+    var countFrom = document.querySelector('[name="time-signature-top-num"]').value;
+    var count = document.createTextNode(countFrom);
+    cd.appendChild(count);
+
+    //start the countdown based on the tempo 
+    var timerBoi = window.setInterval(function () { //decrement on the beat?
+        document.getElementById("countdown").innerHTML = "" + countFrom;
+        if (countFrom == 0) {
+            //remove the countdown text
+            document.getElementById("countdown").innerHTML = "Go!";
+            //clean
+            window.clearInterval(timerBoi);
+        }
+        countFrom = countFrom - 1;
+    }, 60000 / document.querySelector('[name="tempo"]').value);
+
+    //visual for metronome
     var circ = document.getElementById("circ");
     circ.classList.add("circle");
     if (circ.childNodes.length > 0) {
@@ -191,4 +193,5 @@ function startMetronome() {
 function stopMetronome() {
     window.clearInterval(timer);
     document.getElementById("circ").classList.toggle('paused');
+    document.getElementById("countdown").innerHTML = "";
 }
