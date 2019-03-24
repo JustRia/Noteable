@@ -15,7 +15,6 @@ module.exports = {
         console.log(time_signature_top);
         console.log(time_signature_bottom);
         
-        time_signature = "4/4";
         const detectPitch = new Pitchfinder.AMDF();
 
         /*const decoded = WavDecoder.decode.sync(buffer); // get audio data from file using `wav-decoder`
@@ -43,9 +42,6 @@ module.exports = {
     
         var measures = measures_split(combined, time_signature_top);
         console.log('Notes divided into subarrays by measures', measures);
-
-        /*measures = note_types(measures, one_beat);
-        console.log('Measures assigned note types', measures);*/
 
         var new_measures = note_types(measures, time_signature_bottom);
         console.log('Notes with assigned note types', new_measures);
