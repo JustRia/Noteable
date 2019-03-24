@@ -146,9 +146,6 @@ function getKeyAccidentals() {
         case "A":
             ret = ["F#", "C#", "G#"];
             break;
-        case "A-sharp":
-            ret = []; // TODO: REMOVE from options
-            break;
         case "B-flat":
             ret = ["Bb", "Eb"];
             break;
@@ -167,9 +164,6 @@ function getKeyAccidentals() {
         case "D":
             ret = ["F#", "C#"];
             break;
-        case "D-sharp":
-            ret = []; // TODO: remove from options
-            break;
         case "E-flat":
             ret = ["Bb", "Eb", "Ab"];
             break;
@@ -187,9 +181,6 @@ function getKeyAccidentals() {
             break;
         case "G":
             ret = ["F#"];
-            break;
-        case "G-sharp":
-            ret = []; // TODO: REMOVE from options
             break;
     }
     console.log("accidentals in the key " + key_signature_input + " are " + ret);
