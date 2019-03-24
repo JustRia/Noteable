@@ -52,15 +52,18 @@ function submitForm(input) {
         inputFlags[0] = 1;
         key_signature_input = document.querySelector('[name="key-signature"]').value;
         console.log("key signature = " + key_signature_input);
+        document.getElementById("key-signature-confirmation").classList.add("confirmed");
     } else if (input == "tempo") {
         inputFlags[1] = 1;
         tempo_input = document.querySelector('[name="tempo"]').value;
         console.log("tempo = " + tempo_input);
+        document.getElementById("tempo-confirmation").classList.add("confirmed");
     } else if (input == "time-signature") {
         inputFlags[2] = 1;
         time_signature_top_num_input = document.querySelector('[name="time-signature-top-num"]').value;
         time_signature_bottom_num_input = document.querySelector('[name="time-signature-bottom-num"]').value;
         console.log("time signature = " + time_signature_top_num_input + "/" + time_signature_bottom_num_input);
+        document.getElementById("time-signature-confirmation").classList.add("confirmed");
     }
 
     var enableButton = true;
@@ -75,4 +78,19 @@ function submitForm(input) {
         mic_icon.classList.remove("disabled-button");
     }
     return false;
+}
+
+function disable_input(input) {
+    var checkbox = document.getElementById("auto-detect-key-signature").checked;
+    if (checkbox) {
+        // disable stuff
+        if (input == 'key-signature') {
+            document.getElementById("key-signature-selector").disabled = true;
+        }
+    } else {
+        // enable stuff
+        if (input == 'key-signature') {
+            document.getElementById("key-signature-selector").disabled = false;
+        }
+    }
 }

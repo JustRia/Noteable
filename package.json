@@ -5,7 +5,7 @@
   "main": "main.js",
   "scripts": {
     "start": "electron .",
-    "postinstall": "npm rebuild --target=4.0.0 --runtime=electron --dist-url=https://atom.io/download/electron",
+    "postinstall": "npm rebuild --target=4.0.0 --runtime=electron --dist-url=https://atom.io/download/electron && electron-rebuild",
     "test": "mocha"
   },
   "repository": "https://github.com/JustRia/Noteable",
@@ -20,6 +20,7 @@
     "chai": "^4.2.0",
     "chai-as-promised": "^7.1.1",
     "electron": "^4.0.1",
+    "electron-rebuild": "^1.8.4",
     "electron-tooltip": "^1.1.5",
     "mocha": "^5.2.0",
     "spectron": "^5.0.0"

@@ -13,93 +13,115 @@
     <h1 id="logo">
         <img src="images/Title.png" alt="Noteable Logo">
     </h1>
+    <div id="input-main-content" class="main-content">
+        <h3 id="input-prompt">Before you can record, please give us the following:</h3>
+        <div id="buttons-container">
+            <div class="main-button" id="key-signature-button" onclick="addSelected('key-signature')">
+                Key Signature
+                <div id="key-signature-confirmation" class="confirmation"></div>
+                <span class="tooltip">The group of pitches that indicates how your piece will sound</span>
+            </div>
 
-    <div id="buttons-container">
-        <div class="main-button" id="key-signature-button" onclick="addSelected('key-signature')">
-            Key Signature
-            <span class="tooltip">Key signature tooltip goes here</span>
-        </div>
+            <div class="main-button" id="tempo-button" onclick="addSelected('tempo')">
+                Tempo
+                <div id="tempo-confirmation" class="confirmation"></div>
+                <span class="tooltip">How fast or slow the music is. It is measured in beats per minute.</span>
+            </div>
 
-        <div class="main-button" id="tempo-button" onclick="addSelected('tempo')">
-            Tempo
-            <span class="tooltip">Tempo tooltip goes here</span>
-        </div>
-
-        <div class="main-button" id="time-signature-button" onclick="addSelected('time-signature')">
-            Time Signature
-            <span class="tooltip">Time signature tooltip goes here</span>
-        </div>
-    </div>
-
-    <div class="main-content">
-        <!-- All the content we will be adding and removing should appear here -->
-        <div id="key-signature-input" class="hidden">
-            <h3>Input Key Signature:</h3>
-            <form onsubmit="submitForm('key-signature'); return false">
-                <div class="input-container">
-                    <select name="key-signature">
-                        <option value="A-flat">A&#9837;</option>
-                        <option value="A">A</option>
-                        <option value="A-sharp;">A&#9839;</option>
-
-                        <option value="B-flat">B&#9837;</option>
-                        <option value="B">B</option>
-
-                        <option value="C" selected>C</option>
-                        <option value="C-sharp;">C&#9839;</option>
-
-                        <option value="D-flat">D&#9837;</option>
-                        <option value="D">D</option>
-                        <option value="D-sharp;">D&#9839;</option>
-
-                        <option value="E-flat">E&#9837;</option>
-                        <option value="E">E</option>
-
-                        <option value="F">F</option>
-                        <option value="F-sharp;">F&#9839;</option>
-
-                        <option value="G-flat">G&#9837;</option>
-                        <option value="G">G</option>
-                        <option value="G-sharp;">G&#9839;</option>
-                    </select>
-                </div>
-                <input type="submit" value="Submit">
-            </form>
-        </div>
-        <div id="tempo-input" class="hidden">
-            <h3>Input Tempo: </h3>
-              <form onsubmit="submitForm('tempo'); return false">
-                  <div class="input-container">
-                    <input type="number" name="tempo" min="1" max="999" value="120" required>
-                </div>
-                <input type="submit" value="Submit">
-            </form>
-            <div id="detect-tempo-div">
-                <button id="detect-tempo-button">Detect Tempo</button>
-                <div id="detecting-tempo-div" class="hidden">
-                    <h3>Tap spacebar to the beat</h3>
-                    <h2 id="tempo-countdown">10 times</h2>
-                </div>
+            <div class="main-button" id="time-signature-button" onclick="addSelected('time-signature')">
+                Time Signature
+                <div id="time-signature-confirmation" class="confirmation"></div>
+                <span class="tooltip">Indication of rhythm. Numerator: number of beats per measure. Denominator: What type of note gets a beat</span>
             </div>
         </div>
-        <div id="time-signature-input" class="hidden">
-            <h3>Input Time Signature: </h3>
-            <form onsubmit="submitForm('time-signature'); return false">
-                <div class="input-container">
-                    <input type="number" name="time-signature-top-num" min="1" max="99" value="4" required>
-                    <hr />
-                    <input type="number" name="time-signature-bottom-num" min="1" max="99" value="4" required>
+
+        <div class="input-content">
+            <!-- All the content we will be adding and removing should appear here -->
+            <div id="key-signature-input" class="hidden">
+                <div id="auto-detect-key-signature-container">
+                    <input id="auto-detect-key-signature" type="checkbox" onclick="disable_input('key-signature')">
+                    Auto-detect after recording <br />
                 </div>
-                <input type="submit" value="Submit">
-            </form>
+                <div id="key-signature-input-contents">
+                    <h3>Input Key Signature:</h3>
+                    <form id="key-signature-form" onsubmit="submitForm('key-signature'); return false">
+                        <div class="input-container">
+                            <select id="key-signature-selector" name="key-signature">
+                                <option value="A-flat">A&#9837;</option>
+                                <option value="A">A</option>
+                                <option value="A-sharp;">A&#9839;</option>
+
+                                <option value="B-flat">B&#9837;</option>
+                                <option value="B">B</option>
+
+                                <option value="C" selected>C</option>
+                                <option value="C-sharp;">C&#9839;</option>
+
+                                <option value="D-flat">D&#9837;</option>
+                                <option value="D">D</option>
+                                <option value="D-sharp;">D&#9839;</option>
+
+                                <option value="E-flat">E&#9837;</option>
+                                <option value="E">E</option>
+
+                                <option value="F">F</option>
+                                <option value="F-sharp;">F&#9839;</option>
+
+                                <option value="G-flat">G&#9837;</option>
+                                <option value="G">G</option>
+                                <option value="G-sharp;">G&#9839;</option>
+                            </select>
+                        </div>
+                        <input type="submit" value="Submit">
+                    </form>
+                </div>
+            </div>
+            <div id="tempo-input" class="hidden">
+                <h3>Input Tempo: </h3>
+                  <form onsubmit="submitForm('tempo'); return false">
+                      <div class="input-container">
+                        <input type="number" name="tempo" min="1" max="999" value="120" required>
+                    </div>
+                    <input type="submit" value="Submit">
+                </form>
+                <div id="detect-tempo-div">
+                    <button id="detect-tempo-button">Detect Tempo</button>
+                    <div id="detecting-tempo-div" class="hidden">
+                        <h3>Tap spacebar to the beat</h3>
+                        <h2 id="tempo-countdown">10 times</h2>
+                    </div>
+                </div>
+            </div>
+            <div id="time-signature-input" class="hidden">
+                <h3>Input Time Signature: </h3>
+                <form onsubmit="submitForm('time-signature'); return false">
+                    <div class="input-container">
+                        <input type="number" name="time-signature-top-num" min="1" max="99" value="4" required>
+                        <hr />
+                        <input type="number" name="time-signature-bottom-num" min="1" max="99" value="4" required>
+                    </div>
+                    <input type="submit" value="Submit">
+                </form>
+            </div>
         </div>
     </div>
+    <div id="metronome-main-content" class="main-content hidden">
+        <!-- TODO: show metronome before recording -->
+    </div>
+    <div id="progress-bar-main-content" class="main-content hidden">
+        <!-- TODO: generating sheet music progress bar -->
+    </div>
+    <div id="sheet-music-main-content"class="main-content hidden">
+        <!-- TODO: show sheet music with buttons -->
+    </div>
+
+
 
     <!-- microphone icon is contained in this svg -->
-    <div id="mic-icon" class="disabled-button recording-buttons">
+    <div id="mic-icon" class="disabled-button recording-button">
       <img src="images/microphone.png" width=80 height=80 alt="start recording">
     </div>
-    <div id="stop-icon" class="recording-buttons hidden">
+    <div id="stop-icon" class="recording-button hidden">
       <img src="images/stop_recording.png" width=80 height=80 alt="stop recording">
     </div>
 
