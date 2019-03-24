@@ -10,8 +10,12 @@ const fraction_of_beat = {
 }
 
 module.exports = {
-    get_notes : function(buffer, time_signature, tempo) {// see below for optional constructor parameters.
+    get_notes : function(buffer, time_signature_top, time_signature_bottom, tempo) {// see below for optional constructor parameters.
 
+        console.log(time_signature_top);
+        console.log(time_signature_bottom);
+        
+        
         time_signature = "4/4";
         const detectPitch = new Pitchfinder.AMDF();
 
@@ -38,8 +42,10 @@ module.exports = {
         var combined = combine_notes(notes);
         console.log('Notes combined based on consecutive samples of the same note', JSON.parse(JSON.stringify(combined)));
         
-        var beats_per_measure = time_signature.split("/")[0];
-        var one_beat = time_signature.split("/")[1];
+        //var beats_per_measure = time_signature.split("/")[0];
+        //var one_beat = time_signature.split("/")[1];
+        var beats_per_measure = time_signature_top;
+        var one_beat = time_signature_bottom;
     
         var measures = measures_split(combined, beats_per_measure);
         console.log('Notes divided into subarrays by measures', measures);

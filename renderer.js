@@ -16,6 +16,8 @@ var recording = false;
 var detectTempoButton = document.getElementById("detect-tempo-button");
 var tempoCountdown = document.getElementById("tempo-countdown");
 var tempoInput = document.querySelector("input[name='tempo']");
+var time_signature_top_num_input = document.querySelector('[name="time-signature-top-num"]');
+var time_signature_bottom_num_input = document.querySelector('[name="time-signature-bottom-num"]');
 var detectingTempoContent =  document.getElementById("detecting-tempo-div");
 var taps;
 var startTime, endTime;
@@ -138,7 +140,7 @@ function createAudioBuffer(blob) {
                     // Speech to text
                     syncRecognize(blob, audioBuffer.sampleRate);
                     // Note-detection
-                    measures = note_detection.get_notes(audioBuffer, "4/4", tempoInput.value);
+                    measures = note_detection.get_notes(audioBuffer, time_signature_top_num_input.value, time_signature_bottom_num_input.value, tempoInput.value);
                 }, function (e) {
                     "Error decoding data"
                 }));
