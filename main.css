@@ -272,6 +272,7 @@ input[type=number]::-webkit-outer-spin-button {
 }
 
 .countdown {
+    margin: auto;
     padding-bottom: 10px;
     font-family: "Arial", "Verdana";
     font-size: 20px;
