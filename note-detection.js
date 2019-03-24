@@ -15,7 +15,6 @@ module.exports = {
         console.log(time_signature_top);
         console.log(time_signature_bottom);
         
-        
         time_signature = "4/4";
         const detectPitch = new Pitchfinder.AMDF();
 
@@ -41,19 +40,14 @@ module.exports = {
         
         var combined = combine_notes(notes);
         console.log('Notes combined based on consecutive samples of the same note', JSON.parse(JSON.stringify(combined)));
-        
-        //var beats_per_measure = time_signature.split("/")[0];
-        //var one_beat = time_signature.split("/")[1];
-        var beats_per_measure = time_signature_top;
-        var one_beat = time_signature_bottom;
     
-        var measures = measures_split(combined, beats_per_measure);
+        var measures = measures_split(combined, time_signature_top);
         console.log('Notes divided into subarrays by measures', measures);
 
         /*measures = note_types(measures, one_beat);
         console.log('Measures assigned note types', measures);*/
 
-        var new_measures = note_types(measures, one_beat);
+        var new_measures = note_types(measures, time_signature_bottom);
         console.log('Notes with assigned note types', new_measures);
         
 
