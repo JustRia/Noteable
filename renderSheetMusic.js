@@ -8,9 +8,16 @@ function testRenderSheetMusic() {
     key_signature_input = 'G';
     var testArray = [
         [
-            { note_name_full : "F4#", note : "F", octave : "4", accidental : "#", freq : 0, note_length : 32 , note_type : ["2", "1/2"]},
-            { note_name_full : "F4", note : "F", octave : "4", accidental : undefined, freq : 0, note_length : 32 , note_type : ["1/2"]},
-            { note_name_full : "F4b", note : "F", octave : "4", accidental : "b", freq : 0, note_length : 32 , note_type : ["1/2"]}
+            { note_name_full : "C4", note : "C", octave : "4", accidental : undefined, freq : 0, note_length : 32 , note_type : ["1"]},
+            { note_name_full : "F4#", note : "F", octave : "4", accidental : "#", freq : 0, note_length : 32 , note_type : ["1"]},
+            { note_name_full : "F4", note : "F", octave : "4", accidental : undefined, freq : 0, note_length : 32 , note_type : ["1"]},
+            { note_name_full : "F4", note : "F", octave : "4", accidental : undefined, freq : 0, note_length : 32 , note_type : ["1"]},
+            { note_name_full : "F4#", note : "F", octave : "4", accidental : "#", freq : 0, note_length : 32 , note_type : ["1"]},
+            { note_name_full : "E4b", note : "E", octave : "4", accidental : "b", freq : 0, note_length : 32 , note_type : ["1"]}
+        ],
+        [
+            { note_name_full : "E4b", note : "E", octave : "4", accidental : "b", freq : 0, note_length : 32 , note_type : ["1"]},
+            { note_name_full : "E4b", note : "E", octave : "4", accidental : "b", freq : 0, note_length : 32 , note_type : ["1"]}
         ]
     ];
     renderSheetMusic(testArray);
@@ -19,7 +26,7 @@ function testRenderSheetMusic() {
 /*
  * Special characters to take note of:
  * ' (single quote): octave up
- * , (comma): ocatave down
+ * , (comma): octave down
  * ^ (carrot): sharp sign
  * _ (underscore): flat sign
  * = (equals): natural sign
@@ -40,7 +47,7 @@ function renderSheetMusic(input) {
     for (var i = 0; i < input.length; i++) {
         // measureAccidentals holds the key as "C#", "Db", etc. as well as
         // the accidentals that happen in the measure "C4#", "D3b", etc.
-        var measureAccidentals = []; // keep track of accidentals in the measure
+        var accidentals = []; // keep track of accidentals in the measure. Resets every measure
         // one note at a time
         for (var j = 0; j < input[i].length; j++) {
             if (input[i][j].note == "rest") {
@@ -56,112 +63,29 @@ function renderSheetMusic(input) {
             } else {
                 // add note, and possible tie between notes
                 for (var k = 0; k < input[i][j].note_type.length; k++) {
-                    // TODO: check if accidental is applied to this note from this measure
-                    // TODO: check if note is in key or not
+                    // pseudocode:
+                    /*
+                     * if note is in accidentals list:
+                     *    if note not in key:
+                     *        add accidental, and overwrite note in accidental list
+                     *    else if other type of note (b, #, natural) is in accidentals list:
+                     *        add accidental and overwrite note type (C,D,E, etc.) in accidental list
+                     */
 
-
-                    // if (input[i][j].accidental == "b") {
-                    //     // if the note is in the key
-                    //     if (measureAccidentals.includes(input[i][j].note + input[i][j].accidental)) {
-                    //         // make sure there is not an accidental applied to it previously
-                    //         if (measureAccidentals.includes(input[i][j].note + input[i][j].octave + "#") ||
-                    //             measureAccidentals.includes(input[i][j].note + input[i][j].octave)) {
-                    //             output += "_";
-                    //             // remove sharp from measureAccidentals
-                    //             if (measureAccidentals.indexOf(input[i][j].note + input[i][j].octave + "#") >= 0) {
-                    //                 var index = measureAccidentals.indexOf(input[i][j].note + input[i][j].octave + "#");
-                    //                 measureAccidentals.splice(index, 1);
-                    //             }
-                    //             // remove natural from measureAccidentals
-                    //             if (measureAccidentals.indexOf(input[i][j].note + input[i][j].octave) >= 0) {
-                    //                 var index = measureAccidentals.indexOf(input[i][j].note + input[i][j].octave);
-                    //                 measureAccidentals.splice(index, 1);
-                    //             }
-                    //         }
-                    //     }
-                    //     // check to see if we insert the accidental or not
-                    //     else if (!measureAccidentals.includes(input[i][j].note_name_full)) {
-                    //         output += "_";
-                    //         measureAccidentals.push(input[i][j].note_name_full);
-                    //         // remove sharp from measureAccidentals
-                    //         if (measureAccidentals.indexOf(input[i][j].note + input[i][j].octave + "#") >= 0) {
-                    //             var index = measureAccidentals.indexOf(input[i][j].note + input[i][j].octave + "#");
-                    //             measureAccidentals.splice(index, 1);
-                    //         }
-                    //         // remove natural from measureAccidentals
-                    //         if (measureAccidentals.indexOf(input[i][j].note + input[i][j].octave) >= 0) {
-                    //             var index = measureAccidentals.indexOf(input[i][j].note + input[i][j].octave);
-                    //             measureAccidentals.splice(index, 1);
-                    //         }
-                    //     }
-                    // } else if (input[i][j].accidental == "#") {
-                    //     // if the note is in the key
-                    //     if (measureAccidentals.includes(input[i][j].note + input[i][j].accidental)) {
-                    //         // make sure there is not an accidental applied to it previously
-                    //         if (measureAccidentals.includes(input[i][j].note + input[i][j].octave + "b") ||
-                    //             measureAccidentals.includes(input[i][j].note + input[i][j].octave)) {
-                    //             output += "^";
-                    //             // remove flat from measureAccidentals
-                    //             if (measureAccidentals.indexOf(input[i][j].note + input[i][j].octave + "b") >= 0) {
-                    //                 var index = measureAccidentals.indexOf(input[i][j].note + input[i][j].octave + "b");
-                    //                 measureAccidentals.splice(index, 1);
-                    //             }
-                    //             // remove natural from measureAccidentals
-                    //             if (measureAccidentals.indexOf(input[i][j].note + input[i][j].octave) >= 0) {
-                    //                 var index = measureAccidentals.indexOf(input[i][j].note + input[i][j].octave);
-                    //                 measureAccidentals.splice(index, 1);
-                    //             }
-                    //         }
-                    //     }
-                    //     // check to see if we insert the accidental or not
-                    //     else if (!measureAccidentals.includes(input[i][j].note_name_full)) {
-                    //         output += "^";
-                    //         measureAccidentals.push(input[i][j].note_name_full);
-                    //         // remove flat from measureAccidentals
-                    //         if (measureAccidentals.indexOf(input[i][j].note + input[i][j].octave + "b") >= 0) {
-                    //             var index = measureAccidentals.indexOf(input[i][j].note + input[i][j].octave + "b");
-                    //             measureAccidentals.splice(index, 1);
-                    //         }
-                    //         // remove natural from measureAccidentals
-                    //         if (measureAccidentals.indexOf(input[i][j].note + input[i][j].octave) >= 0) {
-                    //             var index = measureAccidentals.indexOf(input[i][j].note + input[i][j].octave);
-                    //             measureAccidentals.splice(index, 1);
-                    //         }
-                    //     }
-                    // } else {
-                    //     // if the note is in the key
-                    //     if (!measureAccidentals.includes(input[i][j].note + "b") &&
-                    //         !measureAccidentals.includes(input[i][j].note + "#")) {
-                    //         // make sure there is not an accidental applied to it previously
-                    //         if (measureAccidentals.includes(input[i][j].note + input[i][j].octave + "#") ||
-                    //             measureAccidentals.includes(input[i][j].note + input[i][j].octave + "b")) {
-                    //             output += "=";
-                    //             if (measureAccidentals.indexOf(input[i][j].note + input[i][j].octave + "#") >= 0) {
-                    //                 var index = measureAccidentals.indexOf(input[i][j].note + input[i][j].octave + "#");
-                    //                 measureAccidentals.splice(index, 1);
-                    //             }
-                    //             // remove flat from measureAccidentals
-                    //             if (measureAccidentals.indexOf(input[i][j].note + input[i][j].octave + "b") >= 0) {
-                    //                 var index = measureAccidentals.indexOf(input[i][j].note + input[i][j].octave + "b");
-                    //                 measureAccidentals.splice(index, 1);
-                    //             }                            }
-                    //     }
-                    //     // check to see if we insert the accidental or not
-                    //     else if (!measureAccidentals.includes(input[i][j].note_name_full)) {
-                    //         output += "=";
-                    //         measureAccidentals.push(input[i][j].note_name_full);
-                    //         // remove sharp from measureAccidentals
-                    //         if (measureAccidentals.indexOf(input[i][j].note + input[i][j].octave + "#") >= 0) {
-                    //             var index = measureAccidentals.indexOf(input[i][j].note + input[i][j].octave + "#");
-                    //             measureAccidentals.splice(index, 1);
-                    //         }
-                    //         // remove flat from measureAccidentals
-                    //         if (measureAccidentals.indexOf(input[i][j].note + input[i][j].octave + "b") >= 0) {
-                    //             var index = measureAccidentals.indexOf(input[i][j].note + input[i][j].octave + "b");
-                    //             measureAccidentals.splice(index, 1);
-                    //         }
-                    //     }
-                    // }
+                    // if accidentals list does not contain the specific note
+                    if (!accidentals.includes(input[i][j].note_name_full)) {
+                        // if the key does not contain the specific note
+                        if (!withinKey(input[i][j])) {
+                            // add accidental to output and adjust accidentals array
+                            [accidentals, output] = addAccidental(input[i][j], accidentals, output);
+                        } else if (accidentals.includes(input[i][j].note + input[i][j].octave) ||
+                                   accidentals.includes(input[i][j].note + input[i][j].octave + "#") ||
+                                   accidentals.includes(input[i][j].note + input[i][j].octave + "b")) {
+                            // if the note is in the key, but there is
+                            // an exisitng accidental causing problems
+                            [accidentals, output] = addAccidental(input[i][j], accidentals, output);
+                        }
+                    }
 
                     // add note name
                     output += input[i][j].note;
@@ -255,8 +179,59 @@ function getKeyAccidentals() {
             ret = ["F#"];
             break;
     }
-    console.log("accidentals in the key " + key_signature_input + " are " + ret);
+    // console.log("accidentals in the key " + key_signature_input + " are " + ret);
     return ret;
+}
+
+/**
+ * @param  input [a note object]
+ * @return true if the given note is within the set key
+ */
+function withinKey(input) {
+    // first check if a natural is in the key
+    if (input.accidental == undefined) {
+        if (getKeyAccidentals().includes(input.note + "#")) {
+            return false;
+        }
+        if (getKeyAccidentals().includes(input.note + "b")) {
+            return false;
+        }
+        return true; // example: the note D is in the key if D# and Db are not in the key
+    } else {
+        return getKeyAccidentals().includes(input.note + input.accidental);
+    }
+}
+
+function addAccidental(input, accidentals, output) {
+    // add accidental
+    switch (input.accidental) {
+        case undefined:
+            output += "=";
+            break;
+        case "#":
+            output += "^";
+            break;
+        case "b":
+            output += "_";
+            break;
+    }
+    // remove the sharp note if it exists
+    if (accidentals.indexOf(input.note + input.octave + "#") >= 0) {
+        var index = accidentals.indexOf(input.note + input.octave + "#");
+        accidentals.splice(index, 1);
+    }
+    // remove the flat note flat if it exists
+    if (accidentals.indexOf(input.note + input.octave + "b") >= 0) {
+        var index = accidentals.indexOf(input.note + input.octave + "b");
+        accidentals.splice(index, 1);
+    }
+    // remove the natural note if it exists
+    if (accidentals.indexOf(input.note + input.octave) >= 0) {
+        var index = accidentals.indexOf(input.note + input.octave + "#");
+        accidentals.splice(index, 1);
+    }
+    accidentals.push(input.note_name_full);
+    return [accidentals, output];
 }
 
 function changeNotesToKey(input) {
