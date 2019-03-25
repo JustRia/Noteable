@@ -42,6 +42,11 @@ function detectKey(measures) {
             points: 0
         },
         {
+            name: "E",
+            notes: ["na", "na", "is", "is", "na", "is", "is"],
+            points: 0
+        },
+        {
             name: "F",
             notes: ["na", "es", "na", "na", "na", "na", "na"],
             points: 0
