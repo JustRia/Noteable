@@ -28,6 +28,9 @@ function testRenderSheetMusic() {
  */
 
 function renderSheetMusic(input) {
+    // shift notes to the key. (i.e. changing Db to C# for key of D)
+    input = changeNotesToKey(input);
+
     var output; // will hold final abcjs format for sheet music
     output = "M: " + time_signature_top_num_input + "/" + time_signature_bottom_num_input + "\n";
     output += "L: 1/" + time_signature_bottom_num_input + "\n";
@@ -37,7 +40,7 @@ function renderSheetMusic(input) {
     for (var i = 0; i < input.length; i++) {
         // measureAccidentals holds the key as "C#", "Db", etc. as well as
         // the accidentals that happen in the measure "C4#", "D3b", etc.
-        var measureAccidentals = getKeyAccidentals(); // keep track of accidentals in the measure
+        var measureAccidentals = []; // keep track of accidentals in the measure
         // one note at a time
         for (var j = 0; j < input[i].length; j++) {
             if (input[i][j].note == "rest") {
@@ -53,110 +56,116 @@ function renderSheetMusic(input) {
             } else {
                 // add note, and possible tie between notes
                 for (var k = 0; k < input[i][j].note_type.length; k++) {
-                    if (input[i][j].accidental == "b") {
-                        // if the note is in the key
-                        if (measureAccidentals.includes(input[i][j].note + input[i][j].accidental)) {
-                            // make sure there is not an accidental applied to it previously
-                            if (measureAccidentals.includes(input[i][j].note + input[i][j].octave + "#") ||
-                                measureAccidentals.includes(input[i][j].note + input[i][j].octave)) {
-                                output += "_";
-                                // remove sharp from measureAccidentals
-                                if (measureAccidentals.indexOf(input[i][j].note + input[i][j].octave + "#") >= 0) {
-                                    var index = measureAccidentals.indexOf(input[i][j].note + input[i][j].octave + "#");
-                                    measureAccidentals.splice(index, 1);
-                                }
-                                // remove natural from measureAccidentals
-                                if (measureAccidentals.indexOf(input[i][j].note + input[i][j].octave) >= 0) {
-                                    var index = measureAccidentals.indexOf(input[i][j].note + input[i][j].octave);
-                                    measureAccidentals.splice(index, 1);
-                                }
-                            }
-                        }
-                        // check to see if we insert the accidental or not
-                        else if (!measureAccidentals.includes(input[i][j].note_name_full)) {
-                            output += "_";
-                            measureAccidentals.push(input[i][j].note_name_full);
-                            // remove sharp from measureAccidentals
-                            if (measureAccidentals.indexOf(input[i][j].note + input[i][j].octave + "#") >= 0) {
-                                var index = measureAccidentals.indexOf(input[i][j].note + input[i][j].octave + "#");
-                                measureAccidentals.splice(index, 1);
-                            }
-                            // remove natural from measureAccidentals
-                            if (measureAccidentals.indexOf(input[i][j].note + input[i][j].octave) >= 0) {
-                                var index = measureAccidentals.indexOf(input[i][j].note + input[i][j].octave);
-                                measureAccidentals.splice(index, 1);
-                            }
-                        }
-                    } else if (input[i][j].accidental == "#") {
-                        // if the note is in the key
-                        if (measureAccidentals.includes(input[i][j].note + input[i][j].accidental)) {
-                            // make sure there is not an accidental applied to it previously
-                            if (measureAccidentals.includes(input[i][j].note + input[i][j].octave + "b") ||
-                                measureAccidentals.includes(input[i][j].note + input[i][j].octave)) {
-                                output += "^";
-                                // remove flat from measureAccidentals
-                                if (measureAccidentals.indexOf(input[i][j].note + input[i][j].octave + "b") >= 0) {
-                                    var index = measureAccidentals.indexOf(input[i][j].note + input[i][j].octave + "b");
-                                    measureAccidentals.splice(index, 1);
-                                }
-                                // remove natural from measureAccidentals
-                                if (measureAccidentals.indexOf(input[i][j].note + input[i][j].octave) >= 0) {
-                                    var index = measureAccidentals.indexOf(input[i][j].note + input[i][j].octave);
-                                    measureAccidentals.splice(index, 1);
-                                }
-                            }
-                        }
-                        // check to see if we insert the accidental or not
-                        else if (!measureAccidentals.includes(input[i][j].note_name_full)) {
-                            output += "^";
-                            measureAccidentals.push(input[i][j].note_name_full);
-                            // remove flat from measureAccidentals
-                            if (measureAccidentals.indexOf(input[i][j].note + input[i][j].octave + "b") >= 0) {
-                                var index = measureAccidentals.indexOf(input[i][j].note + input[i][j].octave + "b");
-                                measureAccidentals.splice(index, 1);
-                            }
-                            // remove natural from measureAccidentals
-                            if (measureAccidentals.indexOf(input[i][j].note + input[i][j].octave) >= 0) {
-                                var index = measureAccidentals.indexOf(input[i][j].note + input[i][j].octave);
-                                measureAccidentals.splice(index, 1);
-                            }
-                        }
-                    } else {
-                        // if the note is in the key
-                        if (!measureAccidentals.includes(input[i][j].note + "b") &&
-                            !measureAccidentals.includes(input[i][j].note + "#")) {
-                            // make sure there is not an accidental applied to it previously
-                            if (measureAccidentals.includes(input[i][j].note + input[i][j].octave + "#") ||
-                                measureAccidentals.includes(input[i][j].note + input[i][j].octave + "b")) {
-                                output += "=";
-                                if (measureAccidentals.indexOf(input[i][j].note + input[i][j].octave + "#") >= 0) {
-                                    var index = measureAccidentals.indexOf(input[i][j].note + input[i][j].octave + "#");
-                                    measureAccidentals.splice(index, 1);
-                                }
-                                // remove flat from measureAccidentals
-                                if (measureAccidentals.indexOf(input[i][j].note + input[i][j].octave + "b") >= 0) {
-                                    var index = measureAccidentals.indexOf(input[i][j].note + input[i][j].octave + "b");
-                                    measureAccidentals.splice(index, 1);
-                                }                            }
-                        }
-                        // check to see if we insert the accidental or not
-                        else if (!measureAccidentals.includes(input[i][j].note_name_full)) {
-                            output += "=";
-                            measureAccidentals.push(input[i][j].note_name_full);
-                            // remove sharp from measureAccidentals
-                            if (measureAccidentals.indexOf(input[i][j].note + input[i][j].octave + "#") >= 0) {
-                                var index = measureAccidentals.indexOf(input[i][j].note + input[i][j].octave + "#");
-                                measureAccidentals.splice(index, 1);
-                            }
-                            // remove flat from measureAccidentals
-                            if (measureAccidentals.indexOf(input[i][j].note + input[i][j].octave + "b") >= 0) {
-                                var index = measureAccidentals.indexOf(input[i][j].note + input[i][j].octave + "b");
-                                measureAccidentals.splice(index, 1);
-                            }
-                        }
-                    }
+                    // TODO: check if accidental is applied to this note from this measure
+                    // TODO: check if note is in key or not
+
+
+                    // if (input[i][j].accidental == "b") {
+                    //     // if the note is in the key
+                    //     if (measureAccidentals.includes(input[i][j].note + input[i][j].accidental)) {
+                    //         // make sure there is not an accidental applied to it previously
+                    //         if (measureAccidentals.includes(input[i][j].note + input[i][j].octave + "#") ||
+                    //             measureAccidentals.includes(input[i][j].note + input[i][j].octave)) {
+                    //             output += "_";
+                    //             // remove sharp from measureAccidentals
+                    //             if (measureAccidentals.indexOf(input[i][j].note + input[i][j].octave + "#") >= 0) {
+                    //                 var index = measureAccidentals.indexOf(input[i][j].note + input[i][j].octave + "#");
+                    //                 measureAccidentals.splice(index, 1);
+                    //             }
+                    //             // remove natural from measureAccidentals
+                    //             if (measureAccidentals.indexOf(input[i][j].note + input[i][j].octave) >= 0) {
+                    //                 var index = measureAccidentals.indexOf(input[i][j].note + input[i][j].octave);
+                    //                 measureAccidentals.splice(index, 1);
+                    //             }
+                    //         }
+                    //     }
+                    //     // check to see if we insert the accidental or not
+                    //     else if (!measureAccidentals.includes(input[i][j].note_name_full)) {
+                    //         output += "_";
+                    //         measureAccidentals.push(input[i][j].note_name_full);
+                    //         // remove sharp from measureAccidentals
+                    //         if (measureAccidentals.indexOf(input[i][j].note + input[i][j].octave + "#") >= 0) {
+                    //             var index = measureAccidentals.indexOf(input[i][j].note + input[i][j].octave + "#");
+                    //             measureAccidentals.splice(index, 1);
+                    //         }
+                    //         // remove natural from measureAccidentals
+                    //         if (measureAccidentals.indexOf(input[i][j].note + input[i][j].octave) >= 0) {
+                    //             var index = measureAccidentals.indexOf(input[i][j].note + input[i][j].octave);
+                    //             measureAccidentals.splice(index, 1);
+                    //         }
+                    //     }
+                    // } else if (input[i][j].accidental == "#") {
+                    //     // if the note is in the key
+                    //     if (measureAccidentals.includes(input[i][j].note + input[i][j].accidental)) {
+                    //         // make sure there is not an accidental applied to it previously
+                    //         if (measureAccidentals.includes(input[i][j].note + input[i][j].octave + "b") ||
+                    //             measureAccidentals.includes(input[i][j].note + input[i][j].octave)) {
+                    //             output += "^";
+                    //             // remove flat from measureAccidentals
+                    //             if (measureAccidentals.indexOf(input[i][j].note + input[i][j].octave + "b") >= 0) {
+                    //                 var index = measureAccidentals.indexOf(input[i][j].note + input[i][j].octave + "b");
+                    //                 measureAccidentals.splice(index, 1);
+                    //             }
+                    //             // remove natural from measureAccidentals
+                    //             if (measureAccidentals.indexOf(input[i][j].note + input[i][j].octave) >= 0) {
+                    //                 var index = measureAccidentals.indexOf(input[i][j].note + input[i][j].octave);
+                    //                 measureAccidentals.splice(index, 1);
+                    //             }
+                    //         }
+                    //     }
+                    //     // check to see if we insert the accidental or not
+                    //     else if (!measureAccidentals.includes(input[i][j].note_name_full)) {
+                    //         output += "^";
+                    //         measureAccidentals.push(input[i][j].note_name_full);
+                    //         // remove flat from measureAccidentals
+                    //         if (measureAccidentals.indexOf(input[i][j].note + input[i][j].octave + "b") >= 0) {
+                    //             var index = measureAccidentals.indexOf(input[i][j].note + input[i][j].octave + "b");
+                    //             measureAccidentals.splice(index, 1);
+                    //         }
+                    //         // remove natural from measureAccidentals
+                    //         if (measureAccidentals.indexOf(input[i][j].note + input[i][j].octave) >= 0) {
+                    //             var index = measureAccidentals.indexOf(input[i][j].note + input[i][j].octave);
+                    //             measureAccidentals.splice(index, 1);
+                    //         }
+                    //     }
+                    // } else {
+                    //     // if the note is in the key
+                    //     if (!measureAccidentals.includes(input[i][j].note + "b") &&
+                    //         !measureAccidentals.includes(input[i][j].note + "#")) {
+                    //         // make sure there is not an accidental applied to it previously
+                    //         if (measureAccidentals.includes(input[i][j].note + input[i][j].octave + "#") ||
+                    //             measureAccidentals.includes(input[i][j].note + input[i][j].octave + "b")) {
+                    //             output += "=";
+                    //             if (measureAccidentals.indexOf(input[i][j].note + input[i][j].octave + "#") >= 0) {
+                    //                 var index = measureAccidentals.indexOf(input[i][j].note + input[i][j].octave + "#");
+                    //                 measureAccidentals.splice(index, 1);
+                    //             }
+                    //             // remove flat from measureAccidentals
+                    //             if (measureAccidentals.indexOf(input[i][j].note + input[i][j].octave + "b") >= 0) {
+                    //                 var index = measureAccidentals.indexOf(input[i][j].note + input[i][j].octave + "b");
+                    //                 measureAccidentals.splice(index, 1);
+                    //             }                            }
+                    //     }
+                    //     // check to see if we insert the accidental or not
+                    //     else if (!measureAccidentals.includes(input[i][j].note_name_full)) {
+                    //         output += "=";
+                    //         measureAccidentals.push(input[i][j].note_name_full);
+                    //         // remove sharp from measureAccidentals
+                    //         if (measureAccidentals.indexOf(input[i][j].note + input[i][j].octave + "#") >= 0) {
+                    //             var index = measureAccidentals.indexOf(input[i][j].note + input[i][j].octave + "#");
+                    //             measureAccidentals.splice(index, 1);
+                    //         }
+                    //         // remove flat from measureAccidentals
+                    //         if (measureAccidentals.indexOf(input[i][j].note + input[i][j].octave + "b") >= 0) {
+                    //             var index = measureAccidentals.indexOf(input[i][j].note + input[i][j].octave + "b");
+                    //             measureAccidentals.splice(index, 1);
+                    //         }
+                    //     }
+                    // }
+
                     // add note name
                     output += input[i][j].note;
+
                     // handle octave
                     if (input[i][j].octave < 4) {
                         var currentOctave = input[i][j].octave;
@@ -171,6 +180,7 @@ function renderSheetMusic(input) {
                             currentOctave--;
                         }
                     }
+
                     // add length for note
                     output += input[i][j].note_type[k];
                     // possibly add the tie
@@ -247,4 +257,51 @@ function getKeyAccidentals() {
     }
     console.log("accidentals in the key " + key_signature_input + " are " + ret);
     return ret;
+}
+
+function changeNotesToKey(input) {
+    var notePos = "ABCDEFG";
+    // one measure at a time
+    for (var i = 0; i < input.length; i++) {
+        // one note at a time
+        for (var j = 0; j < input[i].length; j++) {
+            // if key is sharp or flat
+            if (key_signature_input == "C" ||
+                key_signature_input == "G" ||
+                key_signature_input == "D" ||
+                key_signature_input == "A" ||
+                key_signature_input == "E" ||
+                key_signature_input == "B" ||
+                key_signature_input == "C-sharp" ||
+                key_signature_input == "F-sharp") {
+                // change flat notes to equivalent sharps
+                // example: change Db to a C#
+                if (input[i][j].accidental == "b") {
+                    input[i][j].accidental = "#"; // chance all flats to sharps
+                    // shift letter name back one
+                    if (input[i][j].note == "A") {
+                        input[i][j].note = "G";
+                    } else {
+                        input[i][j].note = notePos[notePos.indexOf(input[i][j].note) - 1];
+                    }
+                    input[i][j].note_name_full = input[i][j].note + input[i][j].octave + input[i][j].accidental;
+                }
+            } else {
+                // change sharp notes to equivalent flats
+                // example: change a C# to a Db
+                if (input[i][j].accidental == "#") {
+                    input[i][j].accidental = "b"; // chance all sharps to flats
+                    // shift letter name forward one
+                    if (input[i][j].note == "G") {
+                        input[i][j].note = "A";
+                    } else {
+                        input[i][j].note = notePos[notePos.indexOf(input[i][j].note) + 1];
+                    }
+                    input[i][j].note_name_full = input[i][j].note + input[i][j].octave + input[i][j].accidental;
+                }
+            }
+
+        }
+    }
+    return input;
 }
