@@ -117,4 +117,14 @@ function detectKey(measures) {
         }
     }
     console.log(majorKeys);
+    var maxPoints = 0;
+    var bestKey = "";
+    for (let key of majorKeys) {
+        if (key.points > maxPoints) {
+            bestKey = key.name;
+            maxPoints = key.points;
+        }
+    }
+    console.log("Best key:", bestKey);
+    return bestKey;
 }
