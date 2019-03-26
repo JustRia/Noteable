@@ -97,23 +97,9 @@ function disable_input(input) {
 
 function checkPowerOfTwo() {
     var bottomNumInput = document.querySelector('[name="time-signature-bottom-num"]');
-    if (!isPowerOfTwo(bottomNumInput.value)) {
+    if (Math.log2(bottomNumInput.value) % 1 == 0) {
+        bottomNumInput.setCustomValidity("");
+    } else {
         bottomNumInput.setCustomValidity("Value must be a power of 2.");
     }
-    else {
-        bottomNumInput.setCustomValidity("");
-    }
-}
-
-function isPowerOfTwo(n)
-{
-    if (n <= 0) {
-        return false;
-    }
-    while (n != 1) {
-        if (n % 2 != 0)
-            return false;
-        n /= 2;
-    }
-    return true;
 }
