@@ -76,6 +76,10 @@ function submitForm(input) {
     if (enableButton) {
         mic_icon = document.getElementById("mic-icon");
         mic_icon.classList.remove("disabled-button");
+        disabledTooltip = document.getElementById("disabled-record-tooltip");
+        disabledTooltip.classList.add("hidden");
+        enabledTooltip = document.getElementById("enabled-record-tooltip");
+        enabledTooltip.classList.remove("hidden");
     }
     return false;
 }

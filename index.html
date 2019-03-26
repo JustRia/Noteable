@@ -20,19 +20,19 @@
             <div class="main-button" id="key-signature-button" onclick="addSelected('key-signature')">
                 Key Signature
                 <div id="key-signature-confirmation" class="confirmation"></div>
-                <span class="tooltip">The group of pitches that indicates how your piece will sound</span>
+                <span class="tooltip-bottom tooltip">The group of pitches that indicates how your piece will sound</span>
             </div>
 
             <div class="main-button" id="tempo-button" onclick="addSelected('tempo')">
                 Tempo
                 <div id="tempo-confirmation" class="confirmation"></div>
-                <span class="tooltip">How fast or slow the music is. It is measured in beats per minute.</span>
+                <span class="tooltip-bottom tooltip">How fast or slow the music is. It is measured in beats per minute.</span>
             </div>
 
             <div class="main-button" id="time-signature-button" onclick="addSelected('time-signature')">
                 Time Signature
                 <div id="time-signature-confirmation" class="confirmation"></div>
-                <span class="tooltip">Indication of rhythm. Numerator: number of beats per measure. Denominator: What type of note gets a beat</span>
+                <span class="tooltip-bottom tooltip">Indication of rhythm. Numerator: number of beats per measure. Denominator: What type of note gets a beat</span>
             </div>
         </div>
 
@@ -121,10 +121,12 @@
 
     <!-- microphone icon is contained in this svg -->
     <div id="mic-icon" class="disabled-button recording-button">
-      <img src="images/microphone.png" width=80 height=80 alt="start recording">
+        <span id="disabled-record-tooltip" class="tooltip-top tooltip">Please provide us the key signature, tempo, and time signature before recording</span>
+        <span id="enabled-record-tooltip" class="tooltip-top tooltip hidden">Click to Record</span>
+        <img src="images/microphone.png" width=80 height=80 alt="start recording">
     </div>
     <div id="stop-icon" class="recording-button hidden">
-      <img src="images/stop_recording.png" width=80 height=80 alt="stop recording">
+        <img src="images/stop_recording.png" width=80 height=80 alt="stop recording">
     </div>
 
     <!-- this is just for testing purposes to confirm recordings and can be removed later-->
