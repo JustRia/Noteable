@@ -158,7 +158,7 @@ function startMetronome() {
 
     //create text for countdown and append it to the html
     var cd = document.getElementById("countdown");
-    var countFrom = document.querySelector('[name="time-signature-top-num"]').value;
+    var countFrom = time_signature_bottom_num_input;
     var count = document.createTextNode(countFrom);
     cd.appendChild(count);
 
@@ -172,7 +172,7 @@ function startMetronome() {
             window.clearInterval(timerBoi);
         }
         countFrom = countFrom - 1;
-    }, 60000 / document.querySelector('[name="tempo"]').value);
+    }, 60000 / tempo_input);
 
     //visual for metronome
     var circ = document.getElementById("circ");
@@ -180,14 +180,14 @@ function startMetronome() {
     if (circ.childNodes.length > 0) {
         circ.removeChild(circ.childNodes[0]);
     }
-    var text = document.createTextNode(document.querySelector('[name="tempo"]').value + " BPM");
+    var text = document.createTextNode(tempo_input + " BPM");
     circ.appendChild(text);
     timer = window.setInterval(function () {
         document.getElementById("circ").classList.add('shadow');
         window.setTimeout(function () {
             document.getElementById("circ").classList.remove('shadow');
         }, 100)
-    }, 60000 / document.querySelector('[name="tempo"]').value); //seconds to wait between playing-> 120bpm = 2bps = play once every 500 ms
+    }, 60000 / tempo_input); //seconds to wait between playing-> 120bpm = 2bps = play once every 500 ms
 }
 
 function stopMetronome() {
