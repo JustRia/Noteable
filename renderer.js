@@ -162,19 +162,7 @@ function startMetronome() {
     var count = document.createTextNode(countFrom);
     cd.appendChild(count);
 
-    //start the countdown based on the tempo 
-    var timerBoi = window.setInterval(function () { //decrement on the beat?
-        document.getElementById("countdown").innerHTML = "" + countFrom;
-        if (countFrom == 0) {
-            //remove the countdown text
-            document.getElementById("countdown").innerHTML = "Go!";
-            //clean
-            window.clearInterval(timerBoi);
-        }
-        countFrom = countFrom - 1;
-    }, 60000 / tempo_input);
-
-    //visual for metronome
+    //visual + text for metronome
     var circ = document.getElementById("circ");
     circ.classList.add("circle");
     if (circ.childNodes.length > 0) {
@@ -182,12 +170,24 @@ function startMetronome() {
     }
     var text = document.createTextNode(tempo_input + " BPM");
     circ.appendChild(text);
-    timer = window.setInterval(function () {
+
+    //start the countdown based on the tempo 
+    timer = window.setInterval(function () { //decrement on the beat?
+        document.getElementById("countdown").innerHTML = "" + countFrom;
+        if (countFrom == 0) {
+            //remove the countdown text
+            document.getElementById("countdown").innerHTML = "Go!";
+            //clean
+            //window.clearInterval(timerBoi);
+                
+        } else {
+            countFrom = countFrom - 1;
+        }
         document.getElementById("circ").classList.add('shadow');
         window.setTimeout(function () {
             document.getElementById("circ").classList.remove('shadow');
         }, 100)
-    }, 60000 / tempo_input); //seconds to wait between playing-> 120bpm = 2bps = play once every 500 ms
+    }, 60000 / tempo_input);
 }
 
 function stopMetronome() {
