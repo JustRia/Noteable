@@ -10,9 +10,11 @@ const fraction_of_beat = {
 }
 
 module.exports = {
-    get_notes : function(buffer, time_signature, tempo) {// see below for optional constructor parameters.
+    get_notes : function(buffer, time_signature_top, time_signature_bottom, tempo) {// see below for optional constructor parameters.
 
-        time_signature = "4/4";
+        console.log(time_signature_top);
+        console.log(time_signature_bottom);
+        
         const detectPitch = new Pitchfinder.AMDF();
 
         /*const decoded = WavDecoder.decode.sync(buffer); // get audio data from file using `wav-decoder`
@@ -29,35 +31,21 @@ module.exports = {
         var notes = frequencies.map(freq => freq < 1109 && freq != null ? 
                                 {
                                     "freq" : freq, 
-                                    "note_name" : "" + teoria.note.fromFrequency(freq).note.name() 
+                                    "note_name" : "" + teoria.note.fromFrequency(freq).note.name().toUpperCase()
                                                 + teoria.note.fromFrequency(freq).note.octave()
                                                 + teoria.note.fromFrequency(freq).note.accidental(),
                                 } : {"freq" : null, "note_name" : "rest"});
         console.log(notes);
         
         var combined = combine_notes(notes);
-        console.log('Notes combined based on consecutive samples of the same note', combined);
-        
-
-        // Change accidental signs (#, b) to fit lilypond format
-        for (var i = 0; i < combined.length; ++i) {   
-            if (combined[i].accidental) {
-                if (combined[i].accidental == "#") {
-                    combined[i].accidental = "is";
-                } else if (combined[i].accidental == "b") {
-                    combined[i].accidental = "es";
-                }
-            }
-        }
-
-        var beats_per_measure = time_signature.split("/")[0];
-        one_beat = time_signature.split("/")[1];
+        console.log('Notes combined based on consecutive samples of the same note', JSON.parse(JSON.stringify(combined)));
     
-        var measures = measures_split(combined, beats_per_measure);
+        var measures = measures_split(combined, time_signature_top);
         console.log('Notes divided into subarrays by measures', measures);
 
-        /*measures = note_types(measures, one_beat);
-        console.log('Measures assigned note types', measures);*/
+        var new_measures = note_types(measures, time_signature_bottom);
+        console.log('Notes with assigned note types', new_measures);
+        
 
         return measures;
         
@@ -85,7 +73,7 @@ function combine_notes(notes) {
 
     // Iterating through the sampled audio
     for (var i = 0; i < notes.length; ++i) {
-        note = notes[i];
+        note = JSON.parse(JSON.stringify(notes[i]));
 
         /* If the index is 0, or the counter for consecutive notes has been reset, create
         a new note object from the current index to begin comparing subsequent elements */
@@ -224,45 +212,81 @@ function note_types(measures, one_beat) {
         measure = JSON.parse(JSON.stringify(measures[i]));
         measure_updated = [];
         for (var j = 0; j < measure.length; ++j) {
-            // Convert a note's sample length to a note type (half, quarter, 8th, 16th, etc)
-            note_type = samples_per_beat / measure[j].note_length * one_beat;
             note_obj = JSON.parse(JSON.stringify(measure[j]));
-            if (note_type % 1 == 0) {
-                //Note type is a multiple of whole number (half, quarter, 8th, 16th, etc)
-                note_obj.note_type = "" + note_type;
-            } else {
-                // Conversion does not cleanly divide into a whole number (dotted note / tied note)
-                // Get number of beats a note takes up
-                temp = note_obj.note_length / samples_per_beat;
-                if (temp == 0.75) { //dotted half beat = 0.5 + 0.25 = 0.75
-                    note_obj.note_type = 2 * one_beat + ".";
-                } else if (temp == 1.25) {  //single beat + quarter beat (slurred over two notes)
-                    note_obj.note_type = one_beat + "~ " + (one_beat * 4);
-                } else if (temp == 1.5) { //dotted single beat = 1.5
-                    note_obj.note_type = one_beat + ".";
-                } else if (temp == 1.75) { //single beat + 3/4 beat (slurred over two notes)
-                    note_obj.note_type = one_beat + "~ " + (2 * one_beat);
-                } else if (temp > 2 && temp < 3) { // between 2 and 3 beats
-                    multiplier = fraction_of_beat[note_obj.note_length % samples_per_beat];
-                    note_obj.note_type = (one_beat / 2) + "~ " + (multiplier[0] * one_beat + multiplier[1]);
-                } else if (temp == 3) { //dotted 2 beat = 3 beats (dotted half note)
-                    note_obj.note_type = one_beat / 2 + ".";
-                } else if (temp > 3 && temp < 4) { //Between a 3 beats and 4 beats
-                    multiplier = fraction_of_beat[note_obj.note_length % samples_per_beat];
-                    note_obj.note_type = (one_beat / 2 + ".") + "~ " + (multiplier[0] * one_beat + multiplier[1]);
-                } else if (temp > 4 && temp < 5) { //between 4 and 5 beats
-                    multiplier = fraction_of_beat[note_obj.note_length % samples_per_beat];
-                    note_obj.note_type = (one_beat / 4) + "~ " + (multiplier[0] * one_beat + multiplier[1]);
-                } else if (temp > 5 && temp < 6) { //between 5 and 6 beats
-                    multiplier = fraction_of_beat[note_obj.note_length % samples_per_beat];
-                    note_obj.note_type = (one_beat / 4 + "~ " + one_beat + "~ " + multiplier[0] * one_beat + multiplier[1]);
-                }else { //dotted 4 beat = 6 beats
-                    note_obj.note_type = one_beat / 4 + ".";
-                }
+
+            //Determine if a note was held for a full beat (32 * x length)
+            rem = note_obj.note_length % samples_per_beat;
+            //How many full beats was the note held
+            quotient = parseInt(note_obj.note_length / samples_per_beat);
+
+            note_obj.note_type = [];
+            quotient_temp = quotient;
+            //If note is held longer than a whole note lengths, split into as many tied whole notes
+            //as possible
+            while (quotient_temp - one_beat > 0) {
+                note_obj.note_type.push(one_beat);
+                quotient_temp -= one_beat;
             }
-            measure_updated.push(note_obj);
+
+            //No remainder, this means a note was held for a full number of beats
+            if (rem == 0) {
+                //If the note beats are power of 2, can be represented as a single note
+                if (Math.log2(quotient_temp) % 1 === 0) {
+                    note_obj.note_type.push(quotient_temp);
+                    measure_updated.push(note_obj);
+                } else {
+                    //Special case: note beats of 3 can be represented as a single note
+                    if (quotient_temp == 3) {
+                        note_obj.note_type.push(quotient_temp);
+                        measure_updated.push(note_obj);
+                    } else {
+                        //Separate into largest power of 2 and what remains
+                        low_pow = Math.pow(2,Math.floor(Math.log2(quotient_temp)));
+                        rest = [quotient_temp - low_pow];
+                        //Further break down until remainder is powers of 2 (or special case 3)
+                        while (Math.log2(rest[rest.length - 1]) % 1 !== 0) {
+                            temp = rest.pop();
+                            if (temp == 3) {
+                                rest.push(temp);
+                                break;
+                            }
+                            pow = Math.pow(2,Math.floor(Math.log2(temp)));
+                            rest.push(pow, temp - pow);
+                        }
+                        note_obj.note_type.push(low_pow, ...rest);
+                        measure_updated.push(note_obj);
+                    }
+                }
+            } else { //There is a remainder, was not held for a whole number of beats
+                if (quotient_temp > 0) { //Only do this is there's full beats not accounted for
+                    //Perform same steps as above
+                    if (Math.log2(quotient_temp) % 1 === 0) {
+                        note_obj.note_type.push(quotient_temp);
+                    } else {
+                        if (quotient_temp == 3) {
+                            note_obj.note_type.push(quotient_temp);
+                        } else {
+                            low_pow = Math.pow(2,Math.floor(Math.log2(quotient_temp)));
+                            rest = [quotient_temp - low_pow];
+                            //Further break down until remainder is powers of 2 (or special case 3)
+                            while (Math.log2(rest[rest.length - 1]) % 1 !== 0) {
+                                temp = rest.pop();
+                                if (temp == 3) {
+                                    rest.push(temp);
+                                    break;
+                                }
+                                pow = Math.pow(2,Math.floor(Math.log2(temp)));
+                                rest.push(pow, temp - pow);
+                            }
+                            note_obj.note_type.push(low_pow, ...rest);
+                        }
+                    }
+                }
+                //Add final fractional bit to the end
+                note_obj.note_type.push(rem + "/" + samples_per_beat);
+                measure_updated.push(note_obj);
+            }
         }
-        
         res.push(measure_updated);
     }
 

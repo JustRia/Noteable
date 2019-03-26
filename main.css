@@ -81,24 +81,31 @@ h1, h2, h3, h4, h5, h6, p {
 /*******************/
 /** Tooltip stuff **/
 /*******************/
-.main-button .tooltip {
+.tooltip {
     position: absolute;
-    top: 110%;
-    left: 0;
-    right: 0;
-    margin: auto;
+    width: 200px;
     padding: 10px;
+    left: 50%;
+    margin-left: -110px; /* width / 2 + padding */
     border-radius: 10px;
     color: white;
     background-color: rgba(45, 45, 45, 0.9);
     z-index: 1;
-
+    transition: all 0.3s;
+    /* intially hidden */
     visibility: hidden;
     opacity: 0;
-    transition: all 0.3s;
+}
+
+.main-button .tooltip {
+    top: 110%;
 }
 
 .main-button:hover .tooltip{
+    visibility: visible;
+    opacity: 1;
+}
+#mic-icon:hover .tooltip {
     visibility: visible;
     opacity: 1;
 }
@@ -108,7 +115,7 @@ h1, h2, h3, h4, h5, h6, p {
 }
 
 /* prevents weird stutter when user would hover over tooltip instead of button */
-.main-button .tooltip:hover {
+.tooltip:hover {
     visibility: hidden;
     opacity: 0;
 }
@@ -117,13 +124,30 @@ h1, h2, h3, h4, h5, h6, p {
 .tooltip::after {
     content: "";
     position: absolute;
-    bottom: 100%;
     left: 50%;
     margin-left: -6px;
     border-width: 6px;
     border-style: solid;
+}
+
+.tooltip-bottom::after {
+    bottom: 100%;
     border-color: transparent transparent rgba(45, 45, 45, 0.9) transparent;
 }
+
+.tooltip-top::after {
+    top: 100%;
+    border-color: rgba(45, 45, 45, 0.9) transparent transparent transparent;
+}
+
+#mic-icon .tooltip {
+    bottom: 94px; /* percent version caused glitch */
+}
+
+
+
+/* the arrow of the tooltip */
+
 
 /*******************/
 /** Main Content ***/
@@ -228,7 +252,6 @@ input[type=number]::-webkit-outer-spin-button {
     right: 0;
     transition: 0.3s all ease-in-out;
 }
-
 
 /**************************/
 /** Screen Width changes **/
