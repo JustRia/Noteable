@@ -1,73 +1,73 @@
 function detectKey(measures) {
     var majorKeys = [
-        //         ["A ", "B ", "C ", "D ", "E ", "F ", "G "]
+        //         ["A", "B", "C", "D", "E", "F", "G"]
         {
             name: "Ab",
-            notes: ["es", "es", "na", "es", "es", "na", "na"],
+            notes: ["b", "b", "n", "b", "b", "n", "n"],
             points: 0
         },
         {
             name: "A",
-            notes: ["na", "na", "is", "na", "na", "is", "is"],
+            notes: ["n", "n", "#", "n", "n", "#", "#"],
             points: 0
         },
         {
             name: "Bb",
-            notes: ["na", "es", "na", "na", "es", "na", "na"],
+            notes: ["n", "b", "n", "n", "b", "n", "n"],
             points: 0
         },
         {
             name: "B",
-            notes: ["is", "na", "is", "is", "na", "is", "is"],
+            notes: ["#", "n", "#", "#", "n", "#", "#"],
             points: 0
         },
         {
             name: "C",
-            notes: ["na", "na", "na", "na", "na", "na", "na"],
+            notes: ["n", "n", "n", "n", "n", "n", "n"],
             points: 0
         },
         {
             name: "Db",
-            notes: ["es", "es", "na", "es", "es", "na", "es"],
+            notes: ["b", "b", "n", "b", "b", "n", "b"],
             points: 0
         },
         {
             name: "D",
-            notes: ["na", "na", "is", "na", "na", "is", "na"],
+            notes: ["n", "n", "#", "n", "n", "#", "n"],
             points: 0
         },
         {
             name: "Eb",
-            notes: ["es", "es", "na", "na", "es", "na", "na"],
+            notes: ["b", "b", "n", "n", "b", "n", "n"],
             points: 0
         },
         {
             name: "E",
-            notes: ["na", "na", "is", "is", "na", "is", "is"],
+            notes: ["n", "n", "#", "#", "n", "#", "#"],
             points: 0
         },
         {
             name: "F",
-            notes: ["na", "es", "na", "na", "na", "na", "na"],
+            notes: ["n", "b", "n", "n", "n", "n", "n"],
             points: 0
         },
         {
             name: "F#",
-            notes: ["is", "na", "is", "is", "is", "is", "is"],
+            notes: ["#", "n", "#", "#", "#", "#", "#"],
             points: 0
         },
         {
             name: "Gb",
-            notes: ["es", "es", "es", "es", "es", "na", "es"],
+            notes: ["b", "b", "b", "b", "b", "n", "b"],
             points: 0
         },
         {
             name: "G",
-            notes: ["na", "na", "na", "na", "na", "is", "na"],
+            notes: ["n", "n", "n", "n", "n", "#", "n"],
             points: 0
         }
     ];
-    const notePos ="abcdefg";
+    const notePos ="ABCDEFG";
 
     //console.log(measures);
     for (let measure of measures) {
@@ -82,33 +82,33 @@ function detectKey(measures) {
                     if (note.accidental) {
                         if (note.accidental == key.notes[pos]) {
                             key.points += note.note_length;
-                        } else if (note.accidental == "is") {
-                            if (note.note == "f") {
-                                if (key.notes[notePos.indexOf("g")] == "es") {
+                        } else if (note.accidental == "#") {
+                            if (note.note == "F") {
+                                if (key.notes[notePos.indexOf("G")] == "b") {
                                     key.points += note.note_length;
                                 }
-                            } else if (note.note == "g") {
-                                if (key.notes[notePos.indexOf("a")] == "es") {
+                            } else if (note.note == "G") {
+                                if (key.notes[notePos.indexOf("A")] == "b") {
                                     key.points += note.note_length;
                                 }
-                            } else if (note.note == "a") {
-                                if (key.notes[notePos.indexOf("b")] == "es") {
+                            } else if (note.note == "A") {
+                                if (key.notes[notePos.indexOf("B")] == "b") {
                                     key.points += note.note_length;
                                 }
                             }
-                        } else if (note.accidental == "es") {
-                            if (note.note == "d") {
-                                if (key.notes[notePos.indexOf("c")] == "is") {
+                        } else if (note.accidental == "b") {
+                            if (note.note == "D") {
+                                if (key.notes[notePos.indexOf("C")] == "#") {
                                     key.points += note.note_length;
                                 }
-                            } else if (note.note == "e") {
-                                if (key.notes[notePos.indexOf("f")] == "is") {
+                            } else if (note.note == "E") {
+                                if (key.notes[notePos.indexOf("F")] == "#") {
                                     key.points += note.note_length;
                                 }
                             }
                         }
                     } else {
-                        if (key.notes[pos] == "na") {
+                        if (key.notes[pos] == "n") {
                             key.points += note.note_length;
                         }
                     }
