@@ -42,7 +42,7 @@ function startRecording() {
             document.getElementById("stop-icon").classList.remove("hidden");
 
             recording = true;
-            startMetronome();
+
             /*
             Simple constraints object, for more advanced audio features see
             <div class="video-container"><blockquote class="wp-embedded-content" data-secret="cVHlrYJoGD"><a href="https://addpipe.com/blog/audio-constraints-getusermedia/">Supported Audio Constraints in getUserMedia()</a></blockquote><iframe class="wp-embedded-content" sandbox="allow-scripts" security="restricted" style="position: absolute; clip: rect(1px, 1px, 1px, 1px);" src="https://addpipe.com/blog/audio-constraints-getusermedia/embed/#?secret=cVHlrYJoGD" data-secret="cVHlrYJoGD" width="600" height="338" title="“Supported Audio Constraints in getUserMedia()” — Pipe Blog" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe></div>
@@ -75,7 +75,8 @@ function startRecording() {
                 })
 
                 //start the recording process
-                rec.record();
+                startMetronome();
+                //rec.record();
 
             }).catch(function (err) {
                 recordButton.disabled = false;
@@ -179,7 +180,7 @@ function startMetronome() {
             document.getElementById("countdown").innerHTML = "Go!";
             //clean
             //window.clearInterval(timerBoi);
-                
+            rec.record();
         } else {
             countFrom = countFrom - 1;
         }
