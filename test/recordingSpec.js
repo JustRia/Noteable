@@ -29,7 +29,7 @@ describe('Record audio', function () {
     });
 
     it('record from mic icon works', function () {
-        return app.webContents.executeJavaScript('document.getElementById("mic-icon").classList.remove("disabled-button")', true).then(function() {
+        return app.webContents.executeJavaScript('document.getElementById("mic-icon").classList.remove("disabled-button")', true).then(function () {
             return app.client.element('#mic-icon').click().then(function () {
                 return app.client.element('#stop-icon').click().then(function () {
                     return assert.notEqual(null, app.client.element('#linkExists'));
@@ -37,13 +37,24 @@ describe('Record audio', function () {
             })
         });
     });
-    it('recording length is not null', function() {
-        return app.webContents.executeJavaScript('document.getElementById("mic-icon").classList.remove("disabled-button")', true).then(function() {
+    it('recording length is not null', function () {
+        return app.webContents.executeJavaScript('document.getElementById("mic-icon").classList.remove("disabled-button")', true).then(function () {
             return app.client.element('#mic-icon').click().then(function () {
                 return app.client.element('#stop-icon').click().then(function () {
                     return assert.notEqual(app.webContents.executeJavaScript('document.getElementByTagName("audio").duration'), null);
                 })
             })
         });
+    })
+
+    /*Metronome tests*/
+    it('metronome exists', function () {
+        return app.webContents.executeJavaScript('document.getElementById("metronome-main-content").classList.remove("main-content-hidden")', true).then(function () {
+                return assert.notEqual(app.client.element('#metronomeGuy'), null);
+        });
+    })
+
+    it('metronome bpm is not null', function () {
+        return assert.notEqual(app.client.element('#metronomeGuy.classList[0].innerText'), null);
     })
 })
