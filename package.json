@@ -28,10 +28,12 @@
   "dependencies": {
     "@google-cloud/speech": "^2.2.0",
     "@google-cloud/storage": "^2.4.1",
-    "abcjs": "^5.6.7",
+    "compromise": "^11.13.1",
     "electron": "^4.0.1",
     "electron-tooltip": "^1.1.5",
     "jquery": "^3.3.1",
+    "nlp-syllables": "https://github.com/claytonhenrylewis/nlp-syllables/tarball/master",
+    "abcjs": "^5.6.7",
     "pitchfinder": "^2.0.9",
     "read-blob": "^1.1.0",
     "recorder-js": "^1.0.7",

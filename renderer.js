@@ -186,7 +186,7 @@ function toggleDetectKey() {
 function startMetronome() {
     //create text for countdown and append it to the html
     var cd = document.getElementById("countdown");
-    var countFrom = time_signature_bottom_num_input;
+    var countFrom = time_signature_top_num_input;
     var count = document.createTextNode(countFrom);
     cd.appendChild(count);
 
