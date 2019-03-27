@@ -22,7 +22,13 @@ body {
     text-align: center;
 }
 
-h1, h2, h3, h4, h5, h6, p {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
     color: white;
 }
 
@@ -38,6 +44,44 @@ h1, h2, h3, h4, h5, h6, p {
     filter: grayscale(0%) opacity(100%);
 }
 
+.button-container {
+    margin: 20px; /* double the .button margin */
+}
+
+.button {
+    margin: 10px;
+    padding: 10px;
+    border-radius: 999px;
+    width: 170px;
+    font-size: 18px;
+    font-weight: bold;
+    border: 4px solid white;
+    display: inline;
+    position: relative;
+    transition: 0.2s all ease-in-out;
+}
+
+.button:hover {
+    box-shadow: 1px 2px 7px #5d5c5c;
+}
+
+.button:focus {
+    outline: none;
+}
+
+.button:active {
+    box-shadow: 0 0 0 white;
+}
+
+.secondary {
+    background: #76baa9;
+    color: white;
+}
+
+.primary {
+    color: #76baa9;
+}
+
 .hidden {
     display: none !important;
 }
@@ -50,6 +94,7 @@ h1, h2, h3, h4, h5, h6, p {
     text-align: center;
     margin-bottom: 80px;
 }
+
 #logo img {
     width: 200px;
 }
@@ -62,16 +107,18 @@ h1, h2, h3, h4, h5, h6, p {
 /** Main Buttons **/
 /*******************/
 #buttons-container {
-    display: flex; /* allows us to evenly distribute the 3 buttons */
+    display: flex;
+    /* allows us to evenly distribute the 3 buttons */
     justify-content: space-around;
-    width:700px;
+    width: 700px;
     margin: 0 auto;
 }
 
 .main-button {
     position: relative;
     width: 200px;
-    padding: 40px 0; /* centers text on button vertically and gives height */
+    padding: 40px 0;
+    /* centers text on button vertically and gives height */
     background-color: white;
     color: black;
     text-align: center;
@@ -81,34 +128,42 @@ h1, h2, h3, h4, h5, h6, p {
 /*******************/
 /** Tooltip stuff **/
 /*******************/
-.main-button .tooltip {
+.tooltip {
     position: absolute;
-    top: 110%;
-    left: 0;
-    right: 0;
-    margin: auto;
+    width: 200px;
     padding: 10px;
+    left: 50%;
+    margin-left: -110px; /* width / 2 + padding */
     border-radius: 10px;
     color: white;
     background-color: rgba(45, 45, 45, 0.9);
     z-index: 1;
-
+    transition: all 0.3s;
+    /* intially hidden */
     visibility: hidden;
     opacity: 0;
-    transition: all 0.3s;
 }
 
-.main-button:hover .tooltip{
+.main-button .tooltip {
+    top: 110%;
+}
+
+.main-button:hover .tooltip {
+    visibility: visible;
+    opacity: 1;
+}
+#mic-icon:hover .tooltip {
     visibility: visible;
     opacity: 1;
 }
 
 .main-button.selected .tooltip {
-    top: calc(110% + 5px); /* shift downward because of selected border */
+    top: calc(110% + 5px);
+    /* shift downward because of selected border */
 }
 
 /* prevents weird stutter when user would hover over tooltip instead of button */
-.main-button .tooltip:hover {
+.tooltip:hover {
     visibility: hidden;
     opacity: 0;
 }
@@ -117,13 +172,30 @@ h1, h2, h3, h4, h5, h6, p {
 .tooltip::after {
     content: "";
     position: absolute;
-    bottom: 100%;
     left: 50%;
     margin-left: -6px;
     border-width: 6px;
     border-style: solid;
+}
+
+.tooltip-bottom::after {
+    bottom: 100%;
     border-color: transparent transparent rgba(45, 45, 45, 0.9) transparent;
 }
+
+.tooltip-top::after {
+    top: 100%;
+    border-color: rgba(45, 45, 45, 0.9) transparent transparent transparent;
+}
+
+#mic-icon .tooltip {
+    bottom: 94px; /* percent version caused glitch */
+}
+
+
+
+/* the arrow of the tooltip */
+
 
 /*******************/
 /** Main Content ***/
@@ -136,12 +208,13 @@ h1, h2, h3, h4, h5, h6, p {
 
 .input-content {
     display: flex;
-    flex: 1; /* takes up rest of space of window so microphone is at the bottom of the screen */
+    flex: 1;
+    /* takes up rest of space of window so microphone is at the bottom of the screen */
     margin: 70px auto;
     align-items: center;
 }
 
-.input-content *{
+.input-content * {
     display: inline-block;
 }
 
@@ -171,11 +244,28 @@ h1, h2, h3, h4, h5, h6, p {
     opacity: 1;
 }
 
-
-
 #auto-detect-key-signature-container {
     display: block;
 }
+
+/*******************/
+/*** Sheet Music ***/
+/*******************/
+
+#sheet-music {
+    margin: 0 auto;
+    max-width: 90%;
+    background-color: white;
+    border-radius: 15px;
+    overflow: scroll !important; /* fixes problem where too many measures displayed for the screen width */
+    height: auto !important; /* fix weird scrollbar when height is barely off */
+}
+
+#sheet-music-main-content {
+    max-height: calc(100vh - 250px);
+}
+
+
 
 /*******************/
 /***** Inputs ******/
@@ -187,8 +277,8 @@ input {
 /* Turn off scroll buttons for numbers */
 input[type=number]::-webkit-inner-spin-button,
 input[type=number]::-webkit-outer-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
+    -webkit-appearance: none;
+    margin: 0;
 }
 
 /* Key-Signature */
@@ -196,11 +286,13 @@ input[type=number]::-webkit-outer-spin-button {
     vertical-align: middle;
     margin: 15px;
 }
-.input-container input{
+
+.input-container input {
     display: block;
     padding: 3px;
     margin: 5px;
 }
+
 .input-container hr {
     display: block;
     width: 100%;
@@ -229,11 +321,11 @@ input[type=number]::-webkit-outer-spin-button {
     transition: 0.3s all ease-in-out;
 }
 
-
 /**************************/
 /** Screen Width changes **/
 /**************************/
 @media only screen and (max-width: 715px) {
+
     /* Buttons start to scroll off the side */
     #buttons-container {
         display: block;
@@ -244,4 +336,54 @@ input[type=number]::-webkit-outer-spin-button {
         width: 90%;
         margin: 10px auto;
     }
+}
+
+/**************************/
+/** Metronome **/
+/**************************/
+#metronome-main-content {
+    justify-content: center;
+}
+
+.metro-container {
+    height: 100px;
+    width: 100px;
+    margin: 0 auto;
+    text-align: center;
+    padding-bottom: 50px;
+}
+
+.countdown {
+    margin: auto;
+    padding-bottom: 10px;
+    font-family: "Arial", "Verdana";
+    font-size: 20px;
+}
+
+.circle {
+    width: 100px;
+    height: 100px;
+    display: flex;
+    position: absolute;
+    background-color: white;
+    border-radius: 50%;
+
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    color:black;
+    font-family: "Arial", "Verdana";
+}
+
+.shadow {
+    animation: shadow-pulse .2s ease-out 1;
+}
+@keyframes shadow-pulse
+{
+     0% {
+          box-shadow: 0 0 0 0px rgba(0, 0, 0, 0.2);
+     }
+     100% {
+          box-shadow: 0 0 0 35px rgba(0, 0, 0, 0);
+     }
 }

@@ -76,6 +76,10 @@ function submitForm(input) {
     if (enableButton) {
         mic_icon = document.getElementById("mic-icon");
         mic_icon.classList.remove("disabled-button");
+        disabledTooltip = document.getElementById("disabled-record-tooltip");
+        disabledTooltip.classList.add("hidden");
+        enabledTooltip = document.getElementById("enabled-record-tooltip");
+        enabledTooltip.classList.remove("hidden");
     }
     return false;
 }
@@ -92,5 +96,14 @@ function disable_input(input) {
         if (input == 'key-signature') {
             document.getElementById("key-signature-selector").disabled = false;
         }
+    }
+}
+
+function checkPowerOfTwo() {
+    var bottomNumInput = document.querySelector('[name="time-signature-bottom-num"]');
+    if (Math.log2(bottomNumInput.value) % 1 == 0) {
+        bottomNumInput.setCustomValidity("");
+    } else {
+        bottomNumInput.setCustomValidity("Value must be a power of 2.");
     }
 }
