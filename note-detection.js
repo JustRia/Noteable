@@ -47,7 +47,7 @@ module.exports = {
         console.log('Notes with assigned note types', new_measures);
         
 
-        return measures;
+        return new_measures;
         
     },
     combine_notes : combine_notes,
