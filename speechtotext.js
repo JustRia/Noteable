@@ -32,7 +32,7 @@ const client = new speech.SpeechClient();
 
 /*
  * Takes a WAV blob and sample rate, converts and sends to Google Cloud Speech API.
- * Returns 
+ * Returns
  */
 function syncRecognize(blob, sampleRate) {
     console.log(blob);
@@ -66,9 +66,11 @@ function syncRecognize(blob, sampleRate) {
                 const response = data[0];
                 const transcription = response.results.map(result => result.alternatives[0].transcript).join('\n');
                 displayTranscription(transcription);
+                updateProgress("speech-to-text");
             })
             .catch(err => {
                 console.error('ERROR:', err);
+                updateProgress("speech-to-text");
             });
     }
 }

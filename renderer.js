@@ -130,8 +130,10 @@ function createAudioBuffer(blob) {
                             key_signature_input = "C";
                         }
                     }
+                    updateProgress("auto-detect-key");
                     // create abcjs object to display
                     renderSheetMusic(measures);
+                    updateProgress("parse-notes-to-render");
                 }, function (e) {
                     "Error decoding data"
                 }));
