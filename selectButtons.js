@@ -52,15 +52,18 @@ function submitForm(input) {
         inputFlags[0] = 1;
         key_signature_input = document.querySelector('[name="key-signature"]').value;
         console.log("key signature = " + key_signature_input);
+        document.getElementById("key-signature-confirmation").classList.add("confirmed");
     } else if (input == "tempo") {
         inputFlags[1] = 1;
         tempo_input = document.querySelector('[name="tempo"]').value;
         console.log("tempo = " + tempo_input);
+        document.getElementById("tempo-confirmation").classList.add("confirmed");
     } else if (input == "time-signature") {
         inputFlags[2] = 1;
         time_signature_top_num_input = document.querySelector('[name="time-signature-top-num"]').value;
         time_signature_bottom_num_input = document.querySelector('[name="time-signature-bottom-num"]').value;
         console.log("time signature = " + time_signature_top_num_input + "/" + time_signature_bottom_num_input);
+        document.getElementById("time-signature-confirmation").classList.add("confirmed");
     }
 
     var enableButton = true;
@@ -73,6 +76,10 @@ function submitForm(input) {
     if (enableButton) {
         mic_icon = document.getElementById("mic-icon");
         mic_icon.classList.remove("disabled-button");
+        disabledTooltip = document.getElementById("disabled-record-tooltip");
+        disabledTooltip.classList.add("hidden");
+        enabledTooltip = document.getElementById("enabled-record-tooltip");
+        enabledTooltip.classList.remove("hidden");
     }
     return false;
 }
@@ -89,5 +96,14 @@ function disable_input(input) {
         if (input == 'key-signature') {
             document.getElementById("key-signature-selector").disabled = false;
         }
+    }
+}
+
+function checkPowerOfTwo() {
+    var bottomNumInput = document.querySelector('[name="time-signature-bottom-num"]');
+    if (Math.log2(bottomNumInput.value) % 1 == 0) {
+        bottomNumInput.setCustomValidity("");
+    } else {
+        bottomNumInput.setCustomValidity("Value must be a power of 2.");
     }
 }
