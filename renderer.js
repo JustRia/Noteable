@@ -17,6 +17,7 @@ var detectTempoButton = document.getElementById("detect-tempo-button");
 var tempoCountdown = document.getElementById("tempo-countdown");
 var tempoInput = document.querySelector("input[name='tempo']");
 var detectingTempoContent = document.getElementById("detecting-tempo-div");
+var detectKeyCheckbox = document.getElementById("auto-detect-key-signature");
 var taps;
 var startTime, endTime;
 var detectingTempo = false;
@@ -29,11 +30,13 @@ var AudioContext = window.AudioContext || window.webkitAudioContext; // shim for
 var audioContext = new AudioContext; //new audio context to help us record
 var audioBuffer; //this variable will contain the audiobuffer post-recording
 var measures = [];
+var detectKeyFlag = false;
 
 recordButton.addEventListener("click", startRecording);
 stopButton.addEventListener("click", stopRecording);
 detectTempoButton.addEventListener("click", startDetectTempo);
 document.addEventListener("keypress", keyPress);
+detectKeyCheckbox.addEventListener("click", toggleDetectKey);
 
 function startRecording() {
     if (!recording) {
@@ -115,6 +118,8 @@ function createAudioBuffer(blob) {
                     syncRecognize(blob, audioBuffer.sampleRate);
                     // Note-detection
                     measures = note_detection.get_notes(audioBuffer, time_signature_top_num_input, time_signature_bottom_num_input, tempo_input);
+                    // Key detection
+                    if (detectKeyFlag) detectKey(measures);
                 }, function (e) {
                     "Error decoding data"
                 }));
@@ -155,8 +160,16 @@ function keyPress(e) {
     }
 }
 
-function startMetronome() {
+// Toggle key detection with checkbox
+function toggleDetectKey() {
+    if (detectKeyFlag) {
+        detectKeyFlag = false;
+    } else {
+        detectKeyFlag = true;
+    }
+}
 
+function startMetronome() {
     //create text for countdown and append it to the html
     var cd = document.getElementById("countdown");
     var countFrom = time_signature_bottom_num_input;
