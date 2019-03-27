@@ -78,7 +78,7 @@
                 <h3>Input Tempo: </h3>
                   <form onsubmit="submitForm('tempo'); return false">
                       <div class="input-container">
-                        <input type="number" name="tempo" min="1" max="999" value="120" required>
+                        <input type="number" name="tempo" min="1" max="256" value="120" required>
                     </div>
                     <input type="submit" value="Submit">
                 </form>
@@ -103,8 +103,12 @@
             </div>
         </div>
     </div>
+
     <div id="metronome-main-content" class="main-content hidden">
-        <!-- TODO: show metronome before recording -->
+            <div class = "metro-container" id="metronomeGuy">
+                <div class = "countdown" id="countdown"></div>
+                <div id="circ"> </div>
+            </div>
     </div>
     <div id="progress-bar-main-content" class="main-content hidden">
         <!-- TODO: generating sheet music progress bar -->
@@ -130,7 +134,6 @@
     </div>
 
     <!-- this is just for testing purposes to confirm recordings and can be removed later-->
-    <div id="recordingsList"></div>
     <div id="transcriptionsList"></div>
 
     <script>

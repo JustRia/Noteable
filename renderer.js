@@ -16,11 +16,12 @@ var recording = false;
 var detectTempoButton = document.getElementById("detect-tempo-button");
 var tempoCountdown = document.getElementById("tempo-countdown");
 var tempoInput = document.querySelector("input[name='tempo']");
-var detectingTempoContent =  document.getElementById("detecting-tempo-div");
+var detectingTempoContent = document.getElementById("detecting-tempo-div");
 var taps;
 var startTime, endTime;
 var detectingTempo = false;
 var tempoBPM;
+var timer;
 var gumStream; //stream from getUserMedia()
 var rec; //Recorder.js object
 var input; //MediaStreamAudioSourceNode we'll be recording
@@ -39,6 +40,7 @@ function startRecording() {
         if (!document.getElementById("mic-icon").classList.contains("disabled-button")) {
             document.getElementById("mic-icon").classList.add("hidden");
             document.getElementById("stop-icon").classList.remove("hidden");
+
             recording = true;
 
             /*
@@ -73,7 +75,8 @@ function startRecording() {
                 })
 
                 //start the recording process
-                rec.record()
+                startMetronome();
+                //rec.record();
 
             }).catch(function (err) {
                 recordButton.disabled = false;
@@ -89,41 +92,14 @@ function stopRecording() {
     document.getElementById("stop-icon").classList.add("hidden");
     document.getElementById("mic-icon").classList.remove("hidden");
     rec.stop();
-
+    stopMetronome();
     //stop microphone access
     gumStream.getAudioTracks()[0].stop();
 
-    //create the wav blob and pass it on to createDownloadLink
-    rec.exportWAV(createDownloadLink);
+    //create the wav blob and pass it on
+    //rec.exportWAV(createDownloadLink);
     rec.exportWAV(createAudioBuffer);
     rec.clear();
-}
-
-/**The callback above contains the blob in wav format */
-
-function createDownloadLink(blob) {
-    var url = URL.createObjectURL(blob);
-    var au = document.createElement('audio');
-    var li = document.createElement('li');
-    var link = document.createElement('a');
-
-    //add controls to the <audio> element in the html file to play stuff
-    au.controls = true;
-    au.src = url;
-
-    //link the a element to the blob
-    link.href = url;
-    link.download = new Date().toISOString() + '.wav';
-    link.innerHTML = link.download;
-    link.setAttribute("id", "linkExists");
-
-    //add the new audio and a elements to the li element
-    li.appendChild(au);
-    li.appendChild(link);
-
-    //add the li element to the ordered list
-    recordingsList.appendChild(li);
-
 }
 
 function createAudioBuffer(blob) {
@@ -148,7 +124,7 @@ function createAudioBuffer(blob) {
 }
 
 // Show tempo detection interface
-function startDetectTempo () {
+function startDetectTempo() {
     detectingTempoContent.classList.remove("hidden");
     detectingTempo = true;
     taps = 10;
@@ -157,7 +133,7 @@ function startDetectTempo () {
 }
 
 // Tempo detection
-function keyPress (e) {
+function keyPress(e) {
     if (detectingTempo) {
         if (e.keyCode == 32) {
             e.preventDefault();
@@ -177,4 +153,46 @@ function keyPress (e) {
             }
         }
     }
+}
+
+function startMetronome() {
+
+    //create text for countdown and append it to the html
+    var cd = document.getElementById("countdown");
+    var countFrom = time_signature_bottom_num_input;
+    var count = document.createTextNode(countFrom);
+    cd.appendChild(count);
+
+    //visual + text for metronome
+    var circ = document.getElementById("circ");
+    circ.classList.add("circle");
+    if (circ.childNodes.length > 0) {
+        circ.removeChild(circ.childNodes[0]);
+    }
+    var text = document.createTextNode(tempo_input + " BPM");
+    circ.appendChild(text);
+
+    //start the countdown based on the tempo 
+    timer = window.setInterval(function () { //decrement on the beat?
+        document.getElementById("countdown").innerHTML = "" + countFrom;
+        if (countFrom == 0) {
+            //remove the countdown text
+            document.getElementById("countdown").innerHTML = "Go!";
+            //clean
+            //window.clearInterval(timerBoi);
+            rec.record();
+        } else {
+            countFrom = countFrom - 1;
+        }
+        document.getElementById("circ").classList.add('shadow');
+        window.setTimeout(function () {
+            document.getElementById("circ").classList.remove('shadow');
+        }, 100)
+    }, 60000 / tempo_input);
+}
+
+function stopMetronome() {
+    window.clearInterval(timer);
+    document.getElementById("circ").classList.toggle('paused');
+    document.getElementById("countdown").innerHTML = "";
 }
