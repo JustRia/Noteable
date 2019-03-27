@@ -38,6 +38,44 @@ h1, h2, h3, h4, h5, h6, p {
     filter: grayscale(0%) opacity(100%);
 }
 
+.button-container {
+    margin: 20px; /* double the .button margin */
+}
+
+.button {
+    margin: 10px;
+    padding: 10px;
+    border-radius: 999px;
+    width: 170px;
+    font-size: 18px;
+    font-weight: bold;
+    border: 4px solid white;
+    display: inline;
+    position: relative;
+    transition: 0.2s all ease-in-out;
+}
+
+.button:hover {
+    box-shadow: 1px 2px 7px #5d5c5c;
+}
+
+.button:focus {
+    outline: none;
+}
+
+.button:active {
+    box-shadow: 0 0 0 white;
+}
+
+.secondary {
+    background: #76baa9;
+    color: white;
+}
+
+.primary {
+    color: #76baa9;
+}
+
 .hidden {
     display: none !important;
 }
@@ -195,11 +233,28 @@ h1, h2, h3, h4, h5, h6, p {
     opacity: 1;
 }
 
-
-
 #auto-detect-key-signature-container {
     display: block;
 }
+
+/*******************/
+/*** Sheet Music ***/
+/*******************/
+
+#sheet-music {
+    margin: 0 auto;
+    max-width: 90%;
+    background-color: white;
+    border-radius: 15px;
+    overflow: scroll !important; /* fixes problem where too many measures displayed for the screen width */
+    height: auto !important; /* fix weird scrollbar when height is barely off */
+}
+
+#sheet-music-main-content {
+    max-height: calc(100vh - 250px);
+}
+
+
 
 /*******************/
 /***** Inputs ******/
