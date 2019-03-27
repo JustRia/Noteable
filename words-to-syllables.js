@@ -1,10 +1,16 @@
 var nlp = require('compromise');
-console.log(nlp);
 var nlpSyllables = require('nlp-syllables');
-console.log(nlpSyllables);
-
 nlp.plugin(nlpSyllables);
-console.log(nlp);
-var t2 = nlp('houston texas');
-console.log(t2.list[0]);
 console.log(nlpSyllables.Term.syllables("conundrum"));
+
+function splitWords(words) {
+    var wordsList = words.split(" ");
+    var syllablesList = [];
+    console.log(wordsList);
+    for (let word of wordsList) {
+        console.log(word);
+        syllablesList.push(...nlpSyllables.Term.syllables(word));
+    }
+    console.log(syllablesList);
+    // do the next thing
+}
