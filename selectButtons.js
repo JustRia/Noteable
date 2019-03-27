@@ -98,3 +98,12 @@ function disable_input(input) {
         }
     }
 }
+
+function checkPowerOfTwo() {
+    var bottomNumInput = document.querySelector('[name="time-signature-bottom-num"]');
+    if (Math.log2(bottomNumInput.value) % 1 == 0) {
+        bottomNumInput.setCustomValidity("");
+    } else {
+        bottomNumInput.setCustomValidity("Value must be a power of 2.");
+    }
+}
