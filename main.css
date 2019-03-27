@@ -22,7 +22,13 @@ body {
     text-align: center;
 }
 
-h1, h2, h3, h4, h5, h6, p {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
     color: white;
 }
 
@@ -88,6 +94,7 @@ h1, h2, h3, h4, h5, h6, p {
     text-align: center;
     margin-bottom: 80px;
 }
+
 #logo img {
     width: 200px;
 }
@@ -100,16 +107,18 @@ h1, h2, h3, h4, h5, h6, p {
 /** Main Buttons **/
 /*******************/
 #buttons-container {
-    display: flex; /* allows us to evenly distribute the 3 buttons */
+    display: flex;
+    /* allows us to evenly distribute the 3 buttons */
     justify-content: space-around;
-    width:700px;
+    width: 700px;
     margin: 0 auto;
 }
 
 .main-button {
     position: relative;
     width: 200px;
-    padding: 40px 0; /* centers text on button vertically and gives height */
+    padding: 40px 0;
+    /* centers text on button vertically and gives height */
     background-color: white;
     color: black;
     text-align: center;
@@ -139,7 +148,7 @@ h1, h2, h3, h4, h5, h6, p {
     top: 110%;
 }
 
-.main-button:hover .tooltip{
+.main-button:hover .tooltip {
     visibility: visible;
     opacity: 1;
 }
@@ -149,7 +158,8 @@ h1, h2, h3, h4, h5, h6, p {
 }
 
 .main-button.selected .tooltip {
-    top: calc(110% + 5px); /* shift downward because of selected border */
+    top: calc(110% + 5px);
+    /* shift downward because of selected border */
 }
 
 /* prevents weird stutter when user would hover over tooltip instead of button */
@@ -198,12 +208,13 @@ h1, h2, h3, h4, h5, h6, p {
 
 .input-content {
     display: flex;
-    flex: 1; /* takes up rest of space of window so microphone is at the bottom of the screen */
+    flex: 1;
+    /* takes up rest of space of window so microphone is at the bottom of the screen */
     margin: 70px auto;
     align-items: center;
 }
 
-.input-content *{
+.input-content * {
     display: inline-block;
 }
 
@@ -266,8 +277,8 @@ input {
 /* Turn off scroll buttons for numbers */
 input[type=number]::-webkit-inner-spin-button,
 input[type=number]::-webkit-outer-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
+    -webkit-appearance: none;
+    margin: 0;
 }
 
 /* Key-Signature */
@@ -275,11 +286,13 @@ input[type=number]::-webkit-outer-spin-button {
     vertical-align: middle;
     margin: 15px;
 }
-.input-container input{
+
+.input-container input {
     display: block;
     padding: 3px;
     margin: 5px;
 }
+
 .input-container hr {
     display: block;
     width: 100%;
@@ -312,6 +325,7 @@ input[type=number]::-webkit-outer-spin-button {
 /** Screen Width changes **/
 /**************************/
 @media only screen and (max-width: 715px) {
+
     /* Buttons start to scroll off the side */
     #buttons-container {
         display: block;
@@ -322,4 +336,50 @@ input[type=number]::-webkit-outer-spin-button {
         width: 90%;
         margin: 10px auto;
     }
+}
+
+/**************************/
+/** Metronome **/
+/**************************/
+.metro-container {
+    height: 100px;
+    width: 100px;
+    margin: 0 auto;
+    text-align: center;
+    padding-bottom: 50px;
+}
+
+.countdown {
+    margin: auto;
+    padding-bottom: 10px;
+    font-family: "Arial", "Verdana";
+    font-size: 20px;
+}
+
+.circle {
+    width: 100px;
+    height: 100px;
+    display: flex;
+    position: absolute;
+    background-color: white;
+    border-radius: 50%;
+
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    color:black;
+    font-family: "Arial", "Verdana";
+}
+
+.shadow {
+    animation: shadow-pulse .2s ease-out 1;
+}
+@keyframes shadow-pulse
+{
+     0% {
+          box-shadow: 0 0 0 0px rgba(0, 0, 0, 0.2);
+     }
+     100% {
+          box-shadow: 0 0 0 35px rgba(0, 0, 0, 0);
+     }
 }
