@@ -136,13 +136,13 @@ function renderSheetMusic(input) {
 function getKeyAccidentals() {
     var ret = [];
     switch (key_signature_input) {
-        case "A-flat":
+        case "Ab":
             ret = ["Bb", "Eb", "Ab", "Db"];
             break;
         case "A":
             ret = ["F#", "C#", "G#"];
             break;
-        case "B-flat":
+        case "Bb":
             ret = ["Bb", "Eb"];
             break;
         case "B":
@@ -151,16 +151,16 @@ function getKeyAccidentals() {
         case "C":
             ret = [];
             break;
-        case "C-sharp":
+        case "Cb":
             ret = ["F#", "C#", "G#", "D#", "A#", "E#", "B#"];
             break;
-        case "D-flat":
+        case "Db":
             ret = ["Bb", "Eb", "Ab", "Db", "Gb"];
             break;
         case "D":
             ret = ["F#", "C#"];
             break;
-        case "E-flat":
+        case "Eb":
             ret = ["Bb", "Eb", "Ab"];
             break;
         case "E":
@@ -169,10 +169,10 @@ function getKeyAccidentals() {
         case "F":
             ret = ["Bb"];
             break;
-        case "F-sharp":
+        case "F#":
             ret = ["F#", "C#", "G#", "D#", "A#", "E#"];
             break;
-        case "G-flat":
+        case "Gb":
             ret = ["Bb", "Eb", "Ab", "Db", "Gb", "Cb"];
             break;
         case "G":
@@ -247,8 +247,8 @@ function changeNotesToKey(input) {
                 key_signature_input == "A" ||
                 key_signature_input == "E" ||
                 key_signature_input == "B" ||
-                key_signature_input == "C-sharp" ||
-                key_signature_input == "F-sharp") {
+                key_signature_input == "C#" ||
+                key_signature_input == "F#") {
                 // change flat notes to equivalent sharps
                 // example: change Db to a C#
                 if (input[i][j].accidental == "b") {

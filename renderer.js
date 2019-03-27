@@ -121,7 +121,13 @@ function createAudioBuffer(blob) {
                     // Note-detection
                     measures = note_detection.get_notes(audioBuffer, time_signature_top_num_input, time_signature_bottom_num_input, tempo_input);
                     // Key detection
-                    if (detectKeyFlag) detectKey(measures);
+                    if (detectKeyFlag) {
+                        key_signature_input = detectKey(measures);
+                        if (key_signature_input == undefined) {
+                            key_signature_input = "C";
+                        }
+                    }
+                    renderSheetMusic(measures);
                 }, function (e) {
                     "Error decoding data"
                 }));
