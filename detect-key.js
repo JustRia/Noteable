@@ -1,4 +1,5 @@
 function detectKey(measures) {
+    // Information for sharps and flats in each key
     var majorKeys = [
         //         ["A", "B", "C", "D", "E", "F", "G"]
         {
@@ -69,16 +70,14 @@ function detectKey(measures) {
     ];
     const notePos ="ABCDEFG";
 
-    //console.log(measures);
+    // Find best key signature
     for (let measure of measures) {
-        //console.log(measure);
         for (let note of measure) {
-            //console.log(note);
             if (note.note != "rest") {
             var pos = notePos.indexOf(note.note);
                 for (let key of majorKeys) {
-                    //console.log(key.name);
-                    //console.log(key.notes[pos]);
+                    // If note fits in the key, add points to that key
+                    // Points are based on note length
                     if (note.accidental) {
                         if (note.accidental == key.notes[pos]) {
                             key.points += note.note_length;
@@ -119,6 +118,7 @@ function detectKey(measures) {
     console.log(majorKeys);
     var maxPoints = 0;
     var bestKey = "";
+    // Key with the most points is the best key
     for (let key of majorKeys) {
         if (key.points > maxPoints) {
             bestKey = key.name;

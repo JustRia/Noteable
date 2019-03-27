@@ -142,6 +142,7 @@ function createAudioBuffer(blob) {
                     syncRecognize(blob, audioBuffer.sampleRate);
                     // Note-detection
                     measures = note_detection.get_notes(audioBuffer, time_signature_top_num_input, time_signature_bottom_num_input, tempo_input);
+                    // Key detection
                     if (detectKeyFlag) detectKey(measures);
                 }, function (e) {
                     "Error decoding data"
@@ -183,6 +184,7 @@ function keyPress (e) {
     }
 }
 
+// Toggle key detection with checkbox
 function toggleDetectKey() {
     if (detectKeyFlag) {
         detectKeyFlag = false;
