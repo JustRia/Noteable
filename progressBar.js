@@ -1,36 +1,33 @@
 // Progress Bar
 
 /* 0: speech to text finished
- * 1: Note frequency detection finished
- * 2: Note detection finished
- * 3: Notes split into measures finished
- * 4: auto detected key finished
- * 5: Measures inputted to renderer finished
- * 6: We have our outputted sheet music :)
+ * 1: Note detection finished
+ * 2: Notes split into measures finished
+ * 3: auto detected key finished
+ * 4: parseing notes into abcjs format has finished
  */
-var progress = [0,0,0,0,0,0,0];
+
+/*
+ * Example: updateProgress("speech-to-text")
+ * will update the progress bar appropriately
+ */
+var progress = [0,0,0,0,0];
 function updateProgress(input) {
     switch (input) {
         case "speech-to-text":
             progress[0] = 1;
             break;
-        case "frequency-detection":
+        case "note-detection":
             progress[1] = 1;
             break;
-        case "note-detection":
+        case "measure-detection":
             progress[2] = 1;
             break;
-        case "measure-detection":
+        case "auto-detect-key":
             progress[3] = 1;
             break;
-        case "auto-detect-key":
+        case "parse-notes-to-render":
             progress[4] = 1;
-            break;
-        case "input-to-renderer":
-            progress[5] = 1;
-            break;
-        case "finished":
-            progress[6] = 1;
             break;
         default:
             console.log("you used updateProgress incorrectly. Please send a valid argument");
@@ -44,7 +41,7 @@ function updateProgress(input) {
         }
     }
     document.getElementById("progress-fill").style.width = percent + "%";
-    if (percent >= 99.9) {
+    if (percent >= 99.8) {
         // wait for animation to finish and then display sheet music
         setTimeout(function(){
             document.getElementById("progress-bar-main-content").classList.add("hidden");

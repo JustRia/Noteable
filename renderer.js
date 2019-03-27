@@ -96,6 +96,9 @@ function stopRecording() {
     recording = false;
     document.getElementById("stop-icon").classList.add("hidden");
     document.getElementById("mic-icon").classList.remove("hidden");
+    // display progress bar and remove metronome
+    document.getElementById("progress-bar-main-content").classList.remove("hidden");
+    document.getElementById("metronome-main-content").classList.add("hidden");
     rec.stop();
     stopMetronome();
     //stop microphone access
@@ -127,6 +130,7 @@ function createAudioBuffer(blob) {
                             key_signature_input = "C";
                         }
                     }
+                    // create abcjs object to display
                     renderSheetMusic(measures);
                 }, function (e) {
                     "Error decoding data"
