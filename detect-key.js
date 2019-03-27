@@ -117,7 +117,7 @@ function detectKey(measures) {
     }
     console.log(majorKeys);
     var maxPoints = 0;
-    var bestKey = "";
+    var bestKey = undefined;
     // Key with the most points is the best key
     for (let key of majorKeys) {
         if (key.points > maxPoints) {
