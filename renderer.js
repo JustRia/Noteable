@@ -43,6 +43,8 @@ function startRecording() {
         if (!document.getElementById("mic-icon").classList.contains("disabled-button")) {
             document.getElementById("mic-icon").classList.add("hidden");
             document.getElementById("stop-icon").classList.remove("hidden");
+            document.getElementById("metronome-main-content").classList.remove("hidden");
+            document.getElementById("input-main-content").classList.add("hidden");
 
             recording = true;
 
@@ -185,7 +187,7 @@ function startMetronome() {
     var text = document.createTextNode(tempo_input + " BPM");
     circ.appendChild(text);
 
-    //start the countdown based on the tempo 
+    //start the countdown based on the tempo
     timer = window.setInterval(function () { //decrement on the beat?
         document.getElementById("countdown").innerHTML = "" + countFrom;
         if (countFrom == 0) {
