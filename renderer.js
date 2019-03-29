@@ -6,7 +6,7 @@ code will be slightly repurposed for our use
 const {
     promisify
 } = require('util');
-var note_detection = require("./note-detection.js")
+var note_detection = require("./note-detection.js");
 //webkitURL is deprecated but nevertheless
 URL = window.URL || window.webkitURL;
 

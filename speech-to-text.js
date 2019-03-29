@@ -1,6 +1,7 @@
 // Imports the Google Cloud client library.
 const {Storage} = require('@google-cloud/storage');
 const speech = require('@google-cloud/speech');
+const words_to_syllables = require("./words-to-syllables.js");
 
 // Instantiates a client. If you don't specify credentials when constructing
 // the client, the client library will look for credentials in the
@@ -65,8 +66,8 @@ function syncRecognize(blob, sampleRate) {
             .then(data => {
                 const response = data[0];
                 const transcription = response.results.map(result => result.alternatives[0].transcript).join('\n');
-                displayTranscription(transcription);
-                splitWords(transcription);
+                var syllables = words_to_syllables.splitWords(transcription);
+                console.log(syllables);
                 updateProgress("speech-to-text");
             })
             .catch(err => {
@@ -74,13 +75,4 @@ function syncRecognize(blob, sampleRate) {
                 updateProgress("speech-to-text");
             });
     }
-}
-
-// TEMPORARY
-// Display the transcription of the audio, to prove that we can do it
-function displayTranscription(transcription) {
-    console.log(transcription);
-    var li = document.createElement('li');
-    li.innerHTML = transcription;
-    transcriptionsList.appendChild(li);
 }
