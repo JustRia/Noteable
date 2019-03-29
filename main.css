@@ -112,6 +112,7 @@ p {
     display: flex;
     /* allows us to evenly distribute the 3 buttons */
     justify-content: space-evenly;
+    width: 100%;
 }
 
 .main-button {
