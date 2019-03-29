@@ -42,6 +42,7 @@ function startRecording() {
     if (!recording) {
         if (!document.getElementById("mic-icon").classList.contains("disabled-button")) {
             document.getElementById("mic-icon").classList.add("hidden");
+            document.getElementById("stop-icon").classList.add("disabled-button");
             document.getElementById("stop-icon").classList.remove("hidden");
             document.getElementById("metronome-main-content").classList.remove("hidden");
             document.getElementById("input-main-content").classList.add("hidden");
@@ -93,18 +94,20 @@ function startRecording() {
 }
 
 function stopRecording() {
-    recording = false;
-    document.getElementById("stop-icon").classList.add("hidden");
-    document.getElementById("mic-icon").classList.remove("hidden");
-    rec.stop();
-    stopMetronome();
-    //stop microphone access
-    gumStream.getAudioTracks()[0].stop();
+    if(!document.getElementById("stop-icon").classList.contains("disabled-button")) {
+        recording = false;
+        document.getElementById("stop-icon").classList.add("hidden");
+        document.getElementById("mic-icon").classList.remove("hidden");
+        rec.stop();
+        stopMetronome();
+        //stop microphone access
+        gumStream.getAudioTracks()[0].stop();
 
-    //create the wav blob and pass it on
-    //rec.exportWAV(createDownloadLink);
-    rec.exportWAV(createAudioBuffer);
-    rec.clear();
+        //create the wav blob and pass it on
+        //rec.exportWAV(createDownloadLink);
+        rec.exportWAV(createAudioBuffer);
+        rec.clear();
+    }
 }
 
 function createAudioBuffer(blob) {
@@ -193,6 +196,9 @@ function startMetronome() {
     var text = document.createTextNode(tempo_input + " BPM");
     circ.appendChild(text);
 
+    //make sure user can't clip stop until after countdown 
+    document.getElementById("stop-icon").classList.add("disabled-button");
+
     //start the countdown based on the tempo
     timer = window.setInterval(function () { //decrement on the beat?
         document.getElementById("countdown").innerHTML = "" + countFrom;
@@ -201,6 +207,7 @@ function startMetronome() {
             document.getElementById("countdown").innerHTML = "Go!";
             //clean
             //window.clearInterval(timerBoi);
+            document.getElementById("stop-icon").classList.remove("disabled-button");
             rec.record();
         } else {
             countFrom = countFrom - 1;
