@@ -378,8 +378,10 @@ input[type=number]::-webkit-outer-spin-button {
 }
 
 .metro-container {
-    height: 100px;
-    width: 100px;
+    width: 15vw;
+    height: 15vw;
+    min-height: 100px;
+    min-width: 100px;
     margin: 0 auto;
     text-align: center;
     padding-bottom: 50px;
@@ -389,17 +391,18 @@ input[type=number]::-webkit-outer-spin-button {
     margin: auto;
     padding-bottom: 10px;
     font-family: "Arial", "Verdana";
-    font-size: 20px;
+    /* font-size: 20px; */
 }
 
 .circle {
-    width: 100px;
-    height: 100px;
+    width: 15vw;
+    height: 15vw;
+    min-width: 100px;
+    min-height: 100px;
     display: flex;
     position: absolute;
     background-color: white;
     border-radius: 50%;
-
     text-align: center;
     justify-content: center;
     align-items: center;
