@@ -196,9 +196,6 @@ function startMetronome() {
     var text = document.createTextNode(tempo_input + " BPM");
     circ.appendChild(text);
 
-    //make sure user can't clip stop until after countdown 
-    document.getElementById("stop-icon").classList.add("disabled-button");
-
     //start the countdown based on the tempo
     timer = window.setInterval(function () { //decrement on the beat?
         document.getElementById("countdown").innerHTML = "" + countFrom;
