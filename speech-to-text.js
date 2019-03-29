@@ -66,6 +66,7 @@ function syncRecognize(blob, sampleRate) {
             .then(data => {
                 const response = data[0];
                 const transcription = response.results.map(result => result.alternatives[0].transcript).join('\n');
+                console.log(transcription);
                 var syllables = words_to_syllables.splitWords(transcription);
                 console.log(syllables);
                 updateProgress("speech-to-text");
