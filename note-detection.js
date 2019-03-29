@@ -14,7 +14,7 @@ module.exports = {
 
         console.log(time_signature_top);
         console.log(time_signature_bottom);
-        
+
         const detectPitch = new Pitchfinder.AMDF();
 
         /*const decoded = WavDecoder.decode.sync(buffer); // get audio data from file using `wav-decoder`
@@ -28,27 +28,28 @@ module.exports = {
                          // We assume users will not sing any faster than quarter beats
         });
 
-        var notes = frequencies.map(freq => freq < 1109 && freq != null ? 
+        var notes = frequencies.map(freq => freq < 1109 && freq != null ?
                                 {
-                                    "freq" : freq, 
+                                    "freq" : freq,
                                     "note_name" : "" + teoria.note.fromFrequency(freq).note.name().toUpperCase()
                                                 + teoria.note.fromFrequency(freq).note.octave()
                                                 + teoria.note.fromFrequency(freq).note.accidental(),
                                 } : {"freq" : null, "note_name" : "rest"});
         console.log(notes);
-        
+
         var combined = combine_notes(notes);
         console.log('Notes combined based on consecutive samples of the same note', JSON.parse(JSON.stringify(combined)));
-    
+        updateProgress("note-detection");
+
         var measures = measures_split(combined, time_signature_top);
         console.log('Notes divided into subarrays by measures', measures);
 
         var new_measures = note_types(measures, time_signature_bottom);
         console.log('Notes with assigned note types', new_measures);
-        
+        updateProgress("measure-detection");
 
         return new_measures;
-        
+
     },
     combine_notes : combine_notes,
     measures : measures_split,
@@ -57,14 +58,14 @@ module.exports = {
 }
 
 /**
- * 
+ *
  * @param {Object[]} notes - The notes sampled from the recorded audio
  * @param {number} notes[].freq - The frequency of the note in Hz
  * @param {string} notes[].note_name - The name of the note (ex. c4, f#5)
- * 
+ *
  * @returns {Array} An array containing the note_name and the number of consecutive sampled frequencies
  *                  with the same note_name
- * 
+ *
  */
 function combine_notes(notes) {
     var size = 1;
@@ -97,7 +98,7 @@ function combine_notes(notes) {
             }
             continue;
         }
-        
+
         // The index's note_name matches the current note being checked, increment size
         if (note.note_name == note_obj.note_name_full) {
             size++;
@@ -110,7 +111,7 @@ function combine_notes(notes) {
             note_obj = null;
             --i;
         }
-        
+
         if (i == notes.length - 1) {
             note_obj.note_length = size;
             note_obj.freq = note_obj.freq / size;
@@ -123,15 +124,15 @@ function combine_notes(notes) {
 
 
 /**
- * 
+ *
  * @param {Object[]} combined_notes - The notes sampled from the recorded audio and the length they were played
  * @param {number} combined_notes[].freq - The frequency of the note in Hz
  * @param {string} combined_notes[].note_name - The name of the note (ex. c4, f#5)
  * @param {number} combined_notes[].note_length - The number of samples a note was held (in 32 samples/beat)
  * @param {number} beats_per_measure - The number of beats per measure
- * 
+ *
  * @returns {Array} The combined_notes array, with rounded lengths and sub-arrays of measures
- * 
+ *
  */
 function measures_split(combined_notes, beats_per_measure) {
 
@@ -160,7 +161,7 @@ function measures_split(combined_notes, beats_per_measure) {
             /*
                 If no more space remains in the measure to fit the entire note, 2 cases:
                 1) If samples_per_measure > 0, there is space for a note in the measure.
-                    cut the next note and put the front into the measure and the back 
+                    cut the next note and put the front into the measure and the back
                     into the next measure.
                 2) samples_per_measure = 0, add full measure, then place note into the next measure(s).
             */
@@ -180,7 +181,7 @@ function measures_split(combined_notes, beats_per_measure) {
             combined_notes.splice(i+1, 0, back_split);
         }
     }
-    
+
     if (samples_per_measure > 4) {
         end_rest = {
             "note_name_full" : "rest",
@@ -196,13 +197,13 @@ function measures_split(combined_notes, beats_per_measure) {
 
 
 /**
- * 
+ *
  * @param {Object[]} measures - The notes sampled from the recorded audio split into measure subarrays by beats
  * @param {number} measures[].note_length - The number of samples a note was held (in 32 samples/beat)
  * @param {number} one_beat - The note type that constitutes one beat (quarter, 8th, 16th, etc)
- * 
+ *
  * @returns {Array} The measures array, with each note assigned a note_type (whole, half, quarter, etc)
- * 
+ *
  */
 function note_types(measures, one_beat) {
 
