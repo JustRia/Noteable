@@ -44,12 +44,10 @@ describe('Progress Bar', function () {
             return app.webContents.executeJavaScript('document.getElementById("input-main-content").classList.add("hidden")', true).then(function() {
                 // now the progress bar is displayed
                 var runScript = 'updateProgress(\'speech-to-text\');';
-                runScript += 'updateProgress(\'frequency-detection\');';
                 runScript += 'updateProgress(\'note-detection\');';
                 runScript += 'updateProgress(\'measure-detection\');';
                 runScript += 'updateProgress(\'auto-detect-key\');';
-                runScript += 'updateProgress(\'input-to-renderer\');';
-                runScript += 'updateProgress(\'finished\');';
+                runScript += 'updateProgress(\'parse-notes-to-render\');';
 
                 return app.webContents.executeJavaScript(runScript, true).then(function() {
                     // wait 2 seconds to let animation run.
