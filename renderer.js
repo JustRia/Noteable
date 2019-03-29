@@ -107,6 +107,9 @@ function stopRecording() {
         //rec.exportWAV(createDownloadLink);
         rec.exportWAV(createAudioBuffer);
         rec.clear();
+        // remove metronome and show progress bar
+        document.getElementById("metronome-main-content").classList.add("hidden");
+        document.getElementById("progress-bar-main-content").classList.remove("hidden");
     }
 }
 
