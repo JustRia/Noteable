@@ -20,6 +20,7 @@ body {
     color: white;
     font-family: "Arial", "Verdana";
     text-align: center;
+    font-size: 1.7vw;
 }
 
 h1,
@@ -92,11 +93,12 @@ p {
 #logo {
     flex: 0;
     text-align: center;
-    margin-bottom: 80px;
+    margin-bottom: 10vh;
 }
 
 #logo img {
-    width: 200px;
+    width: 24%;
+    min-width: 200px;
 }
 
 #input-prompt {
@@ -109,20 +111,20 @@ p {
 #buttons-container {
     display: flex;
     /* allows us to evenly distribute the 3 buttons */
-    justify-content: space-around;
-    width: 700px;
-    margin: 0 auto;
+    justify-content: space-evenly;
 }
 
 .main-button {
     position: relative;
-    width: 200px;
+    width: 20%;
+    min-width: 200px;
     padding: 40px 0;
     /* centers text on button vertically and gives height */
     background-color: white;
     color: black;
     text-align: center;
     border-radius: 15px;
+    font-size: 1.7vw;
 }
 
 /*******************/
@@ -130,10 +132,10 @@ p {
 /*******************/
 .tooltip {
     position: absolute;
-    width: 200px;
+    width: 20vw;
     padding: 10px;
     left: 50%;
-    margin-left: -110px; /* width / 2 + padding */
+    margin-left: -10vw; /* width / 2 + padding */
     border-radius: 10px;
     color: white;
     background-color: rgba(45, 45, 45, 0.9);
@@ -142,6 +144,7 @@ p {
     /* intially hidden */
     visibility: hidden;
     opacity: 0;
+    box-sizing: border-box;
 }
 
 .main-button .tooltip {
@@ -189,7 +192,8 @@ p {
 }
 
 #mic-icon .tooltip {
-    bottom: 94px; /* percent version caused glitch */
+    bottom: 0;
+    margin-bottom: calc(7vw + 13px);
 }
 
 
@@ -227,6 +231,7 @@ p {
     bottom: 8px;
     border-radius: 50%;
     padding: 4px;
+    font-size: 16px;
 }
 
 .confirmation::after {
@@ -235,7 +240,6 @@ p {
 }
 
 .confirmed {
-    /* TODO: MAKE GREEN CHECK MARK */
     background-color: #76baa9;
 }
 
@@ -313,12 +317,20 @@ input[type=number]::-webkit-outer-spin-button {
 /*******************/
 .recording-button {
     flex: 0;
+    width: 7%;
+    min-width: 80px;
+    height: auto;
     bottom: 10px;
     margin-left: auto;
     margin-right: auto;
     left: 0;
     right: 0;
     transition: 0.3s all ease-in-out;
+}
+
+.recording-button img {
+    width: 100%;
+    height: 100%;
 }
 
 /**************************/
@@ -335,6 +347,26 @@ input[type=number]::-webkit-outer-spin-button {
     .main-button {
         width: 90%;
         margin: 10px auto;
+    }
+
+    .tooltip {
+        width: 70vw;
+        margin-left: -35vw; /* width / 2 + padding */
+    }
+}
+
+@media only screen and (max-width: 970px) {
+    body {
+        font-size: 16px;
+    }
+
+    .main-button {
+        font-size: 16px;
+    }
+
+    #mic-icon .tooltip {
+        bottom: 0;
+        margin-bottom: 93px;
     }
 }
 
