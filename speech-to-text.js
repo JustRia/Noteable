@@ -66,7 +66,6 @@ function syncRecognize(blob, sampleRate) {
             .then(data => {
                 const response = data[0];
                 const transcription = response.results.map(result => result.alternatives[0].transcript).join('\n');
-                displayTranscription(transcription);
                 var syllables = words_to_syllables.splitWords(transcription);
                 console.log(syllables);
             })
@@ -74,13 +73,4 @@ function syncRecognize(blob, sampleRate) {
                 console.error('ERROR:', err);
             });
     }
-}
-
-// TEMPORARY
-// Display the transcription of the audio, to prove that we can do it
-function displayTranscription(transcription) {
-    console.log(transcription);
-    var li = document.createElement('li');
-    li.innerHTML = transcription;
-    transcriptionsList.appendChild(li);
 }
