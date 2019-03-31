@@ -3,12 +3,17 @@ Most of the below code is utilizing mattdiamond's popular Recordjs plugin found:
 https://github.com/mattdiamond/Recorderjs
 code will be slightly repurposed for our use
 */
+
 const {
     promisify
 } = require('util');
 var note_detection = require("./note-detection.js");
 //webkitURL is deprecated but nevertheless
 URL = window.URL || window.webkitURL;
+
+const fs = require('fs');
+const jspdf = require('jspdf');
+const jQuery = require("jquery");
 
 var recordButton = document.getElementById("mic-icon");
 var stopButton = document.getElementById("stop-icon");
@@ -18,6 +23,7 @@ var tempoCountdown = document.getElementById("tempo-countdown");
 var tempoInput = document.querySelector("input[name='tempo']");
 var detectingTempoContent = document.getElementById("detecting-tempo-div");
 var detectKeyCheckbox = document.getElementById("auto-detect-key-signature");
+var downloadSheetButton = document.getElementById("download-sheet");
 var taps;
 var startTime, endTime;
 var detectingTempo = false;
@@ -37,6 +43,7 @@ stopButton.addEventListener("click", stopRecording);
 detectTempoButton.addEventListener("click", startDetectTempo);
 document.addEventListener("keypress", keyPress);
 detectKeyCheckbox.addEventListener("click", toggleDetectKey);
+downloadSheetButton.addEventListener("click", sheetToPdf);
 
 function startRecording() {
     if (!recording) {
@@ -94,7 +101,7 @@ function startRecording() {
 }
 
 function stopRecording() {
-    if(!document.getElementById("stop-icon").classList.contains("disabled-button")) {
+    if (!document.getElementById("stop-icon").classList.contains("disabled-button")) {
         recording = false;
         document.getElementById("stop-icon").classList.add("hidden");
         document.getElementById("mic-icon").classList.remove("hidden");
@@ -226,4 +233,38 @@ function stopMetronome() {
     window.clearInterval(timer);
     document.getElementById("circ").classList.toggle('paused');
     document.getElementById("countdown").innerHTML = "";
+}
+
+function sheetToPdf() {
+    var doc = new jspdf.jsPDF();
+    var specialElementHandlers = {
+        '#editor': function (element, renderer) {
+            return true;
+        }
+    };
+
+    $(document).ready(function () {
+        var source = $("#sheet-music").html();
+        doc.fromHTML(
+            source,
+            15,
+            15, {
+                'width': 170,
+                'elementHandlers': specialElementHandlers
+            }
+        );
+        doc.save('sheet.pdf');
+    });
+
+    //var source = document.getElementById("sheet-music")[0];
+
+    /*
+    require('electron').remote.getCurrentWindow().webContents.printToPDF({}, (error, data) => {
+        if (error) throw error;
+        fs.writeFile('./mySheet.pdf', data, (error) => {
+            if (error) throw error;
+            console.log("success!");
+        })
+    })
+    */
 }
