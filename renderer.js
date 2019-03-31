@@ -244,9 +244,8 @@ function sheetToPdf() {
     };
     (function ($) {
         $(document).ready(function () {
-            var source = $("#sheet-music").html();
             doc.fromHTML(
-                source,
+                $("#sheet-music").html(),
                 15,
                 15, {
                     'width': 170,
