@@ -13,7 +13,7 @@ URL = window.URL || window.webkitURL;
 
 const fs = require('fs');
 const jspdf = require('jspdf');
-const jQuery = require("jquery");
+const jq = require("jquery");
 
 var recordButton = document.getElementById("mic-icon");
 var stopButton = document.getElementById("stop-icon");
@@ -242,29 +242,29 @@ function sheetToPdf() {
             return true;
         }
     };
+    (function ($) {
+        $(document).ready(function () {
+            var source = $("#sheet-music").html();
+            doc.fromHTML(
+                source,
+                15,
+                15, {
+                    'width': 170,
+                    'elementHandlers': specialElementHandlers
+                }
+            );
+            doc.save('sheet.pdf');
+        });
+        })(jQuery);
+        //var source = document.getElementById("sheet-music")[0];
 
-    $(document).ready(function () {
-        var source = $("#sheet-music").html();
-        doc.fromHTML(
-            source,
-            15,
-            15, {
-                'width': 170,
-                'elementHandlers': specialElementHandlers
-            }
-        );
-        doc.save('sheet.pdf');
-    });
-
-    //var source = document.getElementById("sheet-music")[0];
-
-    /*
-    require('electron').remote.getCurrentWindow().webContents.printToPDF({}, (error, data) => {
-        if (error) throw error;
-        fs.writeFile('./mySheet.pdf', data, (error) => {
+        /*
+        require('electron').remote.getCurrentWindow().webContents.printToPDF({}, (error, data) => {
             if (error) throw error;
-            console.log("success!");
+            fs.writeFile('./mySheet.pdf', data, (error) => {
+                if (error) throw error;
+                console.log("success!");
+            })
         })
-    })
-    */
-}
+        */
+    }
