@@ -12,6 +12,7 @@ URL = window.URL || window.webkitURL;
 
 var recordButton = document.getElementById("mic-icon");
 var stopButton = document.getElementById("stop-icon");
+var retryButton = document.getElementById("retry-icon");
 var recording = false;
 var detectTempoButton = document.getElementById("detect-tempo-button");
 var tempoCountdown = document.getElementById("tempo-countdown");
@@ -34,6 +35,7 @@ var detectKeyFlag = false;
 
 recordButton.addEventListener("click", startRecording);
 stopButton.addEventListener("click", stopRecording);
+retryButton.addEventListener("click", retryRecording);
 detectTempoButton.addEventListener("click", startDetectTempo);
 document.addEventListener("keypress", keyPress);
 detectKeyCheckbox.addEventListener("click", toggleDetectKey);
@@ -111,6 +113,18 @@ function stopRecording() {
         document.getElementById("metronome-main-content").classList.add("hidden");
         document.getElementById("progress-bar-main-content").classList.remove("hidden");
     }
+}
+
+function retryRecording() {
+    // hide sheet music and go back to input screen
+    document.getElementById("sheet-music-main-content").classList.add("hidden");
+    document.getElementById("input-main-content").classList.remove("hidden");
+    // hide the retry button and show the record button
+    document.getElementById("retry-icon").classList.add("hidden");
+    document.getElementById("mic-icon").classList.remove("hidden");
+    // reset the progress bar
+    progress = [0,0,0,0,0];
+    document.getElementById("progress-fill").style.width = 1 + "%";
 }
 
 function createAudioBuffer(blob) {
