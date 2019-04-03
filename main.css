@@ -156,7 +156,8 @@ p {
     visibility: visible;
     opacity: 1;
 }
-#mic-icon:hover .tooltip {
+
+.recording-button:hover .tooltip {
     visibility: visible;
     opacity: 1;
 }
@@ -192,7 +193,7 @@ p {
     border-color: rgba(45, 45, 45, 0.9) transparent transparent transparent;
 }
 
-#mic-icon .tooltip {
+.recording-button .tooltip {
     bottom: 0;
     margin-bottom: calc(7vw + 13px);
 }
@@ -386,7 +387,7 @@ input[type=number]::-webkit-outer-spin-button {
         font-size: 16px;
     }
 
-    #mic-icon .tooltip {
+    .recording-button .tooltip {
         bottom: 0;
         margin-bottom: 93px;
     }
