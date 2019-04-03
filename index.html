@@ -42,10 +42,11 @@
         <div class="input-content">
             <!-- All the content we will be adding and removing should appear here -->
             <div id="key-signature-input" class="hidden">
-                <div id="auto-detect-key-signature-container">
+                <label id="auto-detect-key-signature-container" class="checkbox-container">
                     <input id="auto-detect-key-signature" type="checkbox" onclick="disable_input('key-signature')">
+                    <span class="checkmark"></span>
                     Auto-detect after recording <br />
-                </div>
+                </label>
                 <div id="key-signature-input-contents">
                     <h3>Input Key Signature:</h3>
                     <form id="key-signature-form" onsubmit="submitForm('key-signature'); return false">
