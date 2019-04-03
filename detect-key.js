@@ -114,7 +114,6 @@ function detectKey(measures) {
                         }
                     }
                 }
-                
             }
         }
     }
