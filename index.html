@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html>
 
-  <head>
+<head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="main.css">
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.1/jquery.min.js" type="text/javascript"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js"></script>
+
     <script src="./selectButtons.js" type="text/javascript"></script>
     <script src="./speech-to-text.js" type="text/javascript"></script>
     <script src="./words-to-syllables.js" type="text/javascript"></script>
@@ -12,9 +14,9 @@
     <script src="./detect-key.js" type="text/javascript"></script>
     <script src="./renderSheetMusic.js" type="text/javascript"></script>
     <title>Noteable</title>
-  </head>
+</head>
 
-  <body>
+<body>
     <h1 id="logo">
         <img src="images/Title.png" alt="Noteable Logo">
     </h1>
@@ -24,19 +26,22 @@
             <div class="main-button" id="key-signature-button" onclick="addSelected('key-signature')">
                 Key Signature
                 <div id="key-signature-confirmation" class="confirmation"></div>
-                <span class="tooltip-bottom tooltip">The group of pitches that indicates how your piece will sound</span>
+                <span class="tooltip-bottom tooltip">The group of pitches that indicates how your piece will
+                    sound</span>
             </div>
 
             <div class="main-button" id="tempo-button" onclick="addSelected('tempo')">
                 Tempo
                 <div id="tempo-confirmation" class="confirmation"></div>
-                <span class="tooltip-bottom tooltip">How fast or slow the music is. It is measured in beats per minute.</span>
+                <span class="tooltip-bottom tooltip">How fast or slow the music is. It is measured in beats per
+                    minute.</span>
             </div>
 
             <div class="main-button" id="time-signature-button" onclick="addSelected('time-signature')">
                 Time Signature
                 <div id="time-signature-confirmation" class="confirmation"></div>
-                <span class="tooltip-bottom tooltip">Indication of rhythm. Numerator: number of beats per measure. Denominator: What type of note gets a beat</span>
+                <span class="tooltip-bottom tooltip">Indication of rhythm. Numerator: number of beats per measure.
+                    Denominator: What type of note gets a beat</span>
             </div>
         </div>
 
@@ -80,8 +85,8 @@
             </div>
             <div id="tempo-input" class="hidden">
                 <h3>Input Tempo: </h3>
-                  <form onsubmit="submitForm('tempo'); return false">
-                      <div class="input-container">
+                <form onsubmit="submitForm('tempo'); return false">
+                    <div class="input-container">
                         <input type="number" name="tempo" min="1" max="256" value="120" required>
                     </div>
                     <input type="submit" value="Submit">
@@ -100,7 +105,8 @@
                     <div class="input-container">
                         <input type="number" name="time-signature-top-num" min="1" max="99" value="4" required>
                         <hr />
-                        <input type="number" name="time-signature-bottom-num" min="1" max="99" value="4" oninput="checkPowerOfTwo();" required>
+                        <input type="number" name="time-signature-bottom-num" min="1" max="99" value="4"
+                            oninput="checkPowerOfTwo();" required>
                     </div>
                     <input type="submit" value="Submit">
                 </form>
@@ -109,10 +115,10 @@
     </div>
 
     <div id="metronome-main-content" class="main-content hidden">
-            <div class = "metro-container" id="metronomeGuy">
-                <div class = "countdown" id="countdown"></div>
-                <div id="circ"> </div>
-            </div>
+        <div class="metro-container" id="metronomeGuy">
+            <div class="countdown" id="countdown"></div>
+            <div id="circ"> </div>
+        </div>
     </div>
     <div id="progress-bar-main-content" class="main-content hidden">
         <h2>Progress:</h2>
@@ -133,7 +139,8 @@
 
     <!-- microphone icon is contained in this svg -->
     <div id="mic-icon" class="disabled-button recording-button">
-        <span id="disabled-record-tooltip" class="tooltip-top tooltip">Please provide us the key signature, tempo, and time signature before recording</span>
+        <span id="disabled-record-tooltip" class="tooltip-top tooltip">Please provide us the key signature, tempo, and
+            time signature before recording</span>
         <span id="enabled-record-tooltip" class="tooltip-top tooltip hidden">Click to Record</span>
         <img src="images/microphone.png" alt="start recording">
     </div>
@@ -145,10 +152,10 @@
     <div id="transcriptionsList"></div>
 
     <script>
-      require('./renderer.js');
+        require('./renderer.js');
     </script>
     <!--It should be noted that rawgit is going to be shut down on October 2019, so I'll look into a more sustainable host for Recorderjs-->
     <script src="https://cdn.rawgit.com/mattdiamond/Recorderjs/08e7abd9/dist/recorder.js"></script>
-  </body>
+</body>
 
 </html>

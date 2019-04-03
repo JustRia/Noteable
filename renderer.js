@@ -13,7 +13,6 @@ URL = window.URL || window.webkitURL;
 
 const fs = require('fs');
 const jspdf = require('jspdf');
-const jq = require("jquery");
 
 var recordButton = document.getElementById("mic-icon");
 var stopButton = document.getElementById("stop-icon");
@@ -236,7 +235,20 @@ function stopMetronome() {
 }
 
 function sheetToPdf() {
-    var doc = new jspdf.jsPDF();
+    /*
+    const PDFDocument = require('pdfkit');
+    const doc = new PDFDocument;
+    doc.pipe(fs.createWriteStream('sheet.pdf'));
+    doc.image(document.getElementById("sheet-music").innerHTML, {
+        fit: [800,800],
+        align: 'center',
+        valign: 'center'
+    })
+    doc.end();
+    doc.save('sheet.pdf');
+    */
+    
+    var doc = new jspdf.jsPDF('p','pt','letter');
     var specialElementHandlers = {
         '#editor': function (element, renderer) {
             return true;
@@ -245,7 +257,7 @@ function sheetToPdf() {
     (function ($) {
         $(document).ready(function () {
             doc.fromHTML(
-                $("#sheet-music").html(),
+                document.getElementById("sheet-music").innerHTML,
                 15,
                 15, {
                     'width': 170,
@@ -255,15 +267,15 @@ function sheetToPdf() {
             doc.save('sheet.pdf');
         });
         })(jQuery);
-        //var source = document.getElementById("sheet-music")[0];
+        
 
-        /*
-        require('electron').remote.getCurrentWindow().webContents.printToPDF({}, (error, data) => {
+    /*
+    require('electron').remote.getCurrentWindow().webContents.printToPDF({}, (error, data) => {
+        if (error) throw error;
+        fs.writeFile('./mySheet.pdf', data, (error) => {
             if (error) throw error;
-            fs.writeFile('./mySheet.pdf', data, (error) => {
-                if (error) throw error;
-                console.log("success!");
-            })
+            console.log("success!");
         })
-        */
-    }
+    })
+    */
+}
