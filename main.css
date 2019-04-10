@@ -441,7 +441,16 @@ input[type=number]::-webkit-outer-spin-button {
   background-color: rgba(0, 0, 0, 0.1);
 }
 
-
+/* Customize submit button */
+input[type="submit"] {
+    color: black;
+    width: auto;
+    font-weight: normal;
+    background-color: white;
+    padding: 8px 26px;
+    font-size: 1.7vw;
+    border: none;
+}
 
 
 
@@ -516,11 +525,7 @@ input[type=number]::-webkit-outer-spin-button {
 }
 
 @media only screen and (max-width: 970px) {
-    body {
-        font-size: 16px;
-    }
-
-    .main-button {
+    body, input[type="submit"], .main-button {
         font-size: 16px;
     }
 
