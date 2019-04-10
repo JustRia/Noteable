@@ -19,6 +19,7 @@ var tempoCountdown = document.getElementById("tempo-countdown");
 var tempoInput = document.querySelector("input[name='tempo']");
 var detectingTempoContent = document.getElementById("detecting-tempo-div");
 var detectKeyCheckbox = document.getElementById("auto-detect-key-signature");
+var editButton = document.getElementById("edit-button");
 var taps;
 var startTime, endTime;
 var detectingTempo = false;
@@ -39,6 +40,7 @@ retryButton.addEventListener("click", retryRecording);
 detectTempoButton.addEventListener("click", startDetectTempo);
 document.addEventListener("keypress", keyPress);
 detectKeyCheckbox.addEventListener("click", toggleDetectKey);
+editButton.addEventListener("click", editInputs);
 
 function startRecording() {
     if (!recording) {
@@ -122,6 +124,18 @@ function retryRecording() {
     // hide the retry button and show the record button
     document.getElementById("retry-icon").classList.add("hidden");
     document.getElementById("mic-icon").classList.remove("hidden");
+    // reset the progress bar
+    progress = [0,0,0,0,0];
+    document.getElementById("progress-fill").style.width = 1 + "%";
+}
+
+function editInputs() {
+    // hide sheet music and go back to input screen
+    document.getElementById("sheet-music-main-content").classList.add("hidden");
+    document.getElementById("input-main-content").classList.remove("hidden");
+    // hide the retry button and show the re-render button
+    document.getElementById("retry-icon").classList.add("hidden");
+    document.getElementById("re-render-button-container").classList.remove("hidden");
     // reset the progress bar
     progress = [0,0,0,0,0];
     document.getElementById("progress-fill").style.width = 1 + "%";
