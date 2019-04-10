@@ -20,6 +20,7 @@ var tempoInput = document.querySelector("input[name='tempo']");
 var detectingTempoContent = document.getElementById("detecting-tempo-div");
 var detectKeyCheckbox = document.getElementById("auto-detect-key-signature");
 var editButton = document.getElementById("edit-button");
+var reRenderButton = document.getElementById("re-render-button");
 var taps;
 var startTime, endTime;
 var detectingTempo = false;
@@ -41,6 +42,7 @@ detectTempoButton.addEventListener("click", startDetectTempo);
 document.addEventListener("keypress", keyPress);
 detectKeyCheckbox.addEventListener("click", toggleDetectKey);
 editButton.addEventListener("click", editInputs);
+reRenderButton.addEventListener("click", reRender);
 
 function startRecording() {
     if (!recording) {
@@ -139,6 +141,12 @@ function editInputs() {
     // reset the progress bar
     progress = [0,0,0,0,0];
     document.getElementById("progress-fill").style.width = 1 + "%";
+}
+
+function reRender() {
+    //TODO
+    //A-aron
+    console.log(audioBuffer, time_signature_top_num_input, time_signature_bottom_num_input, tempo_input)
 }
 
 function createAudioBuffer(blob) {
