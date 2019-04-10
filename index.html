@@ -50,7 +50,7 @@
                 <div id="key-signature-input-contents">
                     <h3>Input Key Signature:</h3>
                     <form id="key-signature-form" onsubmit="submitForm('key-signature'); return false">
-                        <div class="input-container">
+                        <div class="input-container custom-select">
                             <select id="key-signature-selector" name="key-signature">
                                 <option value="Ab">A&#9837;</option>
                                 <option value="A">A</option>
@@ -148,6 +148,8 @@
     </script>
     <!--It should be noted that rawgit is going to be shut down on October 2019, so I'll look into a more sustainable host for Recorderjs-->
     <script src="https://cdn.rawgit.com/mattdiamond/Recorderjs/08e7abd9/dist/recorder.js"></script>
+    <!--dropdownList used to create the custom select for the key signature-->
+    <script src="./dropdownList.js" type="text/javascript"></script>
   </body>
 
 </html>
