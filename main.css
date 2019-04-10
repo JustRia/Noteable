@@ -54,7 +54,7 @@ p {
     padding: 10px;
     border-radius: 999px;
     width: 170px;
-    font-size: 18px;
+    font-size: 1.7vw;
     font-weight: bold;
     border: 4px solid white;
     display: inline;
@@ -223,6 +223,7 @@ p {
 
 .input-content * {
     display: inline-block;
+    vertical-align: middle;
 }
 
 .confirmation {
@@ -298,6 +299,7 @@ p {
 /*******************/
 input {
     text-align: center;
+    font-size: 1.7vw;
 }
 
 /* Turn off scroll buttons for numbers */
@@ -333,7 +335,7 @@ input[type=number]::-webkit-outer-spin-button {
   width: 1.7vw;
   min-width: 16px;
   min-height: 16px;
-  background-color: #eee;
+  background-color: #fff;
   border-radius: 10%;
   vertical-align: text-top;
   margin-right: 6px;
@@ -341,7 +343,7 @@ input[type=number]::-webkit-outer-spin-button {
 
 /* On mouse-over, add a grey background color */
 .checkbox-container:hover input ~ .checkmark {
-  background-color: #ccc;
+  background-color: #ddd;
 }
 
 /* When the checkbox is checked, add a blue background */
@@ -389,7 +391,7 @@ input[type=number]::-webkit-outer-spin-button {
 }
 
 .select-selected {
-  background-color: #eee;
+  background-color: #fff;
 }
 
 /* Style the arrow inside the select element: */
@@ -423,7 +425,7 @@ input[type=number]::-webkit-outer-spin-button {
 /* Style items (options): */
 .select-items {
   position: absolute;
-  background-color: #eee;
+  background-color: #fff;
   top: 100%;
   left: 0;
   right: 0;
@@ -441,14 +443,13 @@ input[type=number]::-webkit-outer-spin-button {
   background-color: rgba(0, 0, 0, 0.1);
 }
 
-/* Customize submit button */
-input[type="submit"] {
+/* Customize submit type buttons */
+input[type="submit"], #detect-tempo-button {
     color: black;
     width: auto;
     font-weight: normal;
     background-color: white;
     padding: 8px 26px;
-    font-size: 1.7vw;
     border: none;
 }
 
@@ -462,7 +463,7 @@ input[type="submit"] {
 
 .input-container input {
     display: block;
-    padding: 3px;
+    padding: 4px;
     margin: 5px;
 }
 
@@ -525,7 +526,7 @@ input[type="submit"] {
 }
 
 @media only screen and (max-width: 970px) {
-    body, input[type="submit"], .main-button {
+    body, input, .main-button, .button {
         font-size: 16px;
     }
 
