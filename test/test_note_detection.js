@@ -71,17 +71,6 @@ describe('note_detection.js measures_split() function unit tests', function() {
         expect(res[0][2].note_length).to.eql(40);
     });
 
-    it('Function should filter out note lengths below the lowest note threshold of 8 after rounding', function() {
-        var arr = [
-            { note_name_full : "C4", note : "C", octave : "4", note_length : 3 },
-        ];
-
-        var res = note_detect.measures(arr, beats_per_measure);
-
-        //Should remove the c4 note since it's less than 8 when rounded
-        expect(res[0][0].note_name_full).to.not.eql("C4");
-    });
-
     it('Function should divide the array of notes into subarrays based on beats per measure', function() {
         var arr = [
             // Measure 1

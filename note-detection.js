@@ -3,12 +3,6 @@ const teoria = require("teoria");
 
 const samples_per_beat = 16;
 
-const fraction_of_beat = {
-    8 : [4, ""],
-    16 : [2, ""],
-    24 : [2, "."],
-}
-
 module.exports = {
     get_notes : function(buffer, time_signature_top, time_signature_bottom, tempo) {// see below for optional constructor parameters.
 
@@ -25,7 +19,7 @@ module.exports = {
         var frequencies = Pitchfinder.frequencies(detectPitch, float32Array, {
             tempo: tempo, // in BPM, defaults to 120
             quantization: samples_per_beat, // samples per beat, defaults to 4 (i.e. 16th notes)
-                         // We assume users will not sing any faster than quarter beats
+                         // We assume users will not sing any faster than half beats
         });
 
         var notes = frequencies.map(freq => freq < 1109 && freq != null ?
@@ -42,10 +36,10 @@ module.exports = {
         updateProgress("note-detection");
 
         var measures = measures_split(combined, time_signature_top);
-        console.log('Notes divided into subarrays by measures', measures);
+        console.log('Notes divided into subarrays by measures', JSON.parse(JSON.stringify(measures)));
 
         var new_measures = note_types(measures, time_signature_bottom);
-        console.log('Notes with assigned note types', new_measures);
+        console.log('Notes with assigned note types', JSON.parse(JSON.stringify(new_measures)));
         updateProgress("measure-detection");
 
         return new_measures;
@@ -68,66 +62,18 @@ module.exports = {
  *
  */
 function combine_notes(notes) {
-    /*var size = 1;
-    var combined_notes = [];
-    var note_obj = null;
 
-    // Iterating through the sampled audio
-    for (var i = 0; i < notes.length; ++i) {
-        note = JSON.parse(JSON.stringify(notes[i]));
-
-        // If the index is 0, or the counter for consecutive notes has been reset, create
-        // a new note object from the current index to begin comparing subsequent elements 
-        if (note_obj == null) {
-            if (note.note_name != "rest") {
-                note_obj = {
-                    "note_name_full" : note.note_name,
-                    "note" : note.note_name.split("")[0],
-                    "octave" : note.note_name.split("")[1],
-                    "accidental" : note.note_name.split("")[2],
-                    "freq" : note.freq,
-                    "note_length" : size
-                }
-            } else {
-                note_obj = {
-                    "note_name_full" : note.note_name,
-                    "note" : "rest",
-                    "freq" : note.freq,
-                    "note_length" : size
-                }
-            }
-            continue;
-        }
-
-        // The index's note_name matches the current note being checked, increment size
-        if (note.note_name == note_obj.note_name_full) {
-            size++;
-            note_obj.freq += note.freq;
-        } else { // note_name does not match, reset note being checked and push the current note_obj
-            note_obj.note_length = size;
-            note_obj.freq = note_obj.freq / size;
-            combined_notes.push(note_obj);
-            size = 1;
-            note_obj = null;
-            --i;
-        }
-
-        if (i == notes.length - 1) {
-            note_obj.note_length = size;
-            note_obj.freq = note_obj.freq / size;
-            combined_notes.push(note_obj);
-        }
-
-    }
-    return combined_notes;*/
-
+    // Partition array into subarrays of 8 samples each (half a beat)
     var spliced_array = [];
     temp_arr = JSON.parse(JSON.stringify(notes));
-    while (temp_arr.length > 0)
+    while (temp_arr.length > 0) {
         spliced_array.push(temp_arr.splice(0, 8));
+    }
     
     var combined_notes = [];
     var median_notes = [];
+
+    // Take the median of each subarray as the most central note the user was trying to input
     for (var i = 0; i < spliced_array.length; i++) {
         var note_obj = null;
         var split = JSON.parse(JSON.stringify(spliced_array[i]));
@@ -144,6 +90,7 @@ function combine_notes(notes) {
             var median = (split[mid1].freq + split[mid2].freq) / 2;
         }
 
+        // Create note object of the median
         if (median == 0) {
             note_obj = {
                 "note_name_full" : "rest",
@@ -168,6 +115,7 @@ function combine_notes(notes) {
         median_notes.push(note_obj);
     }
 
+    // Combine consecutive notes
     var note_obj = null;
     for (var i = 0; i < median_notes.length; i++) {
         var note = JSON.parse(JSON.stringify(median_notes[i]));
@@ -176,7 +124,7 @@ function combine_notes(notes) {
             note_obj = JSON.parse(JSON.stringify(note));
             continue;
         }
-        // The index's note_name matches the current note being checked, increment size
+        // The index's note_name matches the current note being checked, add sizes
         if (note.note_name_full == note_obj.note_name_full) {
             note_obj.note_length += note.note_length;
         } else { // note_name does not match, reset note being checked and push the current note_obj
