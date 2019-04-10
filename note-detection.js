@@ -304,9 +304,21 @@ function note_types(measures, one_beat) {
                         }
                     }
                 }
-                //Add final fractional bit to the end
-                note_obj.note_type.push(rem + "/" + samples_per_beat);
-                measure_updated.push(note_obj);
+                //Case: dotted single beat notes are valid (3/2 of a beat)
+                if (note_obj.note_type.length != 0) {
+                    var last = note_obj.note_type.pop();
+                    if (last == 1 && rem == 8) {
+                        note_obj.note_type.push(((last * samples_per_beat) + rem) + "/" + samples_per_beat);
+                    } else {
+                        //Add final fractional bit to the end
+                        note_obj.note_type.push(last);
+                        note_obj.note_type.push(rem + "/" + samples_per_beat);
+                    }
+                    measure_updated.push(note_obj);
+                } else {
+                    note_obj.note_type.push(rem + "/" + samples_per_beat);
+                    measure_updated.push(note_obj);
+                }
             }
         }
         res.push(measure_updated);

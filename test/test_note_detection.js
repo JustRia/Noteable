@@ -228,7 +228,7 @@ describe('note_detection.js note_types() function unit tests', function() {
 
         var expected = [
             [
-                { note_name_full : "C4", note : "C", octave : "4", note_length : 280, note_type : [4, 4, 4, 4, 1, "8/16"] }
+                { note_name_full : "C4", note : "C", octave : "4", note_length : 280, note_type : [4, 4, 4, 4, "24/16"] }
             ]
         ]
 
@@ -248,7 +248,7 @@ describe('note_detection.js note_types() function unit tests', function() {
         var expected = [
             [
                 { note_name_full : "C4", note : "C", octave : "4", note_length : 40, note_type : [2, "8/16"] },
-                { note_name_full : "C4", note : "C", octave : "4", note_length : 24, note_type : [1, "8/16"] }
+                { note_name_full : "C4", note : "C", octave : "4", note_length : 24, note_type : ["24/16"] }
             ]
         ];
 
