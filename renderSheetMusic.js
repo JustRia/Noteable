@@ -1,5 +1,10 @@
 var ABCJS = require('abcjs');
 
+//prevent event listener from being attached before dom is ready
+window.onload = function() {
+    document.getElementById("download-sheet").addEventListener("click", sheetToPdf);
+}
+
 function testRenderSheetMusic() {
     document.getElementById("sheet-music-main-content").classList.remove("hidden");
     document.getElementById("input-main-content").classList.add("hidden");
@@ -130,10 +135,7 @@ function renderSheetMusic(input) {
 
     console.log(output);
     ABCJS.renderAbc("sheet-music", output); // attaches var abc to DOM element id="sheet-music"
-    //this is here to make sure the event listener doesn't get added before the sheet music is actually ready
-    document.getElementById("download-sheet").addEventListener("click", sheetToPdf);
     sheetToMidi(output);
-    //document.getElementById("download-midi").addEventListener("click", sheetToMidi);
 }
 
 function getKeyAccidentals() {
@@ -285,7 +287,7 @@ function changeNotesToKey(input) {
 }
 
 function sheetToPdf() {
-    
+    console.log("CLICK MEH BABEH")
     var printContents = document.getElementById("sheet-music").innerHTML;
     var originalContents = document.body.innerHTML;
 
@@ -294,6 +296,10 @@ function sheetToPdf() {
     window.print();
 
     document.body.innerHTML = originalContents;
+    //when innerHTML attribute is changed, element is re-created and loses event listener, so have to re-add
+    //yeah I know this is super sus I'm sorry
+    document.getElementById("download-sheet").addEventListener("click", sheetToPdf);
+
 }
 
 function sheetToMidi(output) {
