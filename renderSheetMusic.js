@@ -1,5 +1,7 @@
 var ABCJS = require('abcjs');
 
+var output; // will hold final abcjs format for sheet music
+
 function testRenderSheetMusic() {
     document.getElementById("sheet-music-main-content").classList.remove("hidden");
     document.getElementById("input-main-content").classList.add("hidden");
@@ -38,7 +40,6 @@ function renderSheetMusic(input) {
     // shift notes to the key. (i.e. changing Db to C# for key of D)
     input = changeNotesToKey(input);
 
-    var output; // will hold final abcjs format for sheet music
     output = "M: " + time_signature_top_num_input + "/" + time_signature_bottom_num_input + "\n";
     output += "L: 1/" + time_signature_bottom_num_input + "\n";
     output += "K: " + key_signature_input + "\n";
@@ -131,6 +132,9 @@ function renderSheetMusic(input) {
 
     console.log(output);
     ABCJS.renderAbc("sheet-music", output); // attaches var abc to DOM element id="sheet-music"
+
+    document.getElementById("download-sheet").addEventListener("click", sheetToPdf);
+    document.getElementById("download-midi").addEventListener("click", sheetToMidi);
 }
 
 function getKeyAccidentals() {
@@ -279,4 +283,23 @@ function changeNotesToKey(input) {
         }
     }
     return input;
+}
+
+function sheetToPdf() {
+    
+    var printContents = document.getElementById("sheet-music").innerHTML;
+    var originalContents = document.body.innerHTML;
+
+    document.body.innerHTML = printContents;
+
+    window.print();
+
+    document.body.innerHTML = originalContents;
+}
+
+function sheetToMidi() {
+    var abcjsMidi = require("abcjs/midi");
+    window.abcjsMidi.renderMidi(document.getElementById("midi"),output, {
+      generateDownload:true
+  });
 }

@@ -11,9 +11,6 @@ var note_detection = require("./note-detection.js");
 //webkitURL is deprecated but nevertheless
 URL = window.URL || window.webkitURL;
 
-const fs = require('fs');
-const jspdf = require('jspdf');
-
 var recordButton = document.getElementById("mic-icon");
 var stopButton = document.getElementById("stop-icon");
 var recording = false;
@@ -22,7 +19,6 @@ var tempoCountdown = document.getElementById("tempo-countdown");
 var tempoInput = document.querySelector("input[name='tempo']");
 var detectingTempoContent = document.getElementById("detecting-tempo-div");
 var detectKeyCheckbox = document.getElementById("auto-detect-key-signature");
-var downloadSheetButton = document.getElementById("download-sheet");
 var taps;
 var startTime, endTime;
 var detectingTempo = false;
@@ -42,7 +38,6 @@ stopButton.addEventListener("click", stopRecording);
 detectTempoButton.addEventListener("click", startDetectTempo);
 document.addEventListener("keypress", keyPress);
 detectKeyCheckbox.addEventListener("click", toggleDetectKey);
-downloadSheetButton.addEventListener("click", sheetToPdf);
 
 function startRecording() {
     if (!recording) {
@@ -232,50 +227,4 @@ function stopMetronome() {
     window.clearInterval(timer);
     document.getElementById("circ").classList.toggle('paused');
     document.getElementById("countdown").innerHTML = "";
-}
-
-function sheetToPdf() {
-    /*
-    const PDFDocument = require('pdfkit');
-    const doc = new PDFDocument;
-    doc.pipe(fs.createWriteStream('sheet.pdf'));
-    doc.image(document.getElementById("sheet-music").innerHTML, {
-        fit: [800,800],
-        align: 'center',
-        valign: 'center'
-    })
-    doc.end();
-    doc.save('sheet.pdf');
-    */
-    
-    var doc = new jspdf.jsPDF('p','pt','letter');
-    var specialElementHandlers = {
-        '#editor': function (element, renderer) {
-            return true;
-        }
-    };
-    (function ($) {
-        $(document).ready(function () {
-            doc.fromHTML(
-                document.getElementById("sheet-music").innerHTML,
-                15,
-                15, {
-                    'width': 170,
-                    'elementHandlers': specialElementHandlers
-                }
-            );
-            doc.save('sheet.pdf');
-        });
-        })(jQuery);
-        
-
-    /*
-    require('electron').remote.getCurrentWindow().webContents.printToPDF({}, (error, data) => {
-        if (error) throw error;
-        fs.writeFile('./mySheet.pdf', data, (error) => {
-            if (error) throw error;
-            console.log("success!");
-        })
-    })
-    */
 }
