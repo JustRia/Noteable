@@ -134,7 +134,8 @@ function renderSheetMusic(input) {
     ABCJS.renderAbc("sheet-music", output); // attaches var abc to DOM element id="sheet-music"
 
     document.getElementById("download-sheet").addEventListener("click", sheetToPdf);
-    document.getElementById("download-midi").addEventListener("click", sheetToMidi);
+    sheetToMidi();
+    //document.getElementById("download-midi").addEventListener("click", sheetToMidi);
 }
 
 function getKeyAccidentals() {
@@ -299,7 +300,10 @@ function sheetToPdf() {
 
 function sheetToMidi() {
     var abcjsMidi = require("abcjs/midi");
-    window.abcjsMidi.renderMidi(document.getElementById("midi"),output, {
-      generateDownload:true
+    document.getElementById("download-midi").innerHTML = "";
+    abcjsMidi.renderMidi(document.getElementById("download-midi"),output, {
+      generateDownload:true,
+      generateInline: false,
+      downloadLabel:"Download MIDI"
   });
 }

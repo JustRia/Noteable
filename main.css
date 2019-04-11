@@ -87,6 +87,12 @@ p {
     display: none !important;
 }
 
+#download-midi {
+    background: #76baa9;
+    color: white;
+    text-decoration: none;
+}
+
 /*******************/
 /****** Logo *******/
 /*******************/
