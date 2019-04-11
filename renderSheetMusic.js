@@ -1,7 +1,5 @@
 var ABCJS = require('abcjs');
 
-var output; // will hold final abcjs format for sheet music
-
 function testRenderSheetMusic() {
     document.getElementById("sheet-music-main-content").classList.remove("hidden");
     document.getElementById("input-main-content").classList.add("hidden");
@@ -132,9 +130,9 @@ function renderSheetMusic(input) {
 
     console.log(output);
     ABCJS.renderAbc("sheet-music", output); // attaches var abc to DOM element id="sheet-music"
-
+    //this is here to make sure the event listener doesn't get added before the sheet music is actually ready
     document.getElementById("download-sheet").addEventListener("click", sheetToPdf);
-    sheetToMidi();
+    sheetToMidi(output);
     //document.getElementById("download-midi").addEventListener("click", sheetToMidi);
 }
 
@@ -298,7 +296,7 @@ function sheetToPdf() {
     document.body.innerHTML = originalContents;
 }
 
-function sheetToMidi() {
+function sheetToMidi(output) {
     var abcjsMidi = require("abcjs/midi");
     document.getElementById("download-midi").innerHTML = "";
     abcjsMidi.renderMidi(document.getElementById("download-midi"),output, {

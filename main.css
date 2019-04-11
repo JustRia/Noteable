@@ -87,7 +87,7 @@ p {
     display: none !important;
 }
 
-#download-midi {
+:any-link {
     background: #76baa9;
     color: white;
     text-decoration: none;
