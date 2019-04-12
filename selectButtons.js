@@ -89,12 +89,12 @@ function disable_input(input) {
     if (checkbox) {
         // disable stuff
         if (input == 'key-signature') {
-            document.getElementById("key-signature-selector").disabled = true;
+            document.getElementsByClassName("custom-select")[0].classList.add('disabled-button');
         }
     } else {
         // enable stuff
         if (input == 'key-signature') {
-            document.getElementById("key-signature-selector").disabled = false;
+            document.getElementsByClassName("custom-select")[0].classList.remove('disabled-button');
         }
     }
 }
