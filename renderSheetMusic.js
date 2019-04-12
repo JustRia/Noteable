@@ -55,9 +55,9 @@ function renderSheetMusic(input) {
         // one note at a time
         for (var j = 0; j < input[i].length; j++) {
             if (input[i][j].note == "rest") {
-                output += "z";
                 // possible tie between rests
                 for (var k = 0; k < input[i][j].note_type.length; k++) {
+                    output += "z";
                     output += input[i][j].note_type[k];
                     // if there is more than 1 note:
                     if (k != input[i][j].note_type.length - 1) {
