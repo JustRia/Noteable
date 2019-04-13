@@ -44,8 +44,12 @@ function updateProgress(input) {
     if (percent >= 99.8) {
         // wait for animation to finish and then display sheet music
         setTimeout(function(){
+            // show the sheet music
             document.getElementById("progress-bar-main-content").classList.add("hidden");
             document.getElementById("sheet-music-main-content").classList.remove("hidden");
+            // enable retry button
+            document.getElementById("retry-icon").classList.remove("hidden");
+            document.getElementById("mic-icon").classList.add("hidden");
         }, 1000);
     }
     return percent + "%";
