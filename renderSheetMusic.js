@@ -287,17 +287,27 @@ function changeNotesToKey(input) {
 }
 
 function sheetToPdf() {
-    console.log("CLICK MEH BABEH")
+    var jspdf = require('jspdf');
+    var doc = new jspdf.jsPDF("p","mm","a4");
+    var divHeight = $('#sheet-music').height();
+    var divWidth = $('#sheet-music').width();
+    var ratio = divHeight / divWidth;
     var printContents = document.getElementById("sheet-music").innerHTML;
-    var originalContents = document.body.innerHTML;
+  
+    if(printContents) {
+        printContents = printContents.replace(/\r?\n|\r/g, '').trim();
+    }
 
-    document.body.innerHTML = printContents;
+    var canvas = document.createElement('canvas');
+    canvg(canvas, printContents);
+    var imgData = canvas.toDataURL('image/png');
+    var width = doc.internal.pageSize.getWidth();
+    var height = doc.internal.pageSize.getHeight();
+    height = ratio * width;
+    doc.addImage(imgData, 'PNG', 0, 0, width-20, height-10);
 
-    window.print();
+    doc.save('sheetMusic.pdf');
 
-    document.body.innerHTML = originalContents;
-    //when innerHTML attribute is changed, element is re-created and loses event listener, so have to re-add
-    //yeah I know this is super sus I'm sorry
     document.getElementById("download-sheet").addEventListener("click", sheetToPdf);
 
 }
