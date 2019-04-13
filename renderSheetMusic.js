@@ -42,7 +42,7 @@ function testRenderSheetMusic() {
 function renderSheetMusic(input) {
     // shift notes to the key. (i.e. changing Db to C# for key of D)
     input = changeNotesToKey(input);
-
+    var output; // will hold final abcjs format for sheet music
     output = "M: " + time_signature_top_num_input + "/" + time_signature_bottom_num_input + "\n";
     output += "L: 1/" + time_signature_bottom_num_input + "\n";
     output += "K: " + key_signature_input + "\n";
