@@ -13,6 +13,8 @@
  */
 var progress = [0,0,0,0,0];
 function updateProgress(input) {
+    //to prevent a user from attempting to re-record while the sheet music is being generated in the case of a double click or impatient clicking
+    document.getElementById("mic-icon").classList.add("hidden");
     switch (input) {
         case "speech-to-text":
             progress[0] = 1;
