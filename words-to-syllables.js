@@ -9,7 +9,7 @@ module.exports = {
         var wordsList = words.split(" ");
         var syllablesList = [];
         for (let word of wordsList) {
-            syllablesList.push(...nlpSyllables.Term.syllables(word));
+            syllablesList.push(nlpSyllables.Term.syllables(word));
         }
         return syllablesList;
     }
