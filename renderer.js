@@ -137,7 +137,7 @@ function createAudioBuffer(blob) {
                 resolve(audioContext.decodeAudioData(arraybuffer, function (buffer) {
                     audioBuffer = buffer;
                     // Speech to text
-                    syncRecognize(blob, audioBuffer.sampleRate);
+                    var words = syncRecognize(blob, audioBuffer.sampleRate);
                     // Note-detection
                     measures = note_detection.get_notes(audioBuffer, time_signature_top_num_input, time_signature_bottom_num_input, tempo_input);
                     // Key detection
@@ -149,7 +149,7 @@ function createAudioBuffer(blob) {
                     }
                     updateProgress("auto-detect-key");
                     // create abcjs object to display
-                    renderSheetMusic(measures);
+                    renderSheetMusic(measures, words);
                     updateProgress("parse-notes-to-render");
                 }, function (e) {
                     "Error decoding data"

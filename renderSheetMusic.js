@@ -8,7 +8,7 @@ function testRenderSheetMusic() {
     key_signature_input = 'G';
     var testArray = [
         [
-            { note_name_full : "C4", note : "C", octave : "4", accidental : undefined, freq : 0, note_length : 32 , note_type : ["1"]},
+            { note_name_full : "C4", note : "C", octave : "4", accidental : undefined, freq : 0, note_length : 32 , note_type : ["2", "1"]},
             { note_name_full : "F4#", note : "F", octave : "4", accidental : "#", freq : 0, note_length : 32 , note_type : ["1"]},
             { note_name_full : "F4", note : "F", octave : "4", accidental : undefined, freq : 0, note_length : 32 , note_type : ["1"]},
             { note_name_full : "F4", note : "F", octave : "4", accidental : undefined, freq : 0, note_length : 32 , note_type : ["1"]},
@@ -18,9 +18,69 @@ function testRenderSheetMusic() {
         [
             { note_name_full : "E4b", note : "E", octave : "4", accidental : "b", freq : 0, note_length : 32 , note_type : ["1"]},
             { note_name_full : "E4b", note : "E", octave : "4", accidental : "b", freq : 0, note_length : 32 , note_type : ["1"]}
+        ],
+        [
+            { note_name_full : "E4b", note : "E", octave : "4", accidental : "b", freq : 0, note_length : 32 , note_type : ["1"]},
+            { note_name_full : "E4b", note : "E", octave : "4", accidental : "b", freq : 0, note_length : 32 , note_type : ["1"]}
+        ],
+        [
+            { note_name_full : "E4b", note : "E", octave : "4", accidental : "b", freq : 0, note_length : 32 , note_type : ["1"]},
+            { note_name_full : "E4b", note : "E", octave : "4", accidental : "b", freq : 0, note_length : 32 , note_type : ["1"]}
+        ],
+        [
+            { note_name_full : "E4b", note : "E", octave : "4", accidental : "b", freq : 0, note_length : 32 , note_type : ["1"]},
+            { note_name_full : "E4b", note : "E", octave : "4", accidental : "b", freq : 0, note_length : 32 , note_type : ["1"]}
+        ],
+        [
+            { note_name_full : "E4b", note : "E", octave : "4", accidental : "b", freq : 0, note_length : 32 , note_type : ["1"]},
+            { note_name_full : "E4b", note : "E", octave : "4", accidental : "b", freq : 0, note_length : 32 , note_type : ["1"]}
+        ],
+        [
+            { note_name_full : "E4b", note : "E", octave : "4", accidental : "b", freq : 0, note_length : 32 , note_type : ["1"]},
+            { note_name_full : "E4b", note : "E", octave : "4", accidental : "b", freq : 0, note_length : 32 , note_type : ["1"]}
+        ],
+        [
+            { note_name_full : "E4b", note : "E", octave : "4", accidental : "b", freq : 0, note_length : 32 , note_type : ["1"]},
+            { note_name_full : "E4b", note : "E", octave : "4", accidental : "b", freq : 0, note_length : 32 , note_type : ["1"]}
+        ],
+        [
+            { note_name_full : "E4b", note : "E", octave : "4", accidental : "b", freq : 0, note_length : 32 , note_type : ["1"]},
+            { note_name_full : "E4b", note : "E", octave : "4", accidental : "b", freq : 0, note_length : 32 , note_type : ["1"]}
+        ],
+        [
+            { note_name_full : "E4b", note : "E", octave : "4", accidental : "b", freq : 0, note_length : 32 , note_type : ["1"]},
+            { note_name_full : "E4b", note : "E", octave : "4", accidental : "b", freq : 0, note_length : 32 , note_type : ["1"]}
+        ],
+        [
+            { note_name_full : "E4b", note : "E", octave : "4", accidental : "b", freq : 0, note_length : 32 , note_type : ["1"]},
+            { note_name_full : "E4b", note : "E", octave : "4", accidental : "b", freq : 0, note_length : 32 , note_type : ["1"]}
+        ],
+        [
+            { note_name_full : "E4b", note : "E", octave : "4", accidental : "b", freq : 0, note_length : 32 , note_type : ["1"]},
+            { note_name_full : "E4b", note : "E", octave : "4", accidental : "b", freq : 0, note_length : 32 , note_type : ["1"]}
+        ],
+        [
+            { note_name_full : "E4b", note : "E", octave : "4", accidental : "b", freq : 0, note_length : 32 , note_type : ["1"]},
+            { note_name_full : "E4b", note : "E", octave : "4", accidental : "b", freq : 0, note_length : 32 , note_type : ["1"]}
+        ],
+        [
+            { note_name_full : "E4b", note : "E", octave : "4", accidental : "b", freq : 0, note_length : 32 , note_type : ["1"]},
+            { note_name_full : "E4b", note : "E", octave : "4", accidental : "b", freq : 0, note_length : 32 , note_type : ["1"]}
+        ],
+        [
+            { note_name_full : "E4b", note : "E", octave : "4", accidental : "b", freq : 0, note_length : 32 , note_type : ["1"]},
+            { note_name_full : "E4b", note : "E", octave : "4", accidental : "b", freq : 0, note_length : 32 , note_type : ["1"]}
+        ],
+        [
+            { note_name_full : "E4b", note : "E", octave : "4", accidental : "b", freq : 0, note_length : 32 , note_type : ["1"]},
+            { note_name_full : "E4b", note : "E", octave : "4", accidental : "b", freq : 0, note_length : 32 , note_type : ["1"]}
+        ],
+        [
+            { note_name_full : "E4b", note : "E", octave : "4", accidental : "b", freq : 0, note_length : 32 , note_type : ["1"]},
+            { note_name_full : "E4b", note : "E", octave : "4", accidental : "b", freq : 0, note_length : 32 , note_type : ["1"]}
         ]
     ];
-    renderSheetMusic(testArray);
+    renderSheetMusic(testArray, [["hel", "lo"], ["its"], ["me"], ["I've"], ["been"], ["won","der","ing"], ["if"], ["after"], ["all"], ["this"], ["time"], ["youd"], ["like"], ["to"], ["meet"], ["to"], ["go"], ["over"], ["every", "thing"]]);
 }
 
 /*
@@ -32,11 +92,19 @@ function testRenderSheetMusic() {
  * = (equals): natural sign
  * - (hiphen): tie between A1_B1
  * z: rest
+ * w: start of inline words
+ * W: start of end of music words
+ * M: time signature
+ * L: what note gets a beat
+ * K: key
  */
 
-function renderSheetMusic(input) {
+function renderSheetMusic(input, words) {
     // shift notes to the key. (i.e. changing Db to C# for key of D)
     input = changeNotesToKey(input);
+    var text = "w: "; // will hold the text for each new line of sheet music
+    var wordIndex = 0;
+    var syllableIndex = 0;
 
     var output; // will hold final abcjs format for sheet music
     output = "M: " + time_signature_top_num_input + "/" + time_signature_bottom_num_input + "\n";
@@ -107,9 +175,32 @@ function renderSheetMusic(input) {
 
                     // add length for note
                     output += input[i][j].note_type[k];
+
+                    // add syllable to note
+                    if (k == 0 && wordIndex < words.length) { // only add text to first part of tied notes
+                        if (syllableIndex < words[wordIndex].length) {
+                            if (syllableIndex + 1 < words[wordIndex].length) {
+                                // if more syllables in this word
+                                text += words[wordIndex][syllableIndex] + "- ";
+                            } else {
+                                text += words[wordIndex][syllableIndex] + " ";
+                            }
+                            syllableIndex++;
+                            if (syllableIndex >= words[wordIndex].length) {
+                                // go to the next word
+                                wordIndex++;
+                                syllableIndex = 0;
+                            }
+                        } else {
+                            // shouldn't reach this point, but just in case move on to next word
+                            wordIndex++;
+                            syllableIndex = 0;
+                        }
+                    }
                     // possibly add the tie
                     if (k != input[i][j].note_type.length - 1) {
                         output += "-"; // add tie
+                        text += "* "; // skip to next note for text
                     }
                 }
             }
@@ -124,10 +215,14 @@ function renderSheetMusic(input) {
             output += "|"; // start a new measure only if not at the end
             if ((i + 1) % 4 == 0) {
                 output += "\n"; // start a new line every 4 measures.
+                output += (text + "\n");
+                // TODO: add line's text with new line character at end
+                text = "w: ";
             }
         }
     }
-    output += ":|";
+    output += ":|\n";
+    output += text;
 
     console.log(output);
     ABCJS.renderAbc("sheet-music", output); // attaches var abc to DOM element id="sheet-music"

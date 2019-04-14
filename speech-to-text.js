@@ -70,6 +70,7 @@ function syncRecognize(blob, sampleRate) {
                 var syllables = words_to_syllables.splitWords(transcription);
                 console.log(syllables);
                 updateProgress("speech-to-text");
+                return syllables;
             })
             .catch(err => {
                 console.error('ERROR:', err);
