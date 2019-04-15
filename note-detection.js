@@ -69,7 +69,7 @@ function combine_notes(notes) {
 
     // Remove leading rests to better line up splicing samples into groups of eight (hopefully)
     var counter = 0;
-    while (temp_arr[counter].note_name == "rest") {
+    while (temp_arr[counter].note_name == "rest" && counter < temp_arr.length - 1) {
         counter++;
     }
 
