@@ -102,9 +102,15 @@ function testRenderSheetMusic() {
 function renderSheetMusic(input, words) {
     // shift notes to the key. (i.e. changing Db to C# for key of D)
     input = changeNotesToKey(input);
-    var text = "w: "; // will hold the text for each new line of sheet music
+    var text = ""; // will hold the text for each new line of sheet music
     var wordIndex = 0;
     var syllableIndex = 0;
+    var bottomLyics = false; // true if we want the lyrics displayed at the bottom
+    if (bottomLyics) {
+        text = "W: ";
+    } else {
+        text = "w: ";
+    }
 
     var output; // will hold final abcjs format for sheet music
     output = "M: " + time_signature_top_num_input + "/" + time_signature_bottom_num_input + "\n";
@@ -181,7 +187,10 @@ function renderSheetMusic(input, words) {
                         if (syllableIndex < words[wordIndex].length) {
                             if (syllableIndex + 1 < words[wordIndex].length) {
                                 // if more syllables in this word
-                                text += words[wordIndex][syllableIndex] + "- ";
+                                text += words[wordIndex][syllableIndex];
+                                if (!bottomLyics) {
+                                    text += "- ";
+                                }
                             } else {
                                 text += words[wordIndex][syllableIndex] + " ";
                             }
@@ -200,7 +209,9 @@ function renderSheetMusic(input, words) {
                     // possibly add the tie
                     if (k != input[i][j].note_type.length - 1) {
                         output += "-"; // add tie
-                        text += "* "; // skip to next note for text
+                        if (!bottomLyics) {
+                            text += "* "; // skip to next note for text
+                        }
                     }
                 }
             }
@@ -215,9 +226,12 @@ function renderSheetMusic(input, words) {
             output += "|"; // start a new measure only if not at the end
             if ((i + 1) % 4 == 0) {
                 output += "\n"; // start a new line every 4 measures.
-                output += (text + "\n");
-                // TODO: add line's text with new line character at end
-                text = "w: ";
+                output += (text + "\n"); // add line's text with new line character at end
+                if (bottomLyics) {
+                    text = "W: ";
+                } else {
+                    text = "w: ";
+                }
             }
         }
     }
