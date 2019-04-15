@@ -18,66 +18,6 @@ function testRenderSheetMusic() {
         [
             { note_name_full : "E4b", note : "E", octave : "4", accidental : "b", freq : 0, note_length : 32 , note_type : ["1"]},
             { note_name_full : "E4b", note : "E", octave : "4", accidental : "b", freq : 0, note_length : 32 , note_type : ["1"]}
-        ],
-        [
-            { note_name_full : "E4b", note : "E", octave : "4", accidental : "b", freq : 0, note_length : 32 , note_type : ["1"]},
-            { note_name_full : "E4b", note : "E", octave : "4", accidental : "b", freq : 0, note_length : 32 , note_type : ["1"]}
-        ],
-        [
-            { note_name_full : "E4b", note : "E", octave : "4", accidental : "b", freq : 0, note_length : 32 , note_type : ["1"]},
-            { note_name_full : "E4b", note : "E", octave : "4", accidental : "b", freq : 0, note_length : 32 , note_type : ["1"]}
-        ],
-        [
-            { note_name_full : "E4b", note : "E", octave : "4", accidental : "b", freq : 0, note_length : 32 , note_type : ["1"]},
-            { note_name_full : "E4b", note : "E", octave : "4", accidental : "b", freq : 0, note_length : 32 , note_type : ["1"]}
-        ],
-        [
-            { note_name_full : "E4b", note : "E", octave : "4", accidental : "b", freq : 0, note_length : 32 , note_type : ["1"]},
-            { note_name_full : "E4b", note : "E", octave : "4", accidental : "b", freq : 0, note_length : 32 , note_type : ["1"]}
-        ],
-        [
-            { note_name_full : "E4b", note : "E", octave : "4", accidental : "b", freq : 0, note_length : 32 , note_type : ["1"]},
-            { note_name_full : "E4b", note : "E", octave : "4", accidental : "b", freq : 0, note_length : 32 , note_type : ["1"]}
-        ],
-        [
-            { note_name_full : "E4b", note : "E", octave : "4", accidental : "b", freq : 0, note_length : 32 , note_type : ["1"]},
-            { note_name_full : "E4b", note : "E", octave : "4", accidental : "b", freq : 0, note_length : 32 , note_type : ["1"]}
-        ],
-        [
-            { note_name_full : "E4b", note : "E", octave : "4", accidental : "b", freq : 0, note_length : 32 , note_type : ["1"]},
-            { note_name_full : "E4b", note : "E", octave : "4", accidental : "b", freq : 0, note_length : 32 , note_type : ["1"]}
-        ],
-        [
-            { note_name_full : "E4b", note : "E", octave : "4", accidental : "b", freq : 0, note_length : 32 , note_type : ["1"]},
-            { note_name_full : "E4b", note : "E", octave : "4", accidental : "b", freq : 0, note_length : 32 , note_type : ["1"]}
-        ],
-        [
-            { note_name_full : "E4b", note : "E", octave : "4", accidental : "b", freq : 0, note_length : 32 , note_type : ["1"]},
-            { note_name_full : "E4b", note : "E", octave : "4", accidental : "b", freq : 0, note_length : 32 , note_type : ["1"]}
-        ],
-        [
-            { note_name_full : "E4b", note : "E", octave : "4", accidental : "b", freq : 0, note_length : 32 , note_type : ["1"]},
-            { note_name_full : "E4b", note : "E", octave : "4", accidental : "b", freq : 0, note_length : 32 , note_type : ["1"]}
-        ],
-        [
-            { note_name_full : "E4b", note : "E", octave : "4", accidental : "b", freq : 0, note_length : 32 , note_type : ["1"]},
-            { note_name_full : "E4b", note : "E", octave : "4", accidental : "b", freq : 0, note_length : 32 , note_type : ["1"]}
-        ],
-        [
-            { note_name_full : "E4b", note : "E", octave : "4", accidental : "b", freq : 0, note_length : 32 , note_type : ["1"]},
-            { note_name_full : "E4b", note : "E", octave : "4", accidental : "b", freq : 0, note_length : 32 , note_type : ["1"]}
-        ],
-        [
-            { note_name_full : "E4b", note : "E", octave : "4", accidental : "b", freq : 0, note_length : 32 , note_type : ["1"]},
-            { note_name_full : "E4b", note : "E", octave : "4", accidental : "b", freq : 0, note_length : 32 , note_type : ["1"]}
-        ],
-        [
-            { note_name_full : "E4b", note : "E", octave : "4", accidental : "b", freq : 0, note_length : 32 , note_type : ["1"]},
-            { note_name_full : "E4b", note : "E", octave : "4", accidental : "b", freq : 0, note_length : 32 , note_type : ["1"]}
-        ],
-        [
-            { note_name_full : "E4b", note : "E", octave : "4", accidental : "b", freq : 0, note_length : 32 , note_type : ["1"]},
-            { note_name_full : "E4b", note : "E", octave : "4", accidental : "b", freq : 0, note_length : 32 , note_type : ["1"]}
         ]
     ];
     renderSheetMusic(testArray, [["hel", "lo"], ["its"], ["me"], ["I've"], ["been"], ["won","der","ing"], ["if"], ["after"], ["all"], ["this"], ["time"], ["youd"], ["like"], ["to"], ["meet"], ["to"], ["go"], ["over"], ["every", "thing"]]);
