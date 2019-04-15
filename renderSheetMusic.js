@@ -41,6 +41,7 @@ function renderSheetMusic(input) {
     var output; // will hold final abcjs format for sheet music
     output = "M: " + time_signature_top_num_input + "/" + time_signature_bottom_num_input + "\n";
     output += "L: 1/" + time_signature_bottom_num_input + "\n";
+    output += "Q: 1/" + time_signature_bottom_num_input + "=" + tempo_input + "\n";
     output += "K: " + key_signature_input + "\n";
     output += "|:";
     // one measure at a time
