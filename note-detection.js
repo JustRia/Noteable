@@ -66,13 +66,21 @@ function combine_notes(notes) {
     // Partition array into subarrays of 8 samples each (half a beat)
     var spliced_array = [];
     temp_arr = JSON.parse(JSON.stringify(notes));
-    while (temp_arr.length > 0) {
-        spliced_array.push(temp_arr.splice(0, 8));
+
+    // Remove leading rests to better line up splicing samples into groups of eight (hopefully)
+    var counter = 0;
+    while (temp_arr[counter].note_name == "rest") {
+        counter++;
+    }
+
+    var no_rest = temp_arr.splice(counter, temp_arr.length);
+    console.log(JSON.parse(JSON.stringify(no_rest)));
+    while (no_rest.length > 0) {
+        spliced_array.push(no_rest.splice(0, 8));
     }
     
     var combined_notes = [];
     var median_notes = [];
-
     // Take the median of each subarray as the most central note the user was trying to input
     for (var i = 0; i < spliced_array.length; i++) {
         var note_obj = null;
@@ -82,12 +90,14 @@ function combine_notes(notes) {
             return parseFloat(a.freq) - parseFloat(b.freq);
         });
 
+        console.log(split);
+        
         var mid1 = Math.floor((split.length - 1) / 2);
         var mid2 = Math.ceil((split.length - 1) / 2);
         if (split[mid1].note_name == "rest") {
             var median = split[mid2].freq;
         } else {
-            var median = (split[mid1].freq + split[mid2].freq) / 2;
+            var median = split[mid2].freq;
         }
 
         // Create note object of the median
