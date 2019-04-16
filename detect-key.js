@@ -98,14 +98,10 @@ function detectKey(measures) {
                                 for (let key of majorKeys) {
                                     if (noteN2.accidental) {
                                         if (noteN2.accidental == key.notes[pos]) {
-                                            console.log(note);
-                                            console.log(noteN2);
                                             key.points += note.note_length;
                                         } 
                                     } else {
                                         if (key.notes[pos] == "n") {
-                                            console.log(note);
-                                            console.log(noteN2);
                                             key.points += note.note_length;
                                         }
                                     }
