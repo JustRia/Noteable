@@ -51,9 +51,9 @@ p {
 
 .button {
     margin: 10px;
-    padding: 10px;
+    padding: 10px 20px;
     border-radius: 999px;
-    width: 170px;
+    min-width: 170px;
     font-size: 1.7vw;
     font-weight: bold;
     border: 4px solid white;
@@ -79,12 +79,27 @@ p {
     color: white;
 }
 
+.secondary:hover {
+    background: white;
+    color: #76baa9;
+}
+
+.secondary:hover a {
+    color: #76baa9;
+}
+
 .primary {
     color: #76baa9;
 }
 
 .hidden {
     display: none !important;
+}
+
+:any-link {
+    color: white;
+    text-decoration: none;
+    transition: 0.2s all ease-in-out;
 }
 
 /*******************/
