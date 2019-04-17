@@ -74,7 +74,6 @@ function combine_notes(notes) {
     }
 
     var no_rest = temp_arr.splice(counter, temp_arr.length);
-    console.log(JSON.parse(JSON.stringify(no_rest)));
     while (no_rest.length > 0) {
         spliced_array.push(no_rest.splice(0, 8));
     }
@@ -90,7 +89,6 @@ function combine_notes(notes) {
             return parseFloat(a.freq) - parseFloat(b.freq);
         });
 
-        console.log(split);
         
         var mid1 = Math.floor((split.length - 1) / 2);
         var mid2 = Math.ceil((split.length - 1) / 2);
