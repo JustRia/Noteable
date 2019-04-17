@@ -183,10 +183,15 @@ p {
 }
 
 /* prevents weird stutter when user would hover over tooltip instead of button */
-.tooltip:hover {
+.main-button .tooltip:hover {
     visibility: hidden;
     opacity: 0;
 }
+.recording-button .tooltip:hover {
+    visibility: hidden;
+    opacity: 0;
+}
+
 
 /* the arrow of the tooltip */
 .tooltip::after {
@@ -233,7 +238,7 @@ p {
     display: flex;
     flex: 1;
     /* takes up rest of space of window so microphone is at the bottom of the screen */
-    margin: 70px auto;
+    margin: 0 auto;
     align-items: center;
 }
 
@@ -304,10 +309,6 @@ p {
     border-radius: 15px;
     overflow: scroll !important; /* fixes problem where too many measures displayed for the screen width */
     height: auto !important; /* fix weird scrollbar when height is barely off */
-}
-
-#sheet-music-main-content {
-    max-height: calc(100vh - 250px);
 }
 
 /*******************/
