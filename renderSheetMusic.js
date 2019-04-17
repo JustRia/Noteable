@@ -56,7 +56,7 @@ function renderSheetMusic(input, words) {
     output = "M: " + time_signature_top_num_input + "/" + time_signature_bottom_num_input + "\n";
     output += "L: 1/" + time_signature_bottom_num_input + "\n";
     output += "K: " + key_signature_input + "\n";
-    output += "|:";
+    output += "";
     // one measure at a time
     for (var i = 0; i < input.length; i++) {
         // measureAccidentals holds the key as "C#", "Db", etc. as well as
@@ -175,7 +175,7 @@ function renderSheetMusic(input, words) {
             }
         }
     }
-    output += ":|\n";
+    output += "|\n";
     output += text;
 
     console.log(output);
