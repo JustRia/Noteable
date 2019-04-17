@@ -100,7 +100,6 @@ function stopRecording() {
     if (!document.getElementById("stop-icon").classList.contains("disabled-button")) {
         recording = false;
         document.getElementById("stop-icon").classList.add("hidden");
-        document.getElementById("mic-icon").classList.remove("hidden");
         rec.stop();
         stopMetronome();
         //stop microphone access
