@@ -1,5 +1,10 @@
 var ABCJS = require('abcjs');
 
+//prevent event listener from being attached before dom is ready
+window.onload = function() {
+    document.getElementById("download-sheet").addEventListener("click", sheetToPdf);
+}
+
 function testRenderSheetMusic() {
     document.getElementById("sheet-music-main-content").classList.remove("hidden");
     document.getElementById("input-main-content").classList.add("hidden");
@@ -37,7 +42,6 @@ function testRenderSheetMusic() {
 function renderSheetMusic(input) {
     // shift notes to the key. (i.e. changing Db to C# for key of D)
     input = changeNotesToKey(input);
-
     var output; // will hold final abcjs format for sheet music
     output = "M: " + time_signature_top_num_input + "/" + time_signature_bottom_num_input + "\n";
     output += "L: 1/" + time_signature_bottom_num_input + "\n";
@@ -131,6 +135,7 @@ function renderSheetMusic(input) {
 
     console.log(output);
     ABCJS.renderAbc("sheet-music", output); // attaches var abc to DOM element id="sheet-music"
+    sheetToMidi(output);
 }
 
 function getKeyAccidentals() {
@@ -279,4 +284,40 @@ function changeNotesToKey(input) {
         }
     }
     return input;
+}
+
+function sheetToPdf() {
+    var jspdf = require('jspdf');
+    var doc = new jspdf.jsPDF("p","mm","a4");
+    var divHeight = $('#sheet-music').height();
+    var divWidth = $('#sheet-music').width();
+    var ratio = divHeight / divWidth;
+    var printContents = document.getElementById("sheet-music").innerHTML;
+  
+    if(printContents) {
+        printContents = printContents.replace(/\r?\n|\r/g, '').trim();
+    }
+
+    var canvas = document.createElement('canvas');
+    canvg(canvas, printContents);
+    var imgData = canvas.toDataURL('image/png');
+    var width = doc.internal.pageSize.getWidth();
+    var height = doc.internal.pageSize.getHeight();
+    height = ratio * width;
+    doc.addImage(imgData, 'PNG', 0, 0, width-20, height-10);
+
+    doc.save('sheetMusic.pdf');
+
+    document.getElementById("download-sheet").addEventListener("click", sheetToPdf);
+
+}
+
+function sheetToMidi(output) {
+    var abcjsMidi = require("abcjs/midi");
+    document.getElementById("download-midi").innerHTML = "";
+    abcjsMidi.renderMidi(document.getElementById("download-midi"),output, {
+      generateDownload:true,
+      generateInline: false,
+      downloadLabel:"Download MIDI"
+  });
 }
