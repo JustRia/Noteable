@@ -136,8 +136,6 @@ function createAudioBuffer(blob) {
             } else {
                 resolve(audioContext.decodeAudioData(arraybuffer, function (buffer) {
                     audioBuffer = buffer;
-                    // Speech to text
-                    var words = syncRecognize(blob, audioBuffer.sampleRate);
                     // Note-detection
                     measures = note_detection.get_notes(audioBuffer, time_signature_top_num_input, time_signature_bottom_num_input, tempo_input);
                     // Key detection
@@ -148,9 +146,8 @@ function createAudioBuffer(blob) {
                         }
                     }
                     updateProgress("auto-detect-key");
-                    // create abcjs object to display
-                    renderSheetMusic(measures, words);
-                    updateProgress("parse-notes-to-render");
+                    // Speech to text
+                    syncRecognize(blob, audioBuffer.sampleRate, measures);
                 }, function (e) {
                     "Error decoding data"
                 }));
@@ -185,7 +182,7 @@ function keyPress(e) {
                 tempoBPM = 9 / (elapsedTime / 60000);
                 console.log(tempoBPM);
                 tempoInput.value = Math.round(tempoBPM);
-                detectingTempoContent.classList.add("hidden")
+                detectingTempoContent.classList.add("hidden");
             }
         }
     }

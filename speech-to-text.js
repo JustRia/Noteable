@@ -35,7 +35,7 @@ const client = new speech.SpeechClient();
  * Takes a WAV blob and sample rate, converts and sends to Google Cloud Speech API.
  * Returns
  */
-function syncRecognize(blob, sampleRate) {
+function syncRecognize(blob, sampleRate, measures) {
     console.log(blob);
     console.log(sampleRate);
     var audioBytes = '';
@@ -67,7 +67,7 @@ function syncRecognize(blob, sampleRate) {
                 const response = data[0];
                 const transcription = response.results.map(result => result.alternatives[0].transcript).join('\n');
                 console.log(transcription);
-                var syllables = words_to_syllables.splitWords(transcription);
+                var syllables = words_to_syllables.splitWords(transcription, measures);
                 console.log(syllables);
                 updateProgress("speech-to-text");
                 return syllables;
