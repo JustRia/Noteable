@@ -13,9 +13,11 @@ module.exports = {
         }
         console.log(syllablesList);
         console.log(measures);
-        renderSheetMusic(measures, syllablesList);
-        // create abcjs object to display
-        updateProgress("parse-notes-to-render");
-        //return syllablesList;
+        if (measures) {
+            renderSheetMusic(measures, syllablesList);
+            // create abcjs object to display
+            updateProgress("parse-notes-to-render");
+        }
+        return syllablesList;
     }
 }

@@ -4,6 +4,7 @@ const electronPath = require('electron'); // Require Electron from the binaries 
 const path = require('path');
 const chai = require('chai');
 const words_to_syllables = require("../words-to-syllables.js");
+const dummy = undefined;
 
 let app
 
@@ -12,7 +13,7 @@ global.before(function() {
 })
 
 describe('Syllables', function () {
-    this.timeout(10000)
+    this.timeout(10000);
 
     before(function () {
         app = new Application({
@@ -30,36 +31,36 @@ describe('Syllables', function () {
 
     it("conundrum", function() {
         var text = "conundrum";
-        var expected = ["co", "nun", "drum"];
-        var res = words_to_syllables.splitWords(text);
+        var expected = [["co", "nun", "drum"]];
+        var res = words_to_syllables.splitWords(text, dummy);
         chai.expect(res).to.eql(expected);
     });
 
     it("intimidating", function() {
         var text = "intimidating";
-        var expected = ["in", "ti", "mi", "da", "ting"];
-        var res = words_to_syllables.splitWords(text);
+        var expected = [["in", "ti", "mi", "da", "ting"]];
+        var res = words_to_syllables.splitWords(text, dummy);
         chai.expect(res).to.eql(expected);
     });
 
     it("The old apple revels in its authority.", function() {
         var text = "The old apple revels in its authority.";
-        var expected = ["The", "old", "ap", "ple", "re", "vels", "in", "its", "au", "tho", "ri", "ty."];
-        var res = words_to_syllables.splitWords(text);
+        var expected = [["The"], ["old"], ["ap", "ple"], ["re", "vels"], ["in"], ["its"], ["au", "tho", "ri", "ty."]];
+        var res = words_to_syllables.splitWords(text, dummy);
         chai.expect(res).to.eql(expected);
     });
 
     it("Is this the real life?", function() {
         var text = "Is this the real life?";
-        var expected = ["Is", "this", "the", "real", "life?"];
-        var res = words_to_syllables.splitWords(text);
+        var expected = [["Is"], ["this"], ["the"], ["real"], ["life?"]];
+        var res = words_to_syllables.splitWords(text, dummy);
         chai.expect(res).to.eql(expected);
     });
 
     it("Is this just fantasy?", function() {
         var text = "Is this just fantasy?";
-        var expected = ["Is", "this", "just", "fan", "ta", "sy?"];
-        var res = words_to_syllables.splitWords(text);
+        var expected = [["Is"], ["this"], ["just"], ["fan", "ta", "sy?"]];
+        var res = words_to_syllables.splitWords(text, dummy);
         chai.expect(res).to.eql(expected);
     });
 });
