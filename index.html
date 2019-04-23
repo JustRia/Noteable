@@ -80,8 +80,8 @@
             </div>
             <div id="tempo-input" class="hidden">
                 <h3>Input Tempo: </h3>
-                  <form onsubmit="submitForm('tempo'); return false">
-                      <div class="input-container">
+                <form onsubmit="submitForm('tempo'); return false">
+                    <div class="input-container">
                         <input type="number" name="tempo" min="1" max="256" value="120" required>
                     </div>
                     <input type="submit" value="Submit" class="primary button">
@@ -148,7 +148,7 @@
     <div id="transcriptionsList"></div>
 
     <script>
-      require('./renderer.js');
+        require('./renderer.js');
     </script>
     <!--It should be noted that rawgit is going to be shut down on October 2019, so I'll look into a more sustainable host for Recorderjs-->
     <script src="https://cdn.rawgit.com/mattdiamond/Recorderjs/08e7abd9/dist/recorder.js"></script>
