@@ -112,14 +112,14 @@ function disable_input(input) {
         if (input == 'key-signature') {
             document.getElementsByClassName("custom-select")[0].classList.add('disabled-button');
         }
-        // auto-submit for key_sig
-        submitForm('key-signature');
     } else {
         // enable stuff
         if (input == 'key-signature') {
             document.getElementsByClassName("custom-select")[0].classList.remove('disabled-button');
         }
     }
+    // auto-submit for key_sig
+    submitForm('key-signature');
 }
 
 function checkPowerOfTwo() {
