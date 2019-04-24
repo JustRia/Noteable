@@ -103,6 +103,9 @@ function startRecording() {
 function stopRecording() {
     if (!document.getElementById("stop-icon").classList.contains("disabled-button")) {
         recording = false;
+        // remove metronome and show progress bar
+        document.getElementById("metronome-main-content").classList.add("hidden");
+        document.getElementById("progress-bar-main-content").classList.remove("hidden");
         document.getElementById("stop-icon").classList.add("hidden");
         rec.stop();
         stopMetronome();
@@ -113,9 +116,6 @@ function stopRecording() {
         //rec.exportWAV(createDownloadLink);
         rec.exportWAV(createAudioBuffer);
         rec.clear();
-        // remove metronome and show progress bar
-        document.getElementById("metronome-main-content").classList.add("hidden");
-        document.getElementById("progress-bar-main-content").classList.remove("hidden");
     }
 }
 
@@ -183,8 +183,6 @@ function createAudioBuffer(blob) {
             } else {
                 resolve(audioContext.decodeAudioData(arraybuffer, function (buffer) {
                     audioBuffer = buffer;
-                    // Speech to text
-                    syncRecognize(blob, audioBuffer.sampleRate);
                     // Note-detection
                     measures = note_detection.get_notes(audioBuffer, time_signature_top_num_input, time_signature_bottom_num_input, tempo_input);
                     // Key detection
@@ -195,9 +193,8 @@ function createAudioBuffer(blob) {
                         }
                     }
                     updateProgress("auto-detect-key");
-                    // create abcjs object to display
-                    renderSheetMusic(measures);
-                    updateProgress("parse-notes-to-render");
+                    // Speech to text
+                    syncRecognize(blob, audioBuffer.sampleRate, measures);
                 }, function (e) {
                     "Error decoding data"
                 }));
@@ -232,7 +229,7 @@ function keyPress(e) {
                 tempoBPM = 9 / (elapsedTime / 60000);
                 console.log(tempoBPM);
                 tempoInput.value = Math.round(tempoBPM);
-                detectingTempoContent.classList.add("hidden")
+                detectingTempoContent.classList.add("hidden");
             }
         }
     }
