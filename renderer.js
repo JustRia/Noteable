@@ -3,6 +3,7 @@ Most of the below code is utilizing mattdiamond's popular Recordjs plugin found:
 https://github.com/mattdiamond/Recorderjs
 code will be slightly repurposed for our use
 */
+
 const {
     promisify
 } = require('util');
@@ -100,10 +101,9 @@ function startRecording() {
 }
 
 function stopRecording() {
-    if(!document.getElementById("stop-icon").classList.contains("disabled-button")) {
+    if (!document.getElementById("stop-icon").classList.contains("disabled-button")) {
         recording = false;
         document.getElementById("stop-icon").classList.add("hidden");
-        document.getElementById("mic-icon").classList.remove("hidden");
         rec.stop();
         stopMetronome();
         //stop microphone access

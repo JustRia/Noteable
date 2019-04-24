@@ -51,9 +51,9 @@ p {
 
 .button {
     margin: 10px;
-    padding: 10px;
+    padding: 10px 20px;
     border-radius: 999px;
-    width: 170px;
+    min-width: 170px;
     font-size: 1.7vw;
     font-weight: bold;
     border: 4px solid white;
@@ -79,12 +79,27 @@ p {
     color: white;
 }
 
+.secondary:hover {
+    background: white;
+    color: #76baa9;
+}
+
+.secondary:hover a {
+    color: #76baa9;
+}
+
 .primary {
     color: #76baa9;
 }
 
 .hidden {
     display: none !important;
+}
+
+:any-link {
+    color: white;
+    text-decoration: none;
+    transition: 0.2s all ease-in-out;
 }
 
 /*******************/
@@ -168,10 +183,15 @@ p {
 }
 
 /* prevents weird stutter when user would hover over tooltip instead of button */
-.tooltip:hover {
+.main-button .tooltip:hover {
     visibility: hidden;
     opacity: 0;
 }
+.recording-button .tooltip:hover {
+    visibility: hidden;
+    opacity: 0;
+}
+
 
 /* the arrow of the tooltip */
 .tooltip::after {
@@ -218,7 +238,7 @@ p {
     display: flex;
     flex: 1;
     /* takes up rest of space of window so microphone is at the bottom of the screen */
-    margin: 70px auto;
+    margin: 0 auto;
     align-items: center;
 }
 
@@ -251,6 +271,11 @@ p {
 .confirmed::after {
     transition: 0.3s all linear;
     opacity: 1;
+}
+
+.bounce {
+    animation: bounce;
+    animation-duration: 0.8s;
 }
 
 #auto-detect-key-signature-container {
@@ -289,10 +314,6 @@ p {
     border-radius: 15px;
     overflow: scroll !important; /* fixes problem where too many measures displayed for the screen width */
     height: auto !important; /* fix weird scrollbar when height is barely off */
-}
-
-#sheet-music-main-content {
-    max-height: calc(100vh - 250px);
 }
 
 /*******************/
@@ -594,5 +615,17 @@ input[type="submit"], #detect-tempo-button {
     }
     100% {
         box-shadow: 0 0 0 35px rgba(0, 0, 0, 0);
+    }
+}
+
+@keyframes bounce {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.5);
+    }
+    100% {
+        transform: scale(1);
     }
 }
