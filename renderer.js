@@ -20,6 +20,8 @@ var tempoCountdown = document.getElementById("tempo-countdown");
 var tempoInput = document.querySelector("input[name='tempo']");
 var detectingTempoContent = document.getElementById("detecting-tempo-div");
 var detectKeyCheckbox = document.getElementById("auto-detect-key-signature");
+var editButton = document.getElementById("edit-button");
+var reRenderButton = document.getElementById("re-render-button");
 var taps;
 var startTime, endTime;
 var detectingTempo = false;
@@ -33,6 +35,8 @@ var audioContext = new AudioContext; //new audio context to help us record
 var audioBuffer; //this variable will contain the audiobuffer post-recording
 var measures = [];
 var detectKeyFlag = false;
+var theBlob;
+var theSampleRate;
 
 recordButton.addEventListener("click", startRecording);
 stopButton.addEventListener("click", stopRecording);
@@ -40,6 +44,8 @@ retryButton.addEventListener("click", retryRecording);
 detectTempoButton.addEventListener("click", startDetectTempo);
 document.addEventListener("keypress", keyPress);
 detectKeyCheckbox.addEventListener("click", toggleDetectKey);
+editButton.addEventListener("click", editInputs);
+reRenderButton.addEventListener("click", reRender);
 
 function startRecording() {
     if (!recording) {
@@ -99,6 +105,9 @@ function startRecording() {
 function stopRecording() {
     if (!document.getElementById("stop-icon").classList.contains("disabled-button")) {
         recording = false;
+        // remove metronome and show progress bar
+        document.getElementById("metronome-main-content").classList.add("hidden");
+        document.getElementById("progress-bar-main-content").classList.remove("hidden");
         document.getElementById("stop-icon").classList.add("hidden");
         rec.stop();
         stopMetronome();
@@ -109,9 +118,6 @@ function stopRecording() {
         //rec.exportWAV(createDownloadLink);
         rec.exportWAV(createAudioBuffer);
         rec.clear();
-        // remove metronome and show progress bar
-        document.getElementById("metronome-main-content").classList.add("hidden");
-        document.getElementById("progress-bar-main-content").classList.remove("hidden");
     }
 }
 
@@ -127,6 +133,47 @@ function retryRecording() {
     document.getElementById("progress-fill").style.width = 1 + "%";
 }
 
+function editInputs() {
+    // hide sheet music and go back to input screen
+    document.getElementById("sheet-music-main-content").classList.add("hidden");
+    document.getElementById("input-main-content").classList.remove("hidden");
+    // hide the retry button and show the re-render button
+    document.getElementById("retry-icon").classList.add("hidden");
+    document.getElementById("re-render-button-container").classList.remove("hidden");
+    // reset the progress bar
+    progress = [0,0,0,0,0];
+    document.getElementById("progress-fill").style.width = 1 + "%";
+}
+
+function reRender() {
+
+    // display progress bar
+    document.getElementById("progress-bar-main-content").classList.remove("hidden");
+    document.getElementById("input-main-content").classList.add("hidden");
+    document.getElementById("re-render-button-container").classList.add("hidden");
+
+
+    setTimeout(function(){
+        console.log(audioBuffer, time_signature_top_num_input, time_signature_bottom_num_input, tempo_input, key_signature_input, detectKeyFlag);
+
+        // re-evaluate audio with the new tempo and inputs
+        measures = note_detection.get_notes(audioBuffer, time_signature_top_num_input, time_signature_bottom_num_input, tempo_input);
+
+        // determine key signature
+        if (detectKeyFlag) {
+            key_signature_input = detectKey(measures);
+            if (key_signature_input == undefined) {
+                key_signature_input = "C";
+            }
+        }
+        updateProgress("auto-detect-key");
+
+        // re-render the sheet music
+        syncRecognize(theBlob, theSampleRate, measures);
+        updateProgress("parse-notes-to-render");
+    }, 100);
+}
+
 function createAudioBuffer(blob) {
     var readBlob = require('read-blob');
     return new Promise(function (resolve, reject) {
@@ -136,8 +183,6 @@ function createAudioBuffer(blob) {
             } else {
                 resolve(audioContext.decodeAudioData(arraybuffer, function (buffer) {
                     audioBuffer = buffer;
-                    // Speech to text
-                    syncRecognize(blob, audioBuffer.sampleRate);
                     // Note-detection
                     measures = note_detection.get_notes(audioBuffer, time_signature_top_num_input, time_signature_bottom_num_input, tempo_input);
                     // Key detection
@@ -148,9 +193,10 @@ function createAudioBuffer(blob) {
                         }
                     }
                     updateProgress("auto-detect-key");
-                    // create abcjs object to display
-                    renderSheetMusic(measures);
-                    updateProgress("parse-notes-to-render");
+                    theBlob = blob;
+                    theSampleRate = audioBuffer.sampleRate;
+                    // Speech to text
+                    syncRecognize(blob, audioBuffer.sampleRate, measures);
                 }, function (e) {
                     "Error decoding data"
                 }));
@@ -185,7 +231,7 @@ function keyPress(e) {
                 tempoBPM = 9 / (elapsedTime / 60000);
                 console.log(tempoBPM);
                 tempoInput.value = Math.round(tempoBPM);
-                detectingTempoContent.classList.add("hidden")
+                detectingTempoContent.classList.add("hidden");
             }
         }
     }

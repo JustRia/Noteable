@@ -46,9 +46,11 @@ describe('Render Sheet Music', function () {
                             "{ note_name_full : \"e4\", note : \"E\", octave : \"4\", accidental : undefined, freq : 0, note_length : 32 , note_type : [\"1\"]}," +
                             "{ note_name_full : \"rest\", note : \"rest\", freq : 0, note_length : 96, note_type : [\"3\"] }" +
                         "]" +
-                    "];";
+                    "];" +
+                    "var words = " +
+                    "[[\"hel\", \"lo\"], [\"its\"], [\"me\"]]";
                 return app.webContents.executeJavaScript(runThis, true).then(function() {
-                    return app.webContents.executeJavaScript("renderSheetMusic(testArray);", true).then(function() {
+                    return app.webContents.executeJavaScript("renderSheetMusic(testArray, words);", true).then(function() {
                         return app.client.pause(1000).then(function() {
                             return app.client.element("#sheet-music > svg").isVisible().should.eventually.equal(true);
                         });

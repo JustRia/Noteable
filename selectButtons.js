@@ -52,18 +52,39 @@ function submitForm(input) {
         inputFlags[0] = 1;
         key_signature_input = document.querySelector('[name="key-signature"]').value;
         console.log("key signature = " + key_signature_input);
+
+        /* remove and re-add the checkmark so animation plays again */
+        var elm = document.getElementById("key-signature-confirmation");
+        var newone = elm.cloneNode(true);
+        elm.parentNode.replaceChild(newone, elm);
+
         document.getElementById("key-signature-confirmation").classList.add("confirmed");
+        document.getElementById("key-signature-confirmation").classList.add("bounce");
     } else if (input == "tempo") {
         inputFlags[1] = 1;
         tempo_input = document.querySelector('[name="tempo"]').value;
         console.log("tempo = " + tempo_input);
+
+        /* remove and re-add the checkmark so animation plays again */
+        var elm = document.getElementById("tempo-confirmation");
+        var newone = elm.cloneNode(true);
+        elm.parentNode.replaceChild(newone, elm);
+
         document.getElementById("tempo-confirmation").classList.add("confirmed");
+        document.getElementById("tempo-confirmation").classList.add("bounce");
     } else if (input == "time-signature") {
         inputFlags[2] = 1;
         time_signature_top_num_input = document.querySelector('[name="time-signature-top-num"]').value;
         time_signature_bottom_num_input = document.querySelector('[name="time-signature-bottom-num"]').value;
         console.log("time signature = " + time_signature_top_num_input + "/" + time_signature_bottom_num_input);
+
+        /* remove and re-add the checkmark so animation plays again */
+        var elm = document.getElementById("time-signature-confirmation");
+        var newone = elm.cloneNode(true);
+        elm.parentNode.replaceChild(newone, elm);
+
         document.getElementById("time-signature-confirmation").classList.add("confirmed");
+        document.getElementById("time-signature-confirmation").classList.add("bounce");
     }
 
     var enableButton = true;
@@ -97,6 +118,8 @@ function disable_input(input) {
             document.getElementsByClassName("custom-select")[0].classList.remove('disabled-button');
         }
     }
+    // auto-submit for key_sig
+    submitForm('key-signature');
 }
 
 function checkPowerOfTwo() {
