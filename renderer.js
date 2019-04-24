@@ -99,6 +99,9 @@ function startRecording() {
 function stopRecording() {
     if (!document.getElementById("stop-icon").classList.contains("disabled-button")) {
         recording = false;
+        // remove metronome and show progress bar
+        document.getElementById("metronome-main-content").classList.add("hidden");
+        document.getElementById("progress-bar-main-content").classList.remove("hidden");
         document.getElementById("stop-icon").classList.add("hidden");
         rec.stop();
         stopMetronome();
@@ -109,9 +112,6 @@ function stopRecording() {
         //rec.exportWAV(createDownloadLink);
         rec.exportWAV(createAudioBuffer);
         rec.clear();
-        // remove metronome and show progress bar
-        document.getElementById("metronome-main-content").classList.add("hidden");
-        document.getElementById("progress-bar-main-content").classList.remove("hidden");
     }
 }
 
