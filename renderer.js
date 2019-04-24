@@ -149,31 +149,35 @@ function reRender() {
     //TODO
     //A-aron
     //document.getElementById("re-render-button-container").classList.add("hidden");
-    
+
     // display progress bar
     document.getElementById("progress-bar-main-content").classList.remove("hidden");
-    console.log(audioBuffer, time_signature_top_num_input, time_signature_bottom_num_input, tempo_input, key_signature_input, detectKeyFlag);
-    updateProgress("speech-to-text");
-
-    // re-evaluate audio with the new tempo and inputs
-    measures = note_detection.get_notes(audioBuffer, time_signature_top_num_input, time_signature_bottom_num_input, tempo_input);
-    
-    // determine key signature
-    if (detectKeyFlag) {
-        key_signature_input = detectKey(measures);
-        if (key_signature_input == undefined) {
-            key_signature_input = "C";
-        }
-    }
-    updateProgress("auto-detect-key");
-
-    // re-render the sheet music
-    syncRecognize(theBlob, theSampleRate, measures);
-    updateProgress("parse-notes-to-render");
-    // hide inputs and re-render button
     document.getElementById("input-main-content").classList.add("hidden");
-    document.getElementById("re-render-button-container").classList.add("hidden");
-    
+
+
+    setTimeout(function(){
+        console.log(audioBuffer, time_signature_top_num_input, time_signature_bottom_num_input, tempo_input, key_signature_input, detectKeyFlag);
+        updateProgress("speech-to-text");
+
+        // re-evaluate audio with the new tempo and inputs
+        measures = note_detection.get_notes(audioBuffer, time_signature_top_num_input, time_signature_bottom_num_input, tempo_input);
+
+        // determine key signature
+        if (detectKeyFlag) {
+            key_signature_input = detectKey(measures);
+            if (key_signature_input == undefined) {
+                key_signature_input = "C";
+            }
+        }
+        updateProgress("auto-detect-key");
+
+        // re-render the sheet music
+        syncRecognize(theBlob, theSampleRate, measures);
+        updateProgress("parse-notes-to-render");
+        // hide inputs and re-render button
+        document.getElementById("input-main-content").classList.add("hidden");
+        document.getElementById("re-render-button-container").classList.add("hidden");
+    }, 100);
 }
 
 function createAudioBuffer(blob) {
