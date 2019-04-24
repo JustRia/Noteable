@@ -525,6 +525,13 @@ input[type="submit"], #detect-tempo-button {
     height: 100%;
 }
 
+/**********************/
+/** Re-render button **/
+/**********************/
+.re-render-button {
+    margin: 0px;
+}
+
 /**************************/
 /** Screen Width changes **/
 /**************************/
@@ -603,12 +610,12 @@ input[type="submit"], #detect-tempo-button {
 }
 @keyframes shadow-pulse
 {
-     0% {
-          box-shadow: 0 0 0 0px rgba(0, 0, 0, 0.2);
-     }
-     100% {
-          box-shadow: 0 0 0 35px rgba(0, 0, 0, 0);
-     }
+    0% {
+        box-shadow: 0 0 0 0px rgba(0, 0, 0, 0.2);
+    }
+    100% {
+        box-shadow: 0 0 0 35px rgba(0, 0, 0, 0);
+    }
 }
 
 @keyframes bounce {
