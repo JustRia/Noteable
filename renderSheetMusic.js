@@ -339,8 +339,8 @@ function changeNotesToKey(input) {
 function sheetToPdf() {
     var jspdf = require('jspdf');
     var doc = new jspdf.jsPDF("p","mm","a4");
-    var divHeight = $('#sheet-music').height();
-    var divWidth = $('#sheet-music').width();
+    var divHeight = document.getElementById("sheet-music").scrollHeight;
+    var divWidth = document.getElementById("sheet-music").scrollWidth;
     var ratio = divHeight / divWidth;
     var printContents = document.getElementById("sheet-music").innerHTML;
 
