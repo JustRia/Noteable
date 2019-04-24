@@ -292,6 +292,7 @@ function sheetToPdf() {
     //var divHeight = $('#sheet-music').height();
     //var divWidth = $('#sheet-music').width();
     //var ratio = divHeight / divWidth;
+    var oldContents = document.body.innerHTML;
     var printContents = document.getElementById("sheet-music").innerHTML;
   
     if(printContents) {
@@ -307,6 +308,9 @@ function sheetToPdf() {
     //doc.addImage(imgData, 'PNG', 0, 0, width-20, height-10);
 
     //doc.save('sheetMusic.pdf');
+    document.body.innerHTML = printContents;
+    window.print();
+    document.body.innerHTML = oldContents;
 
     document.getElementById("download-sheet").addEventListener("click", sheetToPdf);
 
@@ -320,4 +324,4 @@ function sheetToMidi(output) {
       generateInline: false,
       downloadLabel:"Download MIDI"
   });
-}
+}   
