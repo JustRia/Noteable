@@ -46,7 +46,7 @@ p {
 }
 
 .button-container {
-    margin: 20px; /* double the .button margin */
+    /* margin: 20px; */ /* double the .button margin */
 }
 
 .button {
@@ -336,7 +336,7 @@ input[type=number]::-webkit-outer-spin-button {
   display: block;
   position: relative;
   padding-left: 35px;
-  margin-bottom: 12px;
+  margin: 12px 0;
   cursor: pointer;
   user-select: none;
 }
@@ -352,6 +352,7 @@ input[type=number]::-webkit-outer-spin-button {
 
 /* Create a custom checkbox */
 .checkmark {
+  display: inline-block;
   position: relative;
   height: 1.7vw;
   width: 1.7vw;
