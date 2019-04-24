@@ -35,6 +35,8 @@ var audioContext = new AudioContext; //new audio context to help us record
 var audioBuffer; //this variable will contain the audiobuffer post-recording
 var measures = [];
 var detectKeyFlag = false;
+var theBlob;
+var theSampleRate;
 
 recordButton.addEventListener("click", startRecording);
 stopButton.addEventListener("click", stopRecording);
@@ -166,7 +168,7 @@ function reRender() {
     updateProgress("auto-detect-key");
 
     // re-render the sheet music
-    renderSheetMusic(measures);
+    syncRecognize(theBlob, theSampleRate, measures);
     updateProgress("parse-notes-to-render");
     // hide inputs and re-render button
     document.getElementById("input-main-content").classList.add("hidden");
@@ -193,6 +195,8 @@ function createAudioBuffer(blob) {
                         }
                     }
                     updateProgress("auto-detect-key");
+                    theBlob = blob;
+                    theSampleRate = audioBuffer.sampleRate;
                     // Speech to text
                     syncRecognize(blob, audioBuffer.sampleRate, measures);
                 }, function (e) {
