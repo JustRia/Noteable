@@ -1,7 +1,7 @@
 var ABCJS = require('abcjs');
+
 var bottomLyics = false; // true if we want the lyrics displayed at the bottom
 var initialOutput = "";
-
 
 //prevent event listener from being attached before dom is ready
 window.onload = function() {
@@ -342,6 +342,20 @@ function changeNotesToKey(input) {
     return input;
 }
 
+function jankRetry() {
+ 
+    // hide sheet music and go back to input screen
+    document.getElementById("sheet-music-main-content").classList.add("hidden");
+    document.getElementById("input-main-content").classList.remove("hidden");
+    // hide the retry button and show the record button
+    document.getElementById("retry-icon").classList.add("hidden");
+    document.getElementById("mic-icon").classList.remove("hidden");
+    // reset the progress bar
+    progress = [0,0,0,0,0];
+    document.getElementById("progress-fill").style.width = 1 + "%";
+    
+}
+
 function sheetToPdf() {
     //var jspdf = require('jspdf');
     //var doc = new jspdf.jsPDF("p","mm","a4");
@@ -369,6 +383,7 @@ function sheetToPdf() {
     document.body.innerHTML = oldContents;
 
     document.getElementById("download-sheet").addEventListener("click", sheetToPdf);
+    document.getElementById("retry-icon").addEventListener("click",jankRetry);
 
 }
 
