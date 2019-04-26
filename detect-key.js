@@ -69,46 +69,44 @@ function detectKey(measures) {
         }
     ];
     const notePos ="ABCDEFG";
+    const noteNames = [
+        [{note: "G", accidental: "#"}, {note: "A", accidental: "b"}],
+        [{note: "A"}],
+        [{note: "A", accidental: "#"}, {note: "B", accidental: "b"}],
+        [{note: "B"}, {note: "C", accidental: "b"}],
+        [{note: "B", accidental: "#"}, {note: "C"}],
+        [{note: "C", accidental: "#"}, {note: "D", accidental: "b"}],
+        [{note: "D"}],
+        [{note: "D", accidental: "#"}, {note: "E", accidental: "b"}],
+        [{note: "E"}, {note: "F", accidental: "b"}],
+        [{note: "E", accidental: "#"}, {note: "F"}],
+        [{note: "F", accidental: "#"}, {note: "G", accidental: "b"}],
+        [{note: "G"}],
+    ];
 
     // Find best key signature
     for (let measure of measures) {
         for (let note of measure) {
             if (note.note != "rest") {
-            var pos = notePos.indexOf(note.note);
-                for (let key of majorKeys) {
-                    // If note fits in the key, add points to that key
-                    // Points are based on note length
-                    if (note.accidental) {
-                        if (note.accidental == key.notes[pos]) {
-                            key.points += note.note_length;
-                        } else if (note.accidental == "#") {
-                            if (note.note == "F") {
-                                if (key.notes[notePos.indexOf("G")] == "b") {
-                                    key.points += note.note_length;
-                                }
-                            } else if (note.note == "G") {
-                                if (key.notes[notePos.indexOf("A")] == "b") {
-                                    key.points += note.note_length;
-                                }
-                            } else if (note.note == "A") {
-                                if (key.notes[notePos.indexOf("B")] == "b") {
-                                    key.points += note.note_length;
+                // If note fits in the key, add points to that key
+                // Points are based on note length
+                for (let noteName of noteNames) {
+                    for (let noteN of noteName) {
+                        if ((note.note == noteN.note) && ((note.accidental == noteN.accidental) || (!note.accidental && !noteN.accidental))) {
+                            for (let noteN2 of noteName) {
+                                var pos = notePos.indexOf(noteN2.note);
+                                for (let key of majorKeys) {
+                                    if (noteN2.accidental) {
+                                        if (noteN2.accidental == key.notes[pos]) {
+                                            key.points += note.note_length;
+                                        } 
+                                    } else {
+                                        if (key.notes[pos] == "n") {
+                                            key.points += note.note_length;
+                                        }
+                                    }
                                 }
                             }
-                        } else if (note.accidental == "b") {
-                            if (note.note == "D") {
-                                if (key.notes[notePos.indexOf("C")] == "#") {
-                                    key.points += note.note_length;
-                                }
-                            } else if (note.note == "E") {
-                                if (key.notes[notePos.indexOf("F")] == "#") {
-                                    key.points += note.note_length;
-                                }
-                            }
-                        }
-                    } else {
-                        if (key.notes[pos] == "n") {
-                            key.points += note.note_length;
                         }
                     }
                 }
