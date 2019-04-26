@@ -1,7 +1,8 @@
 var ABCJS = require('abcjs');
+
 var bottomLyics = false; // true if we want the lyrics displayed at the bottom
 var initialOutput = "";
-
+var output="";
 
 //prevent event listener from being attached before dom is ready
 window.onload = function() {
@@ -62,7 +63,7 @@ function renderSheetMusic(input, words) {
         text = "w: ";
     }
 
-    var output; // will hold final abcjs format for sheet music
+    output; // will hold final abcjs format for sheet music
     output = "M: " + time_signature_top_num_input + "/" + time_signature_bottom_num_input + "\n";
     output += "L: 1/" + time_signature_bottom_num_input + "\n";
     output += "Q: 1/" + time_signature_bottom_num_input + "=" + tempo_input + "\n";
@@ -342,6 +343,20 @@ function changeNotesToKey(input) {
     return input;
 }
 
+function jankRetry() {
+ 
+    // hide sheet music and go back to input screen
+    document.getElementById("sheet-music-main-content").classList.add("hidden");
+    document.getElementById("input-main-content").classList.remove("hidden");
+    // hide the retry button and show the record button
+    document.getElementById("retry-icon").classList.add("hidden");
+    document.getElementById("mic-icon").classList.remove("hidden");
+    // reset the progress bar
+    progress = [0,0,0,0,0];
+    document.getElementById("progress-fill").style.width = 1 + "%";
+    
+}
+
 function sheetToPdf() {
     var jspdf = require('jspdf');
     var doc = new jspdf.jsPDF("p","mm","a4");
@@ -365,6 +380,7 @@ function sheetToPdf() {
     doc.save('sheetMusic.pdf');
 
     document.getElementById("download-sheet").addEventListener("click", sheetToPdf);
+    document.getElementById("retry-icon").addEventListener("click",jankRetry);
 
 }
 
