@@ -1,4 +1,7 @@
 var ABCJS = require('abcjs');
+var bottomLyics = false; // true if we want the lyrics displayed at the bottom
+var initialOutput = "";
+
 
 //prevent event listener from being attached before dom is ready
 window.onload = function() {
@@ -45,12 +48,14 @@ function testRenderSheetMusic() {
  */
 
 function renderSheetMusic(input, words) {
+    initialInput = input; // used for switching the lyrics to bottom or not
+    initialWords = words;
+
     // shift notes to the key. (i.e. changing Db to C# for key of D)
     input = changeNotesToKey(input);
     var text = ""; // will hold the text for each new line of sheet music
     var wordIndex = 0;
     var syllableIndex = 0;
-    var bottomLyics = false; // true if we want the lyrics displayed at the bottom
     if (bottomLyics) {
         text = "W: ";
     } else {
@@ -375,4 +380,14 @@ function sheetToMidi(output) {
       generateInline: false,
       downloadLabel:"Download MIDI"
   });
+}
+
+function toggleLyrics() {
+    var checkbox = document.getElementById("bottom-lyrics").checked;
+    if (checkbox) {
+        bottomLyics = false;
+    } else {
+        bottomLyics = true;
+    }
+    renderSheetMusic(initialInput, initialWords);
 }
