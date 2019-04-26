@@ -338,26 +338,30 @@ function changeNotesToKey(input) {
 }
 
 function sheetToPdf() {
-    var jspdf = require('jspdf');
-    var doc = new jspdf.jsPDF("p","mm","a4");
-    var divHeight = document.getElementById("sheet-music").scrollHeight;
-    var divWidth = document.getElementById("sheet-music").scrollWidth;
-    var ratio = divHeight / divWidth;
+    //var jspdf = require('jspdf');
+    //var doc = new jspdf.jsPDF("p","mm","a4");
+    //var divHeight = $('#sheet-music').height();
+    //var divWidth = $('#sheet-music').width();
+    //var ratio = divHeight / divWidth;
+    var oldContents = document.body.innerHTML;
     var printContents = document.getElementById("sheet-music").innerHTML;
 
     if(printContents) {
         printContents = printContents.replace(/\r?\n|\r/g, '').trim();
     }
 
-    var canvas = document.createElement('canvas');
-    canvg(canvas, printContents);
-    var imgData = canvas.toDataURL('image/png');
-    var width = doc.internal.pageSize.getWidth();
-    var height = doc.internal.pageSize.getHeight();
-    height = ratio * width;
-    doc.addImage(imgData, 'PNG', 0, 0, width-20, height-10);
+    //var canvas = document.createElement('canvas');
+    //canvg(canvas, printContents);
+    //var imgData = canvas.toDataURL('image/png');
+    //var width = doc.internal.pageSize.getWidth();
+    //var height = doc.internal.pageSize.getHeight();
+    //height = ratio * width;
+    //doc.addImage(imgData, 'PNG', 0, 0, width-20, height-10);
 
-    doc.save('sheetMusic.pdf');
+    //doc.save('sheetMusic.pdf');
+    document.body.innerHTML = printContents;
+    window.print();
+    document.body.innerHTML = oldContents;
 
     document.getElementById("download-sheet").addEventListener("click", sheetToPdf);
 
