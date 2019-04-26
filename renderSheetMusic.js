@@ -2,7 +2,6 @@ var ABCJS = require('abcjs');
 
 var bottomLyics = false; // true if we want the lyrics displayed at the bottom
 var initialOutput = "";
-var output="";
 
 //prevent event listener from being attached before dom is ready
 window.onload = function() {
@@ -63,7 +62,7 @@ function renderSheetMusic(input, words) {
         text = "w: ";
     }
 
-    output; // will hold final abcjs format for sheet music
+    var output; // will hold final abcjs format for sheet music
     output = "M: " + time_signature_top_num_input + "/" + time_signature_bottom_num_input + "\n";
     output += "L: 1/" + time_signature_bottom_num_input + "\n";
     output += "Q: 1/" + time_signature_bottom_num_input + "=" + tempo_input + "\n";
